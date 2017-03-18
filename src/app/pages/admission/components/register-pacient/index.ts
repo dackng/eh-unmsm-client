@@ -1,0 +1,1 @@
+export * from './registerPacient.component';
