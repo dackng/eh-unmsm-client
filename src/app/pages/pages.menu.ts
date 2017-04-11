@@ -22,7 +22,7 @@ export const PAGES_MENU = [
             icon: 'ion-compose',
             selected: false,
             expanded: false,
-            order: 400,
+            order: 100,
           }
         },
         children: [
@@ -31,6 +31,28 @@ export const PAGES_MENU = [
             data: {
               menu: {
                 title: 'Registrar paciente',
+              }
+            }
+          }
+        ]
+      },
+      {
+        path: 'medical-test',
+        data: {
+          menu: {
+            title: 'Examen Médico',
+            icon: 'ion-compose',
+            selected: false,
+            expanded: false,
+            order: 200,
+          }
+        },
+        children: [
+          {
+            path: 'general-medicine',
+            data: {
+              menu: {
+                title: 'Medicina General',
               }
             }
           }

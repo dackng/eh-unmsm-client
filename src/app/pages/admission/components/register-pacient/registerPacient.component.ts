@@ -19,7 +19,7 @@ import {UbigeoService} from '../../../../services/ubigeo.service';
 
 export class RegisterPacientComponent implements OnInit{ 
     newPacient : Pacient;
-    codePacient : number;
+    pacientCode : number;
     existPacient: boolean;
     errorMessage: string;
     itemDefaultUbigeo : Ubigeo;
@@ -38,17 +38,17 @@ export class RegisterPacientComponent implements OnInit{
                 this.newPacient.genderList = genderList;
             }, error => this.errorMessage = <any> error);
         
-        this.pacientService.getPacientByCode(this.codePacient)
-            .subscribe( (newPacient : Pacient )=> {            
-                if(newPacient != null){
-                    this.setPacientFields(newPacient);
+        this.pacientService.getPacientByCode(this.pacientCode)
+            .subscribe( (pacient : Pacient )=> {            
+                if(pacient != null){
+                    this.setPacientFields(pacient);
                     this.existPacient = true;
                     this.newPacient.addMedicalStatusItem();
                     this.newPacient.addEapItem();
                     this.newPacient.addUbigeoItems();
                 }else{
                     this.existPacient = false;
-                    this.newPacient.code = this.codePacient;
+                    this.newPacient.code = this.pacientCode;
                     this.itemDefaultUbigeo.initializeItemByDefault();
                     this.loadItemsLists();
                 }
@@ -114,7 +114,7 @@ export class RegisterPacientComponent implements OnInit{
     }
 
     initilize(){
-        this.codePacient = null;
+        this.pacientCode = null;
         this.existPacient = true;
         this.errorMessage = null;
         this.newPacient = new Pacient();
