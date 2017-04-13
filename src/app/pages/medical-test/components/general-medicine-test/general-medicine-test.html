@@ -1,0 +1,79 @@
+<div class="widgets">
+  <div class="row">
+    <div class="col-md-12 text-xs-center">
+      <ba-card baCardClass="with-scroll">
+        <form class="row form-inline">
+          <label>Tipo de paciente</label>&nbsp;&nbsp;
+            <select class="form-control">
+                    <option>Estudiante</option>
+                    <option>Externo</option>
+            </select>
+        </form>
+      </ba-card>
+    </div>
+  </div>
+
+  <div>
+    <ba-card title="Paciente" baCardClass="with-scroll">
+      <form #registerGeneralMedicineTestForm="ngForm" (ngSubmit)="registerGeneralMedicineTest()">
+        <div class="row">
+          <div class="col-md-4">
+            <form #findPacientForm="ngForm" (ngSubmit)="findPacientByCode()">
+              <div class="form-group">
+                <label>Código</label>
+                <div class="form-group input-group">
+                    <input type="text" class="form-control" [(ngModel)]="pacientCode" 
+                        name="pacientCode" ngControl="pacientCode" required>
+                    <span class="input-group-btn">
+                        <button  class="btn btn-secondary" type="submit"><i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                </div>
+              </div>
+            </form>
+            <div class="form-group">
+              <label>Nombres</label>
+              <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.names" 
+                required name="names" ngControl="names" [disabled] ="existPacient">
+            </div>
+            <div class="form-group">
+              <label>Apellido Paterno</label>
+              <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.paternalSurname"
+                    required name="paternalSurname" ngControl="paternalSurname" [disabled]="existPacient">
+            </div>
+            <div class="form-group">
+              <label>Apellido Materno</label>
+              <input type="text" class="form-control disabled-field"[(ngModel)]="pacient.maternalSurname"
+                    required name="maternalSurname" ngControl="maternalSurname" [disabled]="existPacient">
+            </div>
+          </div>
+          <div class="col-md-4">      
+            <!-- MEDICAL TEST PROCESS-->
+            <!-- /MEDICAL TEST PROCESS-->
+          </div>
+        </div>
+            
+        <br>
+        <!-- TRIAJE AND CLINICAL EVALUATION-->
+        <div class="row">
+          <div class="col-md-12 text-xs-center">
+            <ba-card baCardClass="with-scroll">
+              <div class="container-fluid">
+                <tabs>
+                  <tab [tabTitle]="'TRIAJE'" [pageAddress]="pageAddressTab">Tab 1 Content</tab>
+                  <tab tabTitle="EVALUACIÓN CLÍNICA" [pageAddress]="pageAddressTab">Tab 2 Content</tab>
+                </tabs>
+              </div>
+            </ba-card>
+          </div>
+        </div>
+        <!-- /TRIAJE AND CLINICAL EVALUATION-->
+
+        <div class="row text-xs-center">
+          <button type="submit" class="btn btn-primary" [disabled]="existPacient">Registrar</button>&nbsp;&nbsp;
+          <button type="button" (click)="initilize()" class="btn btn-primary" [disabled]="existPacient">Cancelar</button>
+        </div>
+      </form>
+    </ba-card>
+  </div>
+</div>

@@ -7,7 +7,9 @@ import { routing }       from './medical.test.routing';
 
 import { RatingModule } from 'ng2-bootstrap/ng2-bootstrap';
 import { MedicalTestComponent } from './medical.test.component';
-import { GeneralMedicineComponent } from './components/general-medicine/general.medicine.component';
+import { GeneralMedicineTestComponent } from './components/general-medicine-test/general.medicine.test.component';
+import { TabComponent } from '../useful-components/component-tabbed/tab/tab.component';
+import { TabsComponent } from '../useful-components/component-tabbed/tabs/tabs.component';
 
 @NgModule({
   imports: [
@@ -19,7 +21,9 @@ import { GeneralMedicineComponent } from './components/general-medicine/general.
   ],
   declarations: [
     MedicalTestComponent,
-    GeneralMedicineComponent
+    GeneralMedicineTestComponent,
+    TabComponent,
+    TabsComponent
   ]
 })
 export default class MedicalTestModule {

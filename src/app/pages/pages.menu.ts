@@ -49,10 +49,10 @@ export const PAGES_MENU = [
         },
         children: [
           {
-            path: 'general-medicine',
+            path: 'general-medicine-test',
             data: {
               menu: {
-                title: 'Medicina General',
+                title: 'Examen de Medicina General',
               }
             }
           }

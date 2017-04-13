@@ -1,7 +1,7 @@
 import { Routes, RouterModule }  from '@angular/router';
 
 import { MedicalTestComponent } from './medical.test.component';
-import { GeneralMedicineComponent } from './components/general-medicine/general.medicine.component';
+import { GeneralMedicineTestComponent } from './components/general-medicine-test/general.medicine.test.component';
 
 // noinspection TypeScriptValidateTypes
 const routes: Routes = [
@@ -9,7 +9,7 @@ const routes: Routes = [
     path: '',
     component: MedicalTestComponent,
     children: [
-      { path: 'general-medicine', component: GeneralMedicineComponent }
+      { path: 'general-medicine-test', component: GeneralMedicineTestComponent }
     ]
   }
 ];
