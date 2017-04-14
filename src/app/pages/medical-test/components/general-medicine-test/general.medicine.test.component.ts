@@ -6,15 +6,15 @@ import {Catalog} from '../../../../models/catalog';
 import {PacientService} from '../../../../services/pacient.service';
 import {CatalogService} from '../../../../services/catalog.service';
 
-import {TabComponet} from '../../useful-components/component-tabbed/tab/tab.component';
-import {TabsComponet} from '../../useful-components/component-tabbed/tabs/tabs.component';
+import {BasicTablesService} from './basicTables.service';
 
 @Component({
 	moduleId: module.id,
     selector: 'general-medicine',
-    styles: [ require('../../../../theme/sass/_disabled.scss')],
+    styles: [ require('../../../../theme/sass/_disabled.scss')
+            , require ('../../../../pages/useful-components/medical-test-process-table/basicTables.scss')],
     templateUrl: './general-medicine-test.html',
-    providers: [PacientService, CatalogService]
+    providers: [PacientService, CatalogService, BasicTablesService]
 })
 
 export class GeneralMedicineTestComponent implements OnInit{ 

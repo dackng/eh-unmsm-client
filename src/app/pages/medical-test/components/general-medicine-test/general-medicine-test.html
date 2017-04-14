@@ -17,7 +17,7 @@
     <ba-card title="Paciente" baCardClass="with-scroll">
       <form #registerGeneralMedicineTestForm="ngForm" (ngSubmit)="registerGeneralMedicineTest()">
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-6">
             <form #findPacientForm="ngForm" (ngSubmit)="findPacientByCode()">
               <div class="form-group">
                 <label>Código</label>
@@ -47,21 +47,95 @@
                     required name="maternalSurname" ngControl="maternalSurname" [disabled]="existPacient">
             </div>
           </div>
-          <div class="col-md-4">      
+          <div class="col-md-6">
             <!-- MEDICAL TEST PROCESS-->
+            <div class="card card-primary card-inverse">
+                <div class="card-header card-primary">
+                    PROCESO DE EXAMEN MÉDICO
+                </div>  
+                <ba-card baCardClass="with-scroll table-panel">
+                  <medical-test-process-table></medical-test-process-table>
+                </ba-card>
+            </div>
             <!-- /MEDICAL TEST PROCESS-->
           </div>
         </div>
             
-        <br>
         <!-- TRIAJE AND CLINICAL EVALUATION-->
         <div class="row">
-          <div class="col-md-12 text-xs-center">
+          <div class="col-md-12 ">
             <ba-card baCardClass="with-scroll">
               <div class="container-fluid">
                 <tabs>
-                  <tab [tabTitle]="'TRIAJE'" [pageAddress]="pageAddressTab">Tab 1 Content</tab>
-                  <tab tabTitle="EVALUACIÓN CLÍNICA" [pageAddress]="pageAddressTab">Tab 2 Content</tab>
+                  <tab [tabTitle]="'TRIAJE'" [pageAddress]="pageAddressTab">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Peso (Kg)</label>
+                          <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.names" 
+                            required name="names" ngControl="names" [disabled] ="existPacient">
+                        </div>
+                        <div class="form-group">
+                          <label>Talla (Cm)</label>
+                          <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.names" 
+                            required name="names" ngControl="names" [disabled] ="existPacient">
+                        </div>
+                        <div class="form-group">
+                          <label>Pulso</label>
+                          <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.names" 
+                            required name="names" ngControl="names" [disabled] ="existPacient">
+                        </div>
+                        <div class="form-group">
+                          <label>FUM</label>
+                          <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.names" 
+                            required name="names" ngControl="names" [disabled] ="existPacient">
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <!--BLOOD PRESSURE-->
+                          <div class="card card-primary card-inverse">
+                              <div class="card-header card-primary">
+                                  PRESIÓN ARTERIAL
+                              </div>  
+                              <ba-card baCardClass="with-scroll table-panel">
+                                <div class="form-group">
+                                  <label>Sistólica (Mm. Hg)</label>
+                                  <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.names" 
+                                    required name="names" ngControl="names" [disabled] ="existPacient">
+                                </div>
+                                <div class="form-group">
+                                  <label>Diastólica (Mm. Hg)</label>
+                                  <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.names" 
+                                    required name="names" ngControl="names" [disabled] ="existPacient">
+                                </div>  
+                              </ba-card>
+                          </div>
+                        <!--/BLOOD PRESSURE-->
+                      </div>
+                      <div class="col-md-4">
+                        <!--VISUAL ACUITY-->
+                          <div class="card card-primary card-inverse">
+                              <div class="card-header card-primary">
+                                  AGUDEZA VISUAL
+                              </div>  
+                              <ba-card baCardClass="with-scroll table-panel">
+                                <div class="form-group">
+                                  <label>Ojo derecho</label>
+                                  <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.names" 
+                                    required name="names" ngControl="names" [disabled] ="existPacient">
+                                </div>
+                                <div class="form-group">
+                                  <label>Ojo izquierdo</label>
+                                  <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.names" 
+                                    required name="names" ngControl="names" [disabled] ="existPacient">
+                                </div>  
+                              </ba-card>
+                          </div>
+                        <!--/VISUAL ACUITY-->
+                      </div>
+                  </tab>
+                  <tab tabTitle="EVALUACIÓN CLÍNICA" [pageAddress]="pageAddressTab">
+                      Tab 2 Content
+                  </tab>
                 </tabs>
               </div>
             </ba-card>

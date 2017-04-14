@@ -10,6 +10,7 @@ import { MedicalTestComponent } from './medical.test.component';
 import { GeneralMedicineTestComponent } from './components/general-medicine-test/general.medicine.test.component';
 import { TabComponent } from '../useful-components/component-tabbed/tab/tab.component';
 import { TabsComponent } from '../useful-components/component-tabbed/tabs/tabs.component';
+import { MedicalTestProcessTable } from '../useful-components/medical-test-process-table/medical.test.process.table.component';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import { TabsComponent } from '../useful-components/component-tabbed/tabs/tabs.c
     MedicalTestComponent,
     GeneralMedicineTestComponent,
     TabComponent,
-    TabsComponent
+    TabsComponent,
+    MedicalTestProcessTable
   ]
 })
 export default class MedicalTestModule {
