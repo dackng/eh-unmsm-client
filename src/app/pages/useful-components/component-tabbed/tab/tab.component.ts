@@ -9,5 +9,5 @@
 export class TabComponent {
   @Input('tabTitle') title: string;
   @Input() active = false;
-  @Input('pageAddress') pageAddress: string;
+  @Input() pageAddress: string;
 }

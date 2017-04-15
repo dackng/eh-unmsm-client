@@ -6,7 +6,7 @@ import {BasicTablesService} from '../../../pages/medical-test/components/general
   selector: 'medical-test-process-table',
   template: require('./medical-test-process-table.html')
 })
-export class MedicalTestProcessTable {
+export class MedicalTestProcessTableComponent {
 
   peopleTableData:Array<any>;
 

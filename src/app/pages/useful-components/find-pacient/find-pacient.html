@@ -1,0 +1,28 @@
+<form #findPacientForm="ngForm" (ngSubmit)="findPacientByCode()">
+  <div class="form-group">
+    <label>Código</label>
+    <div class="form-group input-group">
+      <input type="text" class="form-control" [(ngModel)]="pacientCode" 
+          name="pacientCode" ngControl="pacientCode" required>
+      <span class="input-group-btn">
+          <button  class="btn btn-secondary" type="submit"><i class="fa fa-search"></i>
+          </button>
+      </span>
+    </div>
+  </div>
+</form>
+<div class="form-group">
+  <label>Nombres</label>
+  <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.names" 
+    required name="names" ngControl="names" [disabled] ="existPacient">
+</div>
+<div class="form-group">
+  <label>Apellido Paterno</label>
+  <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.paternalSurname"
+        required name="paternalSurname" ngControl="paternalSurname" [disabled]="existPacient">
+</div>
+<div class="form-group">
+  <label>Apellido Materno</label>
+  <input type="text" class="form-control disabled-field"[(ngModel)]="pacient.maternalSurname"
+        required name="maternalSurname" ngControl="maternalSurname" [disabled]="existPacient">
+</div>

@@ -18,34 +18,7 @@
       <form #registerGeneralMedicineTestForm="ngForm" (ngSubmit)="registerGeneralMedicineTest()">
         <div class="row">
           <div class="col-md-6">
-            <form #findPacientForm="ngForm" (ngSubmit)="findPacientByCode()">
-              <div class="form-group">
-                <label>Código</label>
-                <div class="form-group input-group">
-                    <input type="text" class="form-control" [(ngModel)]="pacientCode" 
-                        name="pacientCode" ngControl="pacientCode" required>
-                    <span class="input-group-btn">
-                        <button  class="btn btn-secondary" type="submit"><i class="fa fa-search"></i>
-                        </button>
-                    </span>
-                </div>
-              </div>
-            </form>
-            <div class="form-group">
-              <label>Nombres</label>
-              <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.names" 
-                required name="names" ngControl="names" [disabled] ="existPacient">
-            </div>
-            <div class="form-group">
-              <label>Apellido Paterno</label>
-              <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.paternalSurname"
-                    required name="paternalSurname" ngControl="paternalSurname" [disabled]="existPacient">
-            </div>
-            <div class="form-group">
-              <label>Apellido Materno</label>
-              <input type="text" class="form-control disabled-field"[(ngModel)]="pacient.maternalSurname"
-                    required name="maternalSurname" ngControl="maternalSurname" [disabled]="existPacient">
-            </div>
+            <find-pacient (pacient2Notify)="recibiendo($event)"></find-pacient>
           </div>
           <div class="col-md-6">
             <!-- MEDICAL TEST PROCESS-->
@@ -59,8 +32,7 @@
             </div>
             <!-- /MEDICAL TEST PROCESS-->
           </div>
-        </div>
-            
+        </div>    
         <!-- TRIAJE AND CLINICAL EVALUATION-->
         <div class="row">
           <div class="col-md-12 ">
@@ -131,10 +103,55 @@
                               </ba-card>
                           </div>
                         <!--/VISUAL ACUITY-->
+                        <br/>
+                        <div class="row text-xs-right">
+                          <button type="button" (click)="initilize()" class="btn btn-info">Siguiente</button>
+                        </div>
                       </div>
                   </tab>
                   <tab tabTitle="EVALUACIÓN CLÍNICA" [pageAddress]="pageAddressTab">
-                      Tab 2 Content
+                    <!--CLINICAL EVALUATION-->
+                    <div class="row text-xs-left">
+                      <button type="button" (click)="showAddSymptomModal()" class="btn btn-info">Agregar Sintoma</button>
+                    </div>
+                    <br/>
+                    <div class="horizontal-scroll">
+                      <table class="table table-hover">
+                        <thead>
+                          <tr class="black-muted-bg">
+                            <th class="table-id">N°</th>
+                            <th>SINTOMAS</th>
+                            <th>FECHA DE CONSULTA</th>
+                            <th>OBSERVACIÓN</th>
+                            <th>OPCIONES</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let item of peopleTableData">
+                            <td class="table-id center">{{ item.id }}</td>
+                            <td>{{ item.firstName }}</td>
+                            <td>{{ item.firstName }}</td>
+                            <td>{{ item.lastName }}</td>
+                            <td>
+                              <button type="button" class="btn btn-info btn-icon">
+                                <i class="ion-search"></i>
+                              </button>
+                              <button type="button" class="btn btn-success btn-icon">
+                                <i class="ion-edit"></i>
+                              </button>
+                              <button type="button" class="btn btn-danger btn-icon">
+                                <i class="ion-trash-a"></i>
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <br/>
+                    <div class="row text-xs-left">
+                      <button type="button" (click)="initilize()" class="btn btn-info" [disabled]="existPacient">Anterior</button>
+                    </div>
+                    <!--/CLINICAL EVALUATION-->
                   </tab>
                 </tabs>
               </div>
@@ -142,7 +159,6 @@
           </div>
         </div>
         <!-- /TRIAJE AND CLINICAL EVALUATION-->
-
         <div class="row text-xs-center">
           <button type="submit" class="btn btn-primary" [disabled]="existPacient">Registrar</button>&nbsp;&nbsp;
           <button type="button" (click)="initilize()" class="btn btn-primary" [disabled]="existPacient">Cancelar</button>
@@ -150,4 +166,43 @@
       </form>
     </ba-card>
   </div>
+  <!-- ADD SYMPTOM MODAL-->
+  <div bsModal #addSymptomModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+       
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close" aria-label="Close" (click)="hideAddSymptomModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">AGREGAR SINTOMA</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Tipo de sintoma</label>
+                <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.names" 
+                  required name="names" ngControl="names" [disabled] ="existPacient">
+              </div>
+              <div class="form-group">
+                <label>Fecha de cita</label>
+                <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.paternalSurname"
+                      required name="paternalSurname" ngControl="paternalSurname" [disabled]="existPacient">
+              </div>
+              <div class="form-group">
+                <label>Observación</label>
+                <input type="text" class="form-control disabled-field"[(ngModel)]="pacient.maternalSurname"
+                      required name="maternalSurname" ngControl="maternalSurname" [disabled]="existPacient">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary confirm-btn" (click)="hideAddSymptomModal()">Guardar Cambios</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /ADD SYMPTOM MODAL-->
 </div>

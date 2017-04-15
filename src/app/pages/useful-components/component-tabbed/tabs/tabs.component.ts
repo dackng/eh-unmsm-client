@@ -28,5 +28,4 @@ export class TabsComponent implements AfterContentInit {
     // activate the tab the user has clicked on.
     tab.active = true;
   }
-
 }

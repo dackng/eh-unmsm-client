@@ -2,6 +2,7 @@ import { NgModule }      from '@angular/core';
 import { CommonModule }  from '@angular/common';
 import { FormsModule as AngularFormsModule } from '@angular/forms';
 import { NgaModule } from '../../theme/nga.module';
+import { ModalModule } from 'ng2-bootstrap/ng2-bootstrap';
 
 import { routing }       from './medical.test.routing';
 
@@ -10,7 +11,9 @@ import { MedicalTestComponent } from './medical.test.component';
 import { GeneralMedicineTestComponent } from './components/general-medicine-test/general.medicine.test.component';
 import { TabComponent } from '../useful-components/component-tabbed/tab/tab.component';
 import { TabsComponent } from '../useful-components/component-tabbed/tabs/tabs.component';
-import { MedicalTestProcessTable } from '../useful-components/medical-test-process-table/medical.test.process.table.component';
+import { MedicalTestProcessTableComponent } from '../useful-components/medical-test-process-table/medical.test.process.table.component';
+
+import { FindPacientComponent } from '../useful-components/find-pacient/find.pacient.component';
 
 @NgModule({
   imports: [
@@ -18,6 +21,7 @@ import { MedicalTestProcessTable } from '../useful-components/medical-test-proce
     AngularFormsModule,
     NgaModule,
     RatingModule,
+    ModalModule,
     routing
   ],
   declarations: [
@@ -25,7 +29,8 @@ import { MedicalTestProcessTable } from '../useful-components/medical-test-proce
     GeneralMedicineTestComponent,
     TabComponent,
     TabsComponent,
-    MedicalTestProcessTable
+    MedicalTestProcessTableComponent,
+    FindPacientComponent
   ]
 })
 export default class MedicalTestModule {
