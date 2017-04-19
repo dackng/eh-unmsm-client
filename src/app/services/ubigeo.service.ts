@@ -11,7 +11,8 @@ export class UbigeoService {
   URL: string;
   
   constructor (private http: Http) {
-      this.URL = 'http://192.168.1.36:8015/api';
+      //this.URL = 'http://192.168.1.36:8015/api';
+      this.URL = 'https://ehu-ubigeo-service.herokuapp.com/api';
   }
 
   getDepartmentsList() : Observable<Array<Ubigeo>>{

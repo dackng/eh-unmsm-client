@@ -11,7 +11,8 @@ export class PacientService {
   URL: string;                                              
 
   constructor (private http: Http) {
-    this.URL = 'http://192.168.1.36:8014/api';
+    //this.URL = 'http://192.168.1.36:8014/api';
+    this.URL = 'https://ehu-pacient-service.herokuapp.com/api';
   }
 
   getPacientByCode(code: number) : Observable<Pacient>{
