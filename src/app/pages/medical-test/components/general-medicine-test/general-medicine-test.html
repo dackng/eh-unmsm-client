@@ -1,0 +1,186 @@
+<div class="widgets">
+  <!--CHOOSE PACIENT TYPE-->
+  <div class="row">    
+    <div class="col-md-12">
+      <ba-card baCardClass="with-scroll">
+        <div class="row">
+          <div class="col-md-4"></div>
+          <div class="col-md-4">
+            <form class="form-inline">
+              <label>Tipo de paciente</label>&nbsp;&nbsp;
+              <select class="form-control">
+                <option>Estudiante</option>
+                <option>Externo</option>
+              </select>
+            </form>
+          </div>
+          <div class="col-md-4 "></div>
+        </div>
+      </ba-card>
+    </div>
+  </div>
+  <!--/CHOOSE PACIENT TYPE-->
+
+  <div>
+    <ba-card title="Paciente" baCardClass="with-scroll">
+      <form #registerGeneralMedicineTestForm="ngForm" (ngSubmit)="registerGeneralMedicineTest()">
+        <div class="row">
+          <div class="col-md-6">
+            <find-pacient (pacient2Notify)="recibiendo($event)"></find-pacient>
+          </div>
+          <div class="col-md-6">
+            <!-- MEDICAL TEST PROCESS-->
+            <div class="card card-primary card-inverse">
+                <div class="card-header card-primary">
+                    PROCESO DE EXAMEN MÉDICO
+                </div>  
+                <div class="card-block bg-white">
+                  <medical-test-process-table></medical-test-process-table>
+                </div>
+            </div>
+            <!-- /MEDICAL TEST PROCESS-->
+          </div>
+        </div>    
+        
+        <!-- TRIAJE AND CLINICAL EVALUATION-->
+        <div class="row">
+          <div class="col-md-12 ">
+            <ba-card baCardClass="with-scroll">
+              <div class="container-fluid">
+                <tabs>
+                  <tab [tabTitle]="'TRIAJE'" [pageAddress]="pageAddressTab">
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Peso (Kg)</label>
+                          <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.names" 
+                            required name="names" ngControl="names" [disabled] ="existPacient">
+                        </div>
+                        <div class="form-group">
+                          <label>Talla (Cm)</label>
+                          <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.names" 
+                            required name="names" ngControl="names" [disabled] ="existPacient">
+                        </div>
+                        <div class="form-group">
+                          <label>Pulso</label>
+                          <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.names" 
+                            required name="names" ngControl="names" [disabled] ="existPacient">
+                        </div>
+                        <div class="form-group">
+                          <label>FUM</label>
+                          <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.names" 
+                            required name="names" ngControl="names" [disabled] ="existPacient">
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <!--BLOOD PRESSURE-->
+                          <div class="card card-primary card-inverse">
+                            <div class="card-header card-primary">
+                                  PRESIÓN ARTERIAL
+                            </div>  
+                            <div class="card-block bg-white">
+                              <div class="form-group">
+                                <label>Sistólica (Mm. Hg)</label>
+                                <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.names" 
+                                  required name="names" ngControl="names" [disabled] ="existPacient">
+                              </div>
+                              <div class="form-group">
+                                <label>Diastólica (Mm. Hg)</label>
+                                <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.names" 
+                                    required name="names" ngControl="names" [disabled] ="existPacient">
+                              </div>  
+                            </div>
+                          </div>
+                        <!--/BLOOD PRESSURE-->
+                      </div>
+                      <div class="col-md-4">
+                        <!--VISUAL ACUITY-->
+                        <div class="card card-primary card-inverse">
+                          <div class="card-header card-primary">
+                              AGUDEZA VISUAL
+                          </div>  
+                          <div class="card-block bg-white">
+                            <div class="form-group">
+                              <label>Ojo derecho</label>
+                              <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.names" 
+                                required name="names" ngControl="names" [disabled] ="existPacient">
+                            </div>
+                            <div class="form-group">
+                              <label>Ojo izquierdo</label>
+                              <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.names" 
+                                required name="names" ngControl="names" [disabled] ="existPacient">
+                            </div>  
+                          </div>
+                        </div>
+                        <!--/VISUAL ACUITY-->
+                      </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                      <div class="col-md-10"></div>
+                      <div class="col-md-2">
+                        <button type="button" (click)="initilize()" class="btn btn-info">Siguiente</button>
+                      </div>
+                    </div>
+                  </tab>
+                  <tab tabTitle="EVALUACIÓN CLÍNICA" [pageAddress]="pageAddressTab">
+                    <!--CLINICAL EVALUATION-->
+                    <div class="row text-xs-left">
+                      <button type="button" (click)="showAddSymptomModal()" class="btn btn-info">Agregar Sintoma</button>
+                    </div>
+                    <br/>
+                    <div class="horizontal-scroll">
+                      <table class="table table-hover">
+                        <thead>
+                          <tr class="black-muted-bg">
+                            <th class="table-id">N°</th>
+                            <th>SINTOMAS</th>
+                            <th>FECHA DE CONSULTA</th>
+                            <th>OBSERVACIÓN</th>
+                            <th>OPCIONES</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let item of peopleTableData">
+                            <td class="table-id center">{{ item.id }}</td>
+                            <td>{{ item.firstName }}</td>
+                            <td>{{ item.firstName }}</td>
+                            <td>{{ item.lastName }}</td>
+                            <td>
+                              <button type="button" class="btn btn-info btn-icon">
+                                <i class="ion-search"></i>
+                              </button>
+                              <button type="button" class="btn btn-success btn-icon">
+                                <i class="ion-edit"></i>
+                              </button>
+                              <button type="button" class="btn btn-danger btn-icon">
+                                <i class="ion-trash-a"></i>
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <br/>
+                    <div class="row text-xs-left">
+                      <button type="button" (click)="initilize()" class="btn btn-info" [disabled]="existPacient">Anterior</button>
+                    </div>
+                    <!--/CLINICAL EVALUATION-->
+                  </tab>
+                </tabs>
+              </div>
+            </ba-card>
+          </div>
+        </div>
+        <!-- /TRIAJE AND CLINICAL EVALUATION-->
+        <div class="row">
+          <div class="col-md-5"></div>
+          <div class="col-md-7">
+            <button type="submit" class="btn btn-primary" [disabled]="existPacient">Registrar</button>&nbsp;&nbsp;
+            <button type="button" (click)="initilize()" class="btn btn-primary" [disabled]="existPacient">Cancelar</button>
+          </div>
+        </div>
+      </form>
+    </ba-card>
+  </div>
+</div>

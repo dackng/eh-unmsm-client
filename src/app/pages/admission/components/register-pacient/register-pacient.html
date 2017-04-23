@@ -1,0 +1,195 @@
+<div class="widgets">
+
+<!--CHOOSE PACIENT TYPE-->
+  <div class="row">    
+    <div class="col-md-12">
+      <ba-card baCardClass="with-scroll">
+        <div class="row">
+          <div class="col-md-4"></div>
+          <div class="col-md-4">
+            <form class="form-inline">
+            <label>Tipo de paciente</label>&nbsp;&nbsp;
+              <select class="form-control">
+                <option>Estudiante</option>
+                <option>Externo</option>
+              </select>
+            </form>
+          </div>
+          <div class="col-md-4 "></div>
+        </div>
+      </ba-card>
+    </div>
+  </div>
+<!--/CHOOSE PACIENT TYPE-->
+
+  <div>
+    <ba-card title="Paciente" baCardClass="with-scroll">
+      <form  #registerPacientForm="ngForm" (ngSubmit)="registerPacient()">
+        <div class="row">
+          <div class="col-md-6">
+            <form #findPacientForm="ngForm" (ngSubmit)="findPacientByCode()">
+                <div class="form-group">
+                    <label>Código</label>
+                    <div class="form-group input-group">
+                        <input type="text" class="form-control" [(ngModel)]="pacientCode"  
+                            name="pacientCode" ngControl="pacientCode" required >
+                        <span class="input-group-btn">
+                            <button  class="btn btn-secondary" type="submit"><i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+            <div class="form-group">
+                <label>Nombres</label>
+                <input type="text" class="form-control disabled-field" [(ngModel)]="newPacient.names" 
+                    required name="names" ngControl="names" [disabled] ="existPacient">
+            </div>
+            <div class="form-group">
+                <label>Apellido Paterno</label>
+                <input type="text" class="form-control disabled-field" [(ngModel)]="newPacient.paternalSurname"
+                    required name="paternalSurname" ngControl="paternalSurname" [disabled]="existPacient">
+            </div>
+            <div class="form-group">
+                <label>Apellido Materno</label>
+                <input type="text" class="form-control disabled-field"[(ngModel)]="newPacient.maternalSurname"
+                    required name="maternalSurname" ngControl="maternalSurname" [disabled]="existPacient">
+            </div>
+            <div class="form-group">
+                <label>Estado civil</label>
+                <select [(ngModel)]="newPacient.idCivilStatus" class="form-control disabled-field" 
+                    required name="idCivilStatus" ngControl="idCivilStatus" [disabled] ="existPacient">
+                    <option *ngFor="let cs of newPacient.civilStatusList" [ngValue]="cs.idSecondary" 
+                    [selected]="cs.idSecondary == newPacient.idCivilStatus">{{cs.name}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="text" class="form-control disabled-field" placeholder="email@example.com"
+                    required [(ngModel)]="newPacient.email" name="email" ngControl="email" [disabled]="existPacient">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+                <label>Estado de examen médico</label>
+                <input type="text" class="form-control disabled" [(ngModel)]="newPacient.nameMedicalStatus" 
+                    name="nameMedicalStatus" ngControl="nameMedicalStatus" [disabled]="true">
+            </div>
+            <div class="form-group">
+                <label>EAP</label>
+                <select [(ngModel)]="newPacient.idEap" class="form-control disabled-field" name="idEap"
+                    required ngControl="idEap" [disabled]="existPacient">
+                    <option *ngFor="let eap of newPacient.eapList" [ngValue]="eap.idSecondary" 
+                    [selected]="eap.idSecondary == newPacient.idEap"> {{eap.name}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Fecha de nacimiento</label> 
+                <input class="form-control disabled-field" type="date" [(ngModel)]="newPacient.birthDate"
+                    required name="birthDate" ngControl="birthDate" [disabled]="existPacient">
+            </div>
+            <div class="form-group">
+                <label>Teléfono</label>
+                <input class="form-control disabled-field" type="tel" [(ngModel)]="newPacient.telephone"
+                    required name="telephone" ngControl="telephone" [disabled]="existPacient">
+            </div>
+            <div class="form-group">
+                <label>Género</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                <label class="radio-inline">
+                    <input type="radio" name="gender" ngControl="gender" [(ngModel)]="newPacient.gender" 
+                        value = {{newPacient.genderList[0].name}}  [disabled]="existPacient || newPacient.isFemale()"
+                        [checked]="newPacient.isMale()" >Masculino
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="gender" ngControl="gender" [(ngModel)]="newPacient.gender"
+                            value = {{newPacient.genderList[1].name}}  [disabled]="existPacient || newPacient.isMale()"
+                        [checked]="newPacient.isFemale()" >Femenino
+                </label>
+            </div>
+          </div>
+        </div>
+        
+        <br>
+        <!-- ADDRESS-->
+        <div class="card card-primary card-inverse">
+          <div class="card-header card-primary">UBICACIÓN</div>
+          <div class="card-block bg-white">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Departamento</label>&nbsp;&nbsp;
+                  <select [(ngModel)]="newPacient.ubigeo.departmentCode"
+                        class="form-control disabled-field" name="departmentCode" (ngModelChange)="loadProvincesList($event)"
+                            ngControl="departmentCode" [disabled]="existPacient">
+                        <option *ngFor="let dpm of newPacient.departmentsList" 
+                            [ngValue] = "dpm.departmentCode"
+                            [selected]="dpm.departmentCode == newPacient.ubigeo.departmentCode">
+                                {{dpm.departmentDescription}}</option>
+                  </select>
+                  <small *ngIf="newPacient.ubigeo.departmentCode == null && !existPacient" 
+                        class="text-danger">
+                        Requerido*
+                  </small>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                    <label>Provincia</label>&nbsp;&nbsp;
+                    <select [(ngModel)]="newPacient.ubigeo.provinceCode" 
+                        class="form-control disabled-field" name="provinceCode" (ngModelChange) = "loadDistrictsList($event)"
+                            ngControl="provinceCode" [disabled]="existPacient">
+                        <option *ngFor="let pv of newPacient.provincesList" 
+                                [ngValue]="pv.provinceCode" 
+                            [selected]="pv.provinceCode == newPacient.ubigeo.provinceCode">
+                                {{pv.provinceDescription}}</option>
+                    </select>
+                    <small *ngIf="newPacient.ubigeo.provinceCode == null && !existPacient" 
+                        class="text-danger">
+                        Requerido*
+                    </small>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Distrito</label>&nbsp;&nbsp;
+                  <select [(ngModel)]="newPacient.ubigeo.districtCode" 
+                        class="form-control disabled-field" name="districtCode"
+                            ngControl="districtCode" [disabled]="existPacient">
+                        <option *ngFor="let dt of newPacient.districtsList"
+                            [ngValue]="dt.districtCode" 
+                            [selected]="dt.districtCode == newPacient.ubigeo.districtCode">
+                                {{dt.districtDescription}}</option>
+                  </select>
+                  <small *ngIf="newPacient.ubigeo.districtCode == null && !existPacient" 
+                    class="text-danger">
+                    Requerido*
+                  </small>
+                </div>
+              </div>
+            </div>
+                
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Dirección</label>&nbsp;&nbsp;
+                  <input class="form-control disabled-field">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /ADDRESS-->
+
+        <div class="row">
+          <div class="col-md-5"></div>
+          <div class="col-md-7">
+            <button type="submit" class="btn btn-primary" [disabled]="existPacient">Registrar</button>&nbsp;&nbsp;
+            <button type="button" (click)="initilize()" class="btn btn-primary" [disabled]="existPacient">Cancelar</button>
+          </div>
+        </div>
+      </form>
+    </ba-card>
+  </div>
+  
+ 
+</div>
