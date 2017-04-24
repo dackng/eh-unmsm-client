@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DefaultModal } from './default-modal/default-modal.component';
+import { ModalDirective } from 'ng2-bootstrap/ng2-bootstrap';
 
 @Component({
   selector: 'modals',

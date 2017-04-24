@@ -6,7 +6,7 @@ import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { TranslateService } from '@ngx-translate/core';
 
 export function createTranslateLoader(http: Http) {
-    return new TranslateHttpLoader(http, './assets/i18n/US/', '.json');
+    return new TranslateHttpLoader(http, './assets/i18n/ES/', '.json');
 }
 
 const translationOptions = {
@@ -24,8 +24,8 @@ const translationOptions = {
 })
 export class AppTranslationModule {
   constructor(private translate: TranslateService) {
-    translate.addLangs(["en"]);
-    translate.setDefaultLang('en');
-    translate.use('en');
+    translate.addLangs(["es"]);
+    translate.setDefaultLang('es');
+    translate.use('es');
   }
 }

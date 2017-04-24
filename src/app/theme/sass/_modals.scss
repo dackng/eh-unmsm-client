@@ -2,6 +2,7 @@
 
 .modal {
   padding-top: 100px;
+  background:rgba(0,0,0,0.5);
 
   .modal-content {
     color: $dropdown-text;
@@ -17,9 +18,11 @@
     .close {
       outline: none;
     }
+    
   }
 }
 
 .modal-buttons .btn {
   margin-right: 20px;
 }
+

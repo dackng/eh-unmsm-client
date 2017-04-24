@@ -18,7 +18,7 @@ export const PAGES_MENU = [
         path: 'admission',
         data: {
           menu: {
-            title: 'Admisión',
+            title: 'general.menu.admission',
             icon: 'ion-compose',
             selected: false,
             expanded: false,
@@ -30,7 +30,7 @@ export const PAGES_MENU = [
             path: 'register-pacient',
             data: {
               menu: {
-                title: 'Registrar paciente',
+                title: 'register_pacient.option',
               }
             }
           }
@@ -40,7 +40,7 @@ export const PAGES_MENU = [
         path: 'medical-test',
         data: {
           menu: {
-            title: 'Examen Médico',
+            title: 'general.menu.medical_test',
             icon: 'ion-compose',
             selected: false,
             expanded: false,
@@ -52,13 +52,13 @@ export const PAGES_MENU = [
             path: 'general-medicine-test',
             data: {
               menu: {
-                title: 'Examen de Medicina General',
+                title: 'medical_test.option',
               }
             }
           }
         ]
       }
-      /*
+      ,
       {
         path: 'editors',
         data: {
@@ -178,7 +178,7 @@ export const PAGES_MENU = [
             }
           },
         ]
-      },
+      } /*,
       {
         path: 'forms',
         data: {

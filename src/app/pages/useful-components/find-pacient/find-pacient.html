@@ -1,12 +1,12 @@
 <form #findPacientForm="ngForm" (ngSubmit)="findPacientByCode()">
   <div class="form-group">
-    <label>Código</label>
-    <div class="form-group input-group">
-      <input type="text" class="form-control" [(ngModel)]="pacientCode" 
-          name="pacientCode" ngControl="pacientCode" required>
-      <span class="input-group-btn">
-          <button  class="btn btn-secondary" type="submit"><i class="fa fa-search"></i>
-          </button>
+    <label translate>{{'pacient.code'}}</label>
+    <div class="input-group">
+      <input type="text" class="form-control" [(ngModel)]="pacientCode"  
+          name="pacientCode" ngControl="pacientCode" required >
+      <span class="input-group-addon addon-right  input-group-addon-primary">
+        <button  class="btn btn-primary" type="submit"><i class="fa fa-search"></i>
+        </button>
       </span>
     </div>
   </div>

@@ -8,8 +8,7 @@ import {CatalogService} from '../../../../services/catalog.service';
 
 import {BasicTablesService} from './basicTables.service';
 
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { SymptomModalComponent } from './symptom-modal/symptom.modal.component';
+import { ModalDirective } from 'ng2-bootstrap';
 
 @Component({
     selector: 'general-medicine',
@@ -28,8 +27,9 @@ export class GeneralMedicineTestComponent implements OnInit{
     errorMessage: string; 
     
     peopleTableData:Array<any>;//para la tabla de sintomas
+    @ViewChild('addSymptomModal') addSymptomModal: ModalDirective;
 
-    constructor(private _basicTablesService: BasicTablesService, private modalService: NgbModal) {//para la tabla de sintomas
+    constructor(private _basicTablesService: BasicTablesService) {//para la tabla de sintomas
         this.peopleTableData = _basicTablesService.peopleTableData;
     }
 
@@ -38,11 +38,14 @@ export class GeneralMedicineTestComponent implements OnInit{
     }
 
     showAddSymptomModal(): void {
-        const activeModal = this.modalService.open(SymptomModalComponent, {size: 'sm'});
-        activeModal.componentInstance.modalHeader = 'Child modal';
-        //activeModal.componentInstance.modalContent = `I am a child modal, opened from parent component!`;
+        this.addSymptomModal.config.backdrop = false;
+        this.addSymptomModal.show();
     }
 
+    hideAddSymptomModal(): void {
+        this.addSymptomModal.hide();
+    }
+    
     initilize(){
         this.pacientCode = null;
         this.existPacient = true;
