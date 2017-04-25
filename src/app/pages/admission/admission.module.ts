@@ -1,10 +1,10 @@
-import { NgModule }      from '@angular/core';
-import { CommonModule }  from '@angular/common';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule as AngularFormsModule } from '@angular/forms';
 import { AppTranslationModule } from '../../app.translation.module';
 import { NgaModule } from '../../theme/nga.module';
-
-import { routing }       from './admission.routing';
+import { CustomFormsModule } from 'ng2-validation'
+import { routing } from './admission.routing';
 
 import { AdmissionComponent } from './admission.component';
 import { RegisterPacientComponent } from './components/register-pacient/register.pacient.component';
@@ -15,6 +15,7 @@ import { RegisterPacientComponent } from './components/register-pacient/register
     AngularFormsModule,
     AppTranslationModule,
     NgaModule,
+    CustomFormsModule,
     routing
   ],
   declarations: [

@@ -137,4 +137,5 @@ export class RegisterPacientComponent implements OnInit{
         this.newPacient.gender = pacient.gender;
         this.newPacient.ubigeo = pacient.ubigeo;
     }
+
 }

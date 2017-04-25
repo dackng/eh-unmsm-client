@@ -28,8 +28,9 @@
               <div class="form-group">
                 <label translate>{{'pacient.code'}}</label>
                 <div class="input-group">
-                  <input type="text" class="form-control" [(ngModel)]="pacientCode"  
-                      name="pacientCode" ngControl="pacientCode" required >
+                   <input type="text" class="form-control" [(ngModel)]="pacientCode" 
+                      name="pacientCode" maxlength="8" ngControl="pacientCode"  required
+                      onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
                   <span class="input-group-addon addon-right  input-group-addon-primary">
                     <button  class="btn btn-primary" type="submit"><i class="fa fa-search"></i>
                     </button>
