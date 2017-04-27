@@ -7,13 +7,13 @@ export class Pacient {
     public names: string;
     public paternalSurname: string;
     public maternalSurname: string;
-    public idCivilStatus: number;
-    public nameCivilStatus: string;
+    public civilStatusId: number;
+    public civilStatusName: string;
     public email: string;
-    public idMedicalStatus: number;
-    public nameMedicalStatus: string;
-    public idEap: number;
-    public nameEap: string;
+    public medicalStatusId: number;
+    public medicalStatusName: string;
+    public eapId: number;
+    public eapName: string;
     public birthDate: Date;
     public telephone: number;
     public gender: string;
@@ -88,11 +88,11 @@ export class Pacient {
     }
 
     private getMedicalStatusItem(): Catalog{
-        return new Catalog(this.idCivilStatus, this.nameCivilStatus);
+        return new Catalog(this.civilStatusId, this.civilStatusName);
     }
 
     private getEapItem(): Catalog{
-        return new Catalog(this.idEap, this.nameEap);
+        return new Catalog(this.eapId, this.eapName);
     }
 
 }

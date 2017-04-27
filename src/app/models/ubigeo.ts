@@ -1,15 +1,15 @@
 export class Ubigeo {
 
-    public ubigeoCode: string;
+    public code: string;
     public departmentCode: string;
     public departmentDescription: string;  
     public provinceCode: string;
-    public provinceDescription: string;
     public districtCode: string;
+    public provinceDescription: string;
     public districtDescription: string;
 
     constructor(){
-        this.ubigeoCode = null;
+        this.code = null;
         this.departmentCode = null;
         this.provinceCode = null;
         this.districtCode = null;
@@ -25,7 +25,7 @@ export class Ubigeo {
     }
 
     joinCodes(){
-        this.ubigeoCode = this.departmentCode+this.provinceCode+this.districtCode;
+        this.code = this.departmentCode+this.provinceCode+this.districtCode;
     }
 
     validateCodes(){

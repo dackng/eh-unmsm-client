@@ -8,12 +8,12 @@ import { routing }       from './medical.test.routing';
 
 import { MedicalTestComponent } from './medical.test.component';
 import { GeneralMedicineTestComponent } from './components/general-medicine-test/general.medicine.test.component';
-import { TabComponent } from '../useful-components/component-tabbed/tab/tab.component';
-import { TabsComponent } from '../useful-components/component-tabbed/tabs/tabs.component';
-import { MedicalTestProcessTableComponent } from '../useful-components/medical-test-process-table/medical.test.process.table.component';
+import { TabComponent } from '../components-shared/component-tabbed/tab/tab.component';
+import { TabsComponent } from '../components-shared/component-tabbed/tabs/tabs.component';
+import { MedicalTestProcessTableComponent } from '../components-shared/medical-test-process-table/medical.test.process.table.component';
 
-import { FindPacientComponent } from '../useful-components/find-pacient/find.pacient.component';
-import { SelectPacientTypeComponent } from '../useful-components/select-pacient-type/select.pacient.type.component';
+import { FindPacientComponent } from '../components-shared/find-pacient/find.pacient.component';
+import { SelectPacientTypeComponent } from '../components-shared/select-pacient-type/select.pacient.type.component';
 
 @NgModule({
   imports: [

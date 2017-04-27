@@ -55,10 +55,10 @@
             </div>
             <div class="form-group">
                 <label translate>{{'pacient.civilStatus'}}</label>
-                <select [(ngModel)]="newPacient.idCivilStatus" class="form-control disabled-field" 
-                    required name="idCivilStatus" ngControl="idCivilStatus" [disabled] ="existPacient">
-                    <option *ngFor="let cs of newPacient.civilStatusList" [ngValue]="cs.idSecondary" 
-                    [selected]="cs.idSecondary == newPacient.idCivilStatus">{{cs.name}}</option>
+                <select [(ngModel)]="newPacient.civilStatusId" class="form-control disabled-field" 
+                    required name="civilStatusId" ngControl="civilStatusId" [disabled] ="existPacient">
+                    <option *ngFor="let cs of newPacient.civilStatusList" [ngValue]="cs.secondaryId" 
+                    [selected]="cs.secondaryId == newPacient.civilStatusId">{{cs.name}}</option>
                 </select>
             </div>
             <div class="form-group">
@@ -70,15 +70,15 @@
           <div class="col-md-6">
             <div class="form-group">
                 <label translate>{{'pacient.medicalTestState'}}</label>
-                <input type="text" class="form-control disabled" [(ngModel)]="newPacient.nameMedicalStatus" 
-                    name="nameMedicalStatus" ngControl="nameMedicalStatus" [disabled]="true">
+                <input type="text" class="form-control disabled" [(ngModel)]="newPacient.medicalStatusName" 
+                    name="medicalStatusName" ngControl="medicalStatusName" [disabled]="true">
             </div>
             <div class="form-group">
                 <label translate>{{'pacient.eap'}}</label>
-                <select [(ngModel)]="newPacient.idEap" class="form-control disabled-field" name="idEap"
-                    required ngControl="idEap" [disabled]="existPacient">
-                    <option *ngFor="let eap of newPacient.eapList" [ngValue]="eap.idSecondary" 
-                    [selected]="eap.idSecondary == newPacient.idEap"> {{eap.name}}</option>
+                <select [(ngModel)]="newPacient.eapId" class="form-control disabled-field" name="eapId"
+                    required ngControl="eapId" [disabled]="existPacient">
+                    <option *ngFor="let eap of newPacient.eapList" [ngValue]="eap.secondaryId" 
+                    [selected]="eap.secondaryId == newPacient.eapId"> {{eap.name}}</option>
                 </select>
             </div>
             <div class="form-group">

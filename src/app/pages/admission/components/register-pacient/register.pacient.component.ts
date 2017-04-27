@@ -62,8 +62,8 @@ export class RegisterPacientComponent implements OnInit{
 
         this.catalogService.getFirstMedicalStatus()
             .subscribe( (medicalStatus : Catalog ) => {
-                this.newPacient.nameMedicalStatus = medicalStatus.name;
-                this.newPacient.idMedicalStatus = medicalStatus.idSecondary;
+                this.newPacient.medicalStatusName = medicalStatus.name;
+                this.newPacient.medicalStatusId = medicalStatus.secondaryId;
             }, error => this.errorMessage = <any> error);
 
         this.catalogService.getEapList()
@@ -125,13 +125,13 @@ export class RegisterPacientComponent implements OnInit{
         this.newPacient.names = pacient.names;
         this.newPacient.paternalSurname = pacient.paternalSurname;
         this.newPacient.maternalSurname = pacient.maternalSurname;
-        this.newPacient.idCivilStatus = pacient.idCivilStatus;
-        this.newPacient.nameCivilStatus = pacient.nameCivilStatus;
+        this.newPacient.civilStatusId = pacient.civilStatusId;
+        this.newPacient.civilStatusName = pacient.civilStatusName;
         this.newPacient.email =  pacient.email;
-        this.newPacient.idMedicalStatus = pacient.idMedicalStatus;
-        this.newPacient.nameMedicalStatus = pacient.nameMedicalStatus;
-        this.newPacient.idEap = pacient.idEap;
-        this.newPacient.nameEap = pacient.nameEap;
+        this.newPacient.medicalStatusId = pacient.medicalStatusId;
+        this.newPacient.medicalStatusName = pacient.medicalStatusName;
+        this.newPacient.eapId = pacient.eapId;
+        this.newPacient.eapName = pacient.eapName;
         this.newPacient.birthDate = pacient.birthDate;
         this.newPacient.telephone = pacient.telephone;
         this.newPacient.gender = pacient.gender;
