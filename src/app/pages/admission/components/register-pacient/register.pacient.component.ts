@@ -21,8 +21,11 @@ export class RegisterPacientComponent implements OnInit{
     pacientCode : number;
     existPacient: boolean;
     errorMessage: string;
-    itemDefaultUbigeo : Ubigeo;
-    
+    ubigeoItemByDefault : Ubigeo;
+    genderRadioDisabled : boolean;
+    submittedDisabled : boolean;
+    pacientCodeDisabled : boolean;
+
     ngOnInit(){
         this.initilize();
     }
@@ -31,6 +34,7 @@ export class RegisterPacientComponent implements OnInit{
                 , private ubigeoService: UbigeoService) {}
 
     findPacientByCode(){
+        this.pacientCodeDisabled = true;
         this.newPacient = new Pacient();
         this.catalogService.getGenderList()
             .subscribe( (genderList : Array<Catalog> ) => {
@@ -45,11 +49,14 @@ export class RegisterPacientComponent implements OnInit{
                     this.newPacient.addMedicalStatusItem();
                     this.newPacient.addEapItem();
                     this.newPacient.addUbigeoItems();
+                    this.genderRadioDisabled = this.newPacient.isMale();
                 }else{
                     this.existPacient = false;
                     this.newPacient.code = this.pacientCode;
-                    this.itemDefaultUbigeo.initializeItemByDefault();
+                    this.newPacient.ubigeo.changeToLima();
+                    this.ubigeoItemByDefault.initializeItemByDefault();
                     this.loadItemsLists();
+                    this.genderRadioDisabled = false;
                 }
             }, error => this.errorMessage = <any> error);        
     }
@@ -58,6 +65,7 @@ export class RegisterPacientComponent implements OnInit{
         this.catalogService.getCivilStatusList()
             .subscribe( (civilStatusList : Array<Catalog> ) => {
                 this.newPacient.civilStatusList = civilStatusList;
+                this.newPacient.addCivilStatusItemByDefault();
             }, error => this.errorMessage = <any> error);
 
         this.catalogService.getFirstMedicalStatus()
@@ -65,20 +73,20 @@ export class RegisterPacientComponent implements OnInit{
                 this.newPacient.medicalStatusName = medicalStatus.name;
                 this.newPacient.medicalStatusId = medicalStatus.secondaryId;
             }, error => this.errorMessage = <any> error);
-
+        
         this.catalogService.getEapList()
             .subscribe( (eapList : Array<Catalog> ) => {
                 this.newPacient.eapList = eapList;
+                this.newPacient.addEapItemByDefault();
             }, error => this.errorMessage = <any> error);
 
         this.ubigeoService.getDepartmentsList()
             .subscribe( (departmentsList : Array<Ubigeo> ) => {
                 this.newPacient.departmentsList = departmentsList;
-                this.newPacient.addDeparmentItemByDefault(this.itemDefaultUbigeo);
                 this.newPacient.provincesList = [];
-                this.newPacient.addProvinceItemByDefault(this.itemDefaultUbigeo);
+                this.loadProvincesList(this.newPacient.ubigeo.departmentCode);
                 this.newPacient.districtsList = [];
-                this.newPacient.addDistrictItemByDefault(this.itemDefaultUbigeo);
+                this.loadDistrictsList(this.newPacient.ubigeo.provinceCode);
             }, error => this.errorMessage = <any> error);
     }
 
@@ -87,9 +95,9 @@ export class RegisterPacientComponent implements OnInit{
         this.ubigeoService.getProvincesListByDepartmentCode(this.newPacient.ubigeo.departmentCode)
             .subscribe( (provincesList : Array<Ubigeo>) => {
                 this.newPacient.provincesList = provincesList;
-                this.newPacient.addProvinceItemByDefault(this.itemDefaultUbigeo);
+                this.newPacient.addProvinceItemByDefault(this.ubigeoItemByDefault);
                 this.newPacient.districtsList = [];
-                this.newPacient.addDistrictItemByDefault(this.itemDefaultUbigeo);
+                this.newPacient.addDistrictItemByDefault(this.ubigeoItemByDefault);
             }, error => this.errorMessage = <any> error);
     }
 
@@ -98,11 +106,12 @@ export class RegisterPacientComponent implements OnInit{
         this.ubigeoService.getDistrictsListByProvinceCode(this.newPacient.ubigeo.provinceCode)
             .subscribe( (districtsList : Array<Ubigeo>) => {
                 this.newPacient.districtsList = districtsList;
-                this.newPacient.addDistrictItemByDefault(this.itemDefaultUbigeo);
+                this.newPacient.addDistrictItemByDefault(this.ubigeoItemByDefault);
             }, error => this.errorMessage = <any> error);
     }
 
     registerPacient(){
+        this.submittedDisabled = true;
         if(this.newPacient.validateUbigeoCodes()){
             this.newPacient.generateUbigeoCode();
             this.pacientService.registerPacient(this.newPacient)
@@ -117,7 +126,10 @@ export class RegisterPacientComponent implements OnInit{
         this.existPacient = true;
         this.errorMessage = null;
         this.newPacient = new Pacient();
-        this.itemDefaultUbigeo = new Ubigeo();
+        this.ubigeoItemByDefault = new Ubigeo();
+        this.genderRadioDisabled = true;
+        this.submittedDisabled = false;
+        this.pacientCodeDisabled = false;
     }
 
     setPacientFields(pacient: Pacient){
@@ -137,5 +149,4 @@ export class RegisterPacientComponent implements OnInit{
         this.newPacient.gender = pacient.gender;
         this.newPacient.ubigeo = pacient.ubigeo;
     }
-
 }

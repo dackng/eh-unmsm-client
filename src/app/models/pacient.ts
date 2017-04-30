@@ -18,6 +18,7 @@ export class Pacient {
     public telephone: number;
     public gender: string;
     public ubigeo: Ubigeo;
+    public address : string;
     
     public civilStatusList : Array<Catalog>;
     public eapList : Array<Catalog>;
@@ -34,6 +35,9 @@ export class Pacient {
         this.provincesList = [];
         this.districtsList = [];
         this.initializeGenderList();
+        this.eapId = null;
+        this.civilStatusId = null;
+        this.gender = null;
     }
 
     generateUbigeoCode(){
@@ -45,11 +49,15 @@ export class Pacient {
     }
 
     addMedicalStatusItem(){
-        this.civilStatusList.push(this.getMedicalStatusItem());
+        this.civilStatusList.push(new Catalog(this.civilStatusId, this.civilStatusName));
     }
 
     addEapItem(){
-        this.eapList.push(this.getEapItem());
+        this.eapList.push(new Catalog(this.eapId, this.eapName));
+    }
+
+    addEapItemByDefault(){
+       this.eapList.push(new Catalog(null,"<SELECCIONE>")); 
     }
 
     addUbigeoItems(){
@@ -57,15 +65,12 @@ export class Pacient {
         this.provincesList.push(this.ubigeo);
         this.districtsList.push(this.ubigeo);
     }
-    
-    addDeparmentItemByDefault(item: Ubigeo){
-        this.departmentsList.push(item);
-        this.ubigeo.departmentCode = null;
-    }
 
     addProvinceItemByDefault(item: Ubigeo){
-        this.provincesList.push(item);
-        this.ubigeo.provinceCode = null;
+        if(!this.ubigeo.isLima()){
+            this.provincesList.push(item);
+            this.ubigeo.provinceCode = null;
+        }
     }
     
     addDistrictItemByDefault(item: Ubigeo){
@@ -75,24 +80,16 @@ export class Pacient {
 
     initializeGenderList(){
         this.genderList = [];
-        this.genderList.push(new Catalog(null,""));//first index for Male
-        this.genderList.push(new Catalog(null,""));//second index for Female
+        let item = new Catalog(null,"");
+        this.genderList.push(item);//first index for Male
+        this.genderList.push(item);//second index for Female
     }
 
     isMale():boolean{
         return this.gender == this.genderList[0].name ? true : false;
     }
 
-    isFemale():boolean{
-        return this.gender == this.genderList[1].name ? true : false;
+    addCivilStatusItemByDefault(){
+       this.civilStatusList.push(new Catalog(null,"<SELECCIONE>")); 
     }
-
-    private getMedicalStatusItem(): Catalog{
-        return new Catalog(this.civilStatusId, this.civilStatusName);
-    }
-
-    private getEapItem(): Catalog{
-        return new Catalog(this.eapId, this.eapName);
-    }
-
 }

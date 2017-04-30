@@ -24,85 +24,121 @@
       <form  #registerPacientForm="ngForm" (ngSubmit)="registerPacient()">
         <div class="row">
           <div class="col-md-6">
-            <form #findPacientForm="ngForm" (ngSubmit)="findPacientByCode()">
-              <div class="form-group">
-                <label translate>{{'pacient.code'}}</label>
-                <div class="input-group">
-                   <input type="text" class="form-control" [(ngModel)]="pacientCode" 
-                      name="pacientCode" maxlength="8" ngControl="pacientCode"  required
-                      onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
-                  <span class="input-group-addon addon-right  input-group-addon-primary">
-                    <button  class="btn btn-primary" type="submit"><i class="fa fa-search"></i>
-                    </button>
-                  </span>
-                </div>
+            <div class="form-group">
+              <label translate>{{'pacient.code'}}</label>
+              <div class="input-group">
+                <input type="text" class="form-control disabled-field" [(ngModel)]="pacientCode" 
+                  [disabled]="pacientCodeDisabled" name="pacientCode" maxlength="8" required
+                  ngControl="pacientCode" onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+                  #pacientCodeField="ngModel"/>
+                <span class="input-group-addon addon-right  input-group-addon-primary">
+                  <button  class="btn btn-primary" [disabled]="pacientCodeField.errors?.required || pacientCodeDisabled" 
+                    (click)="findPacientByCode()"type="button">
+                    <i class="fa fa-search"></i>
+                  </button>
+                </span>
               </div>
-            </form>
-            <div class="form-group">
-                <label translate>{{'pacient.names'}}</label>
-                <input type="text" class="form-control disabled-field" [(ngModel)]="newPacient.names" 
-                    required name="names" ngControl="names" [disabled] ="existPacient">
             </div>
             <div class="form-group">
-                <label translate>{{'pacient.paternalSurname'}}</label>
-                <input type="text" class="form-control disabled-field" [(ngModel)]="newPacient.paternalSurname"
-                    required name="paternalSurname" ngControl="paternalSurname" [disabled]="existPacient">
+              <label translate>{{'pacient.names'}}</label>
+              <input type="text" class="form-control disabled-field" [(ngModel)]="newPacient.names" 
+                required name="names" ngControl="names" [disabled] ="existPacient"
+                #names="ngModel">
+              <small *ngIf="names.errors?.required && submittedDisabled" 
+                class="text-danger" translate>{{'general.messages.required'}}</small>    
             </div>
             <div class="form-group">
-                <label translate>{{'pacient.maternalSurname'}}</label>
-                <input type="text" class="form-control disabled-field"[(ngModel)]="newPacient.maternalSurname"
-                    required name="maternalSurname" ngControl="maternalSurname" [disabled]="existPacient">
+              <label translate>{{'pacient.paternalSurname'}}</label>
+              <input type="text" class="form-control disabled-field" [(ngModel)]="newPacient.paternalSurname"
+                required name="paternalSurname" ngControl="paternalSurname" [disabled]="existPacient"
+                #paternalSurname="ngModel">
+              <small *ngIf="paternalSurname.errors?.required && submittedDisabled" 
+                class="text-danger" translate>{{'general.messages.required'}}</small>  
             </div>
             <div class="form-group">
-                <label translate>{{'pacient.civilStatus'}}</label>
-                <select [(ngModel)]="newPacient.civilStatusId" class="form-control disabled-field" 
-                    required name="civilStatusId" ngControl="civilStatusId" [disabled] ="existPacient">
-                    <option *ngFor="let cs of newPacient.civilStatusList" [ngValue]="cs.secondaryId" 
-                    [selected]="cs.secondaryId == newPacient.civilStatusId">{{cs.name}}</option>
-                </select>
+              <label translate>{{'pacient.maternalSurname'}}</label>
+              <input type="text" class="form-control disabled-field"[(ngModel)]="newPacient.maternalSurname"
+                required name="maternalSurname" ngControl="maternalSurname" [disabled]="existPacient"
+                #maternalSurname="ngModel">
+              <small *ngIf="maternalSurname.errors?.required && submittedDisabled" 
+                class="text-danger" translate>{{'general.messages.required'}}</small>
             </div>
             <div class="form-group">
-                <label translate>{{'pacient.email'}}</label>
-                <input type="text" class="form-control disabled-field" placeholder="email@example.com"
-                    required [(ngModel)]="newPacient.email" name="email" ngControl="email" [disabled]="existPacient">
+              <label translate>{{'pacient.civilStatus'}}</label>
+              <select [(ngModel)]="newPacient.civilStatusId" class="form-control disabled-field" 
+                required name="civilStatusId" ngControl="civilStatusId" [disabled] ="existPacient"
+                #civilStatus="ngModel">
+                <option *ngFor="let cs of newPacient.civilStatusList" [ngValue]="cs.secondaryId" 
+                  [selected]="cs.secondaryId == newPacient.civilStatusId">{{cs.name}}</option>
+              </select>
+              <small *ngIf="civilStatus.errors?.required && submittedDisabled" 
+                class="text-danger" translate>{{'general.messages.required'}}</small>
+            </div>
+            <div class="form-group">
+              <label translate>{{'pacient.email'}}</label>
+              <input type="text" class="form-control disabled-field" placeholder="email@example.com"
+                required [(ngModel)]="newPacient.email" name="email" ngControl="email" 
+                [disabled]="existPacient" #email="ngModel">
+              <small *ngIf="email.errors?.required && submittedDisabled" 
+                class="text-danger" translate>{{'general.messages.required'}}</small>  
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
-                <label translate>{{'pacient.medicalTestState'}}</label>
-                <input type="text" class="form-control disabled" [(ngModel)]="newPacient.medicalStatusName" 
-                    name="medicalStatusName" ngControl="medicalStatusName" [disabled]="true">
+              <label translate>{{'pacient.medicalTestState'}}</label>
+              <input type="text" class="form-control disabled" [(ngModel)]="newPacient.medicalStatusName" 
+                name="medicalStatusName" ngControl="medicalStatusName" [disabled]="true">
             </div>
             <div class="form-group">
-                <label translate>{{'pacient.eap'}}</label>
-                <select [(ngModel)]="newPacient.eapId" class="form-control disabled-field" name="eapId"
-                    required ngControl="eapId" [disabled]="existPacient">
-                    <option *ngFor="let eap of newPacient.eapList" [ngValue]="eap.secondaryId" 
-                    [selected]="eap.secondaryId == newPacient.eapId"> {{eap.name}}</option>
-                </select>
+              <label translate>{{'pacient.eap'}}</label>
+              <select [(ngModel)]="newPacient.eapId" class="form-control disabled-field" name="eapId"
+                required ngControl="eapId" [disabled]="existPacient" #eap="ngModel">
+                <option *ngFor="let eap of newPacient.eapList" [ngValue]="eap.secondaryId" 
+                  [selected]="eap.secondaryId == newPacient.eapId"> {{eap.name}}</option>
+              </select>
+              <small *ngIf="eap.errors?.required && submittedDisabled" 
+                class="text-danger" translate>{{'general.messages.required'}}</small>
             </div>
             <div class="form-group">
-                <label translate>{{'pacient.birthDate'}}</label> 
-                <input class="form-control disabled-field" type="date" [(ngModel)]="newPacient.birthDate"
-                    required name="birthDate" ngControl="birthDate" [disabled]="existPacient">
+              <label translate>{{'pacient.birthDate'}}</label> 
+              <input class="form-control disabled-field" type="date" [(ngModel)]="newPacient.birthDate"
+                required name="birthDate" ngControl="birthDate" [disabled]="existPacient" #birthDate="ngModel">
+              <small *ngIf="birthDate.errors?.required && submittedDisabled" 
+                class="text-danger" translate>{{'general.messages.required'}}</small>
             </div>
             <div class="form-group">
-                <label translate>{{'pacient.telephone'}}</label>
-                <input class="form-control disabled-field" type="tel" [(ngModel)]="newPacient.telephone"
-                    required name="telephone" ngControl="telephone" [disabled]="existPacient">
+              <label translate>{{'pacient.telephone'}}</label>
+              <input class="form-control disabled-field" type="text" [(ngModel)]="newPacient.telephone"
+                required name="telephone" ngControl="telephone" [disabled]="existPacient" maxlength="9" 
+                onkeypress='return event.charCode >= 48 && event.charCode <= 57' #telephone="ngModel"/>
+              <small *ngIf="telephone.errors?.required && submittedDisabled" 
+                class="text-danger" translate>{{'general.messages.required'}}</small>
             </div>
-            <div class="form-group">
+            <br/>
+            <div class="form-group radio-demo row">
+              <div class="col-md-2">
                 <label translate>{{'pacient.gender.name'}}</label>&nbsp;&nbsp;&nbsp;&nbsp;
-                <label class="radio-inline" translate>
-                    <input type="radio" name="gender" ngControl="gender" [(ngModel)]="newPacient.gender"  
-                        value = {{newPacient.genderList[0].name}}  [disabled]="existPacient || newPacient.isFemale()"
-                        [checked]="newPacient.isMale()" >{{'pacient.gender.male'}}
+              </div>
+              <div class="col-md-4">
+                <label class="radio-inline custom-radio nowrap">
+                  <input type="radio" name="gender" ngControl="gender" [(ngModel)]="newPacient.gender" 
+                    value = {{newPacient.genderList[0].name}} [checked]="newPacient.isMale()" 
+                    [disabled]="!genderRadioDisabled">
+                  <span translate>{{'pacient.gender.male'}}</span>
                 </label>
-                <label class="radio-inline" translate>
-                    <input type="radio" name="gender" ngControl="gender" [(ngModel)]="newPacient.gender"
-                            value = {{newPacient.genderList[1].name}}  [disabled]="existPacient || newPacient.isMale()"
-                        [checked]="newPacient.isFemale()" >{{'pacient.gender.female'}}
+              </div>
+              <div class="col-md-4">
+                <label class="radio-inline custom-radio nowrap">
+                  <input type="radio" name="gender" ngControl="gender" [(ngModel)]="newPacient.gender"
+                    value = {{newPacient.genderList[1].name}} [checked]="!newPacient.isMale()"
+                    [disabled]="genderRadioDisabled">
+                  <span translate>{{'pacient.gender.female'}}</span>
                 </label>
+              </div>
+            </div>
+            <div class="form-group ">
+              <small *ngIf="newPacient.gender==null && submittedDisabled" 
+                class="text-danger" translate>{{'general.messages.required'}}</small>
             </div>
           </div>
         </div>
@@ -113,52 +149,41 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label translate>{{'pacient.ubigeo.department'}}</label>&nbsp;&nbsp;
-                <select [(ngModel)]="newPacient.ubigeo.departmentCode"
-                      class="form-control disabled-field" name="departmentCode" (ngModelChange)="loadProvincesList($event)"
-                          ngControl="departmentCode" [disabled]="existPacient">
-                      <option *ngFor="let dpm of newPacient.departmentsList" 
-                          [ngValue] = "dpm.departmentCode"
-                          [selected]="dpm.departmentCode == newPacient.ubigeo.departmentCode">
-                              {{dpm.departmentDescription}}</option>
+                <select [(ngModel)]="newPacient.ubigeo.departmentCode" #departmentCode="ngModel"
+                  class="form-control disabled-field" name="departmentCode"  [disabled]="existPacient" 
+                  ngControl="departmentCode" (ngModelChange)="loadProvincesList($event)">
+                  <option *ngFor="let dpm of newPacient.departmentsList" 
+                    [selected]="dpm.departmentCode == newPacient.ubigeo.departmentCode"
+                    [ngValue] = "dpm.departmentCode">{{dpm.departmentDescription}}</option>
                 </select>
-                <small *ngIf="newPacient.ubigeo.departmentCode == null && !existPacient" 
-                      class="text-danger" translate>
-                      {{'general.messages.required'}}
-                </small>
               </div>
             </div>
             <div class="col-md-4">
               <div class="form-group">
-                  <label translate>{{'pacient.ubigeo.province'}}</label>&nbsp;&nbsp;
-                  <select [(ngModel)]="newPacient.ubigeo.provinceCode" 
-                      class="form-control disabled-field" name="provinceCode" (ngModelChange) = "loadDistrictsList($event)"
-                          ngControl="provinceCode" [disabled]="existPacient">
-                      <option *ngFor="let pv of newPacient.provincesList" 
-                              [ngValue]="pv.provinceCode" 
-                          [selected]="pv.provinceCode == newPacient.ubigeo.provinceCode">
-                              {{pv.provinceDescription}}</option>
-                  </select>
-                  <small *ngIf="newPacient.ubigeo.provinceCode == null && !existPacient" 
-                      class="text-danger" translate>
-                      {{'general.messages.required'}}
-                  </small>
+                <label translate>{{'pacient.ubigeo.province'}}</label>&nbsp;&nbsp;
+                <select [(ngModel)]="newPacient.ubigeo.provinceCode" required #provinceCode="ngModel" 
+                  class="form-control disabled-field" name="provinceCode" (ngModelChange) = "loadDistrictsList($event)"
+                  ngControl="provinceCode" [disabled]="existPacient">
+                  <option *ngFor="let pv of newPacient.provincesList" [ngValue]="pv.provinceCode"
+                    [selected]="pv.provinceCode == newPacient.ubigeo.provinceCode">
+                    {{pv.provinceDescription}}</option>
+                </select>
+                <small *ngIf="provinceCode.errors?.required && submittedDisabled" 
+                  class="text-danger" translate>{{'general.messages.required'}}</small>
               </div>
             </div>
             <div class="col-md-4">
               <div class="form-group">
                 <label translate>{{'pacient.ubigeo.district'}}</label>&nbsp;&nbsp;
-                <select [(ngModel)]="newPacient.ubigeo.districtCode" 
-                      class="form-control disabled-field" name="districtCode"
-                          ngControl="districtCode" [disabled]="existPacient">
-                      <option *ngFor="let dt of newPacient.districtsList"
-                          [ngValue]="dt.districtCode" 
-                          [selected]="dt.districtCode == newPacient.ubigeo.districtCode">
-                              {{dt.districtDescription}}</option>
+                <select [(ngModel)]="newPacient.ubigeo.districtCode" required #districtCode="ngModel"
+                  class="form-control disabled-field" name="districtCode"
+                  ngControl="districtCode" [disabled]="existPacient">
+                  <option *ngFor="let dt of newPacient.districtsList" [ngValue]="dt.districtCode" 
+                    [selected]="dt.districtCode == newPacient.ubigeo.districtCode">
+                    {{dt.districtDescription}}</option>
                 </select>
-                <small *ngIf="newPacient.ubigeo.districtCode == null && !existPacient" 
-                  class="text-danger" translate>
-                  {{'general.messages.required'}}
-                </small>
+                <small *ngIf="districtCode.errors?.required && submittedDisabled" 
+                  class="text-danger" translate>{{'general.messages.required'}}</small>
               </div>
             </div>
           </div>
@@ -166,7 +191,10 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label translate>{{'pacient.address'}}</label>&nbsp;&nbsp;
-                <input class="form-control disabled-field">
+                <input class="form-control disabled-field" [(ngModel)]="newPacient.address"
+                  required name="address" ngControl="address" [disabled]="existPacient" #address="ngModel">
+                <small *ngIf="address.errors?.required && submittedDisabled" 
+                  class="text-danger" translate>{{'general.messages.required'}}</small>
               </div>
             </div>
           </div>
@@ -175,8 +203,11 @@
 
         <div class="row">
           <div class="col-md-12 text-center">
-            <button type="submit" class="btn btn-primary btn-xm" [disabled]="existPacient" translate>{{'general.buttons.register'}}</button>&nbsp;&nbsp;&nbsp;&nbsp;
-            <button type="button" (click)="initilize()" class="btn btn-primary btn-xm" [disabled]="existPacient" translate>{{'general.buttons.cancel'}}</button>
+            <button type="submit" class="btn btn-primary btn-xm" 
+              [disabled]="existPacient && !registerPacientForm.form.valid" translate>{{'general.buttons.register'}}
+              </button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="button" (click)="initilize()" class="btn btn-primary btn-xm"
+               [disabled]="existPacient" translate>{{'general.buttons.cancel'}}</button>
           </div>
         </div>
       </form>
