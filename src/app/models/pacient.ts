@@ -1,5 +1,6 @@
 import {Ubigeo} from './ubigeo';
 import {Catalog} from './catalog';
+import * as moment from 'moment';
 
 export class Pacient {
 
@@ -19,13 +20,14 @@ export class Pacient {
     public gender: string;
     public ubigeo: Ubigeo;
     public address : string;
-    
+
     public civilStatusList : Array<Catalog>;
     public eapList : Array<Catalog>;
     public departmentsList : Array<Ubigeo>;
     public provincesList : Array<Ubigeo>;
     public districtsList : Array<Ubigeo>;
     public genderList: Array<Catalog>;
+    public formattedDate : string;
 
     constructor(){
         this.ubigeo = new Ubigeo();
@@ -91,5 +93,9 @@ export class Pacient {
 
     addCivilStatusItemByDefault(){
        this.civilStatusList.push(new Catalog(null,"<SELECCIONE>")); 
+    }
+
+    setFormattedDate(date : Date){
+        this.formattedDate = moment(date).format("DD/MM/YYYY");
     }
 }

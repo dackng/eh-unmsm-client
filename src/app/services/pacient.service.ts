@@ -11,7 +11,7 @@ export class PacientService {
   URL: string;                                              
 
   constructor (private http: Http) {
-    //this.URL = 'http://192.168.1.36:8014/api';
+    //this.URL = 'http://192.168.1.42:8014/api';
     this.URL = 'https://ehu-pacient-service.herokuapp.com/api';
   }
 
@@ -35,6 +35,6 @@ export class PacientService {
   }
 
   private handleError() {//if there is error http 404 "Not found" then set null
-        return Observable.of(null);
+      return Observable.of(null);
   }
 }

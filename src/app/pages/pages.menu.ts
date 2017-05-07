@@ -57,7 +57,7 @@ export const PAGES_MENU = [
             }
           }
         ]
-      }
+      }/*
       ,
       {
         path: 'editors',
@@ -178,7 +178,7 @@ export const PAGES_MENU = [
             }
           },
         ]
-      } /*,
+      } ,
       {
         path: 'forms',
         data: {

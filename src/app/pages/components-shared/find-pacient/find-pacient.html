@@ -2,10 +2,14 @@
   <div class="form-group">
     <label translate>{{'pacient.code'}}</label>
     <div class="input-group">
-      <input type="text" class="form-control" [(ngModel)]="pacientCode"  
-          name="pacientCode" ngControl="pacientCode" required >
+      <input type="text" class="form-control disabled-field" [(ngModel)]="pacientCode" 
+        [disabled]="!existPacient" name="pacientCode" maxlength="8" [rangeLength]="[8,8]" required
+        ngControl="pacientCode" onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+        #pacientCodeField="ngModel"/>
       <span class="input-group-addon addon-right  input-group-addon-primary">
-        <button  class="btn btn-primary" type="submit"><i class="fa fa-search"></i>
+        <button  class="btn btn-primary" type="button" 
+          [disabled]="pacientCodeField.errors?.required || pacientCodeField.errors?.rangeLength || !existPacient">
+          <i class="fa fa-search"></i>
         </button>
       </span>
     </div>

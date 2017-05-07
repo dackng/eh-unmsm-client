@@ -28,12 +28,12 @@
               <label translate>{{'pacient.code'}}</label>
               <div class="input-group">
                 <input type="text" class="form-control disabled-field" [(ngModel)]="pacientCode" 
-                  [disabled]="pacientCodeDisabled" name="pacientCode" maxlength="8" required
+                  [disabled]="!existPacient" name="pacientCode" maxlength="8" [rangeLength]="[8,8]" required
                   ngControl="pacientCode" onkeypress='return event.charCode >= 48 && event.charCode <= 57'
                   #pacientCodeField="ngModel"/>
                 <span class="input-group-addon addon-right  input-group-addon-primary">
-                  <button  class="btn btn-primary" [disabled]="pacientCodeField.errors?.required || pacientCodeDisabled" 
-                    (click)="findPacientByCode()"type="button">
+                  <button  class="btn btn-primary" (click)="findPacientByCode()"type="button" 
+                    [disabled]="pacientCodeField.errors?.required || pacientCodeField.errors?.rangeLength || !existPacient">
                     <i class="fa fa-search"></i>
                   </button>
                 </span>
@@ -78,8 +78,8 @@
               <label translate>{{'pacient.email'}}</label>
               <input type="text" class="form-control disabled-field" placeholder="email@example.com"
                 required [(ngModel)]="newPacient.email" name="email" ngControl="email" 
-                [disabled]="existPacient" #email="ngModel">
-              <small *ngIf="email.errors?.required && submittedDisabled" 
+                [disabled]="existPacient" #email="ngModel" email>
+              <small *ngIf="email.errors?.email && submittedDisabled" 
                 class="text-danger" translate>{{'general.messages.required'}}</small>  
             </div>
           </div>
@@ -101,10 +101,15 @@
             </div>
             <div class="form-group">
               <label translate>{{'pacient.birthDate'}}</label> 
-              <input class="form-control disabled-field" type="date" [(ngModel)]="newPacient.birthDate"
-                required name="birthDate" ngControl="birthDate" [disabled]="existPacient" #birthDate="ngModel">
-              <small *ngIf="birthDate.errors?.required && submittedDisabled" 
-                class="text-danger" translate>{{'general.messages.required'}}</small>
+              <div *ngIf="!existPacient">
+                <input  class="form-control disabled-field" type="date" [(ngModel)]="newPacient.birthDate" 
+                  required name="birthDate" ngControl="birthDate" [disabled]="existPacient" #birthDate="ngModel">
+                <small *ngIf="birthDate.errors?.required && submittedDisabled" 
+                  class="text-danger" translate>{{'general.messages.required'}}</small>
+              </div>
+              <input *ngIf="existPacient" type="text" class="form-control disabled-field" 
+                [(ngModel)]="newPacient.formattedDate" [disabled]="existPacient"
+                [ngModelOptions]="{standalone: true}"/>
             </div>
             <div class="form-group">
               <label translate>{{'pacient.telephone'}}</label>
@@ -204,7 +209,7 @@
         <div class="row">
           <div class="col-md-12 text-center">
             <button type="submit" class="btn btn-primary btn-xm" 
-              [disabled]="existPacient && !registerPacientForm.form.valid" translate>{{'general.buttons.register'}}
+              [disabled]="existPacient" translate>{{'general.buttons.register'}}
               </button>&nbsp;&nbsp;&nbsp;&nbsp;
             <button type="button" (click)="initilize()" class="btn btn-primary btn-xm"
                [disabled]="existPacient" translate>{{'general.buttons.cancel'}}</button>

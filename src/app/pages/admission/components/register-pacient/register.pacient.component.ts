@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 
-
 import {Pacient} from '../../../../models/pacient';
 import {Catalog} from '../../../../models/catalog';
 import {Ubigeo} from '../../../../models/ubigeo';
@@ -24,8 +23,6 @@ export class RegisterPacientComponent implements OnInit{
     ubigeoItemByDefault : Ubigeo;
     genderRadioDisabled : boolean;
     submittedDisabled : boolean;
-    pacientCodeDisabled : boolean;
-
     ngOnInit(){
         this.initilize();
     }
@@ -34,7 +31,6 @@ export class RegisterPacientComponent implements OnInit{
                 , private ubigeoService: UbigeoService) {}
 
     findPacientByCode(){
-        this.pacientCodeDisabled = true;
         this.newPacient = new Pacient();
         this.catalogService.getGenderList()
             .subscribe( (genderList : Array<Catalog> ) => {
@@ -116,7 +112,7 @@ export class RegisterPacientComponent implements OnInit{
             this.newPacient.generateUbigeoCode();
             this.pacientService.registerPacient(this.newPacient)
                     .subscribe( pacient => {
-                            this.initilize();
+                       this.initilize();
                     }, error => this.errorMessage = <any> error);
        } 
     }
@@ -129,7 +125,6 @@ export class RegisterPacientComponent implements OnInit{
         this.ubigeoItemByDefault = new Ubigeo();
         this.genderRadioDisabled = true;
         this.submittedDisabled = false;
-        this.pacientCodeDisabled = false;
     }
 
     setPacientFields(pacient: Pacient){
@@ -144,9 +139,10 @@ export class RegisterPacientComponent implements OnInit{
         this.newPacient.medicalStatusName = pacient.medicalStatusName;
         this.newPacient.eapId = pacient.eapId;
         this.newPacient.eapName = pacient.eapName;
-        this.newPacient.birthDate = pacient.birthDate;
+        this.newPacient.setFormattedDate(pacient.birthDate);
         this.newPacient.telephone = pacient.telephone;
         this.newPacient.gender = pacient.gender;
+        this.newPacient.address = pacient.address;
         this.newPacient.ubigeo = pacient.ubigeo;
     }
 }

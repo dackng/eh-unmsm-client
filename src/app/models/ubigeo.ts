@@ -3,7 +3,7 @@ export class Ubigeo {
     public static LIMA_DEPARTMENT_CODE = "15";
     public static LIMA_PROVINCE_CODE = "01";
 
-    public code: string;
+    public ubigeoCode: string;
     public departmentCode: string;
     public departmentDescription: string;  
     public provinceCode: string;
@@ -12,7 +12,7 @@ export class Ubigeo {
     public districtDescription: string;
 
     constructor(){
-        this.code = null;
+        this.ubigeoCode = null;
         this.provinceCode = null;
         this.districtCode = null;
     }
@@ -35,7 +35,7 @@ export class Ubigeo {
     }
 
     joinCodes(){
-        this.code = this.departmentCode + this.provinceCode + this.districtCode;
+        this.ubigeoCode = this.departmentCode + this.provinceCode + this.districtCode;
     }
 
     validateCodes(){

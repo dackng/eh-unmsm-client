@@ -11,7 +11,7 @@ export class CatalogService {
   URL: string; 
 
   constructor (private http: Http) {
-    //this.URL = 'http://192.168.1.37:8013/api';
+    //this.URL = 'http://192.168.1.42:8013/api';
     this.URL = 'https://ehu-catalog-service.herokuapp.com/api';
   }
 

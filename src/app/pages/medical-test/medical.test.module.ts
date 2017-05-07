@@ -4,6 +4,7 @@ import { FormsModule as AngularFormsModule } from '@angular/forms';
 import { AppTranslationModule } from '../../app.translation.module';
 import { NgaModule } from '../../theme/nga.module';
 import { ModalModule } from 'ng2-bootstrap/ng2-bootstrap';
+import { CustomFormsModule } from 'ng2-validation';
 import { routing }       from './medical.test.routing';
 
 import { MedicalTestComponent } from './medical.test.component';
@@ -22,6 +23,7 @@ import { SelectPacientTypeComponent } from '../components-shared/select-pacient-
     NgaModule,
     ModalModule,
     AppTranslationModule,
+    CustomFormsModule,
     routing
   ],
   declarations: [
