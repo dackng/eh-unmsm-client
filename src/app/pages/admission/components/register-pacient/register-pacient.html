@@ -145,6 +145,13 @@
               <small *ngIf="newPacient.gender==null && submittedDisabled" 
                 class="text-danger" translate>{{'general.messages.required'}}</small>
             </div>
+            <ba-card baCardClass="with-scroll">
+              <div class="checkbox-demo-row">
+                <ba-checkbox [(ngModel)]="applyMedicalTest" [baCheckboxClass]="'disabled'"
+                  [ngModelOptions]="{standalone: true}" 
+                  [label]="'¿Realizar examen médico?'" [disabled]="false"></ba-checkbox>
+              </div>
+            </ba-card>
           </div>
         </div>
         <br>

@@ -24,7 +24,7 @@ export class PacientService {
   registerPacient(pacient: Pacient) {
     let bodyString = JSON.stringify(pacient);
     let headers = new Headers({ 'Content-Type': 'application/json' });
-    return this.http.post(this.URL + '/save', bodyString, {headers:headers})
+    return this.http.post(this.URL + '/register', bodyString, {headers:headers})
       .map(this.extractData)
       .catch(this.handleError);
   }

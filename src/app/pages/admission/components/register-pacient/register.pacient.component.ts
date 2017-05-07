@@ -23,6 +23,8 @@ export class RegisterPacientComponent implements OnInit{
     ubigeoItemByDefault : Ubigeo;
     genderRadioDisabled : boolean;
     submittedDisabled : boolean;
+    applyMedicalTest: boolean;
+
     ngOnInit(){
         this.initilize();
     }
@@ -40,6 +42,7 @@ export class RegisterPacientComponent implements OnInit{
         this.pacientService.getPacientByCode(this.pacientCode)
             .subscribe( (pacient : Pacient )=> {            
                 if(pacient != null){
+                    //this.emrService.getEmrByPacientCode(this.pacientCode)
                     this.setPacientFields(pacient);
                     this.existPacient = true;
                     this.newPacient.addMedicalStatusItem();
@@ -108,13 +111,16 @@ export class RegisterPacientComponent implements OnInit{
 
     registerPacient(){
         this.submittedDisabled = true;
-        if(this.newPacient.validateUbigeoCodes()){
+        if(this.applyMedicalTest){
+            //call insert emr record
+        }
+        if(!this.existPacient){//if don't exist pacient
             this.newPacient.generateUbigeoCode();
             this.pacientService.registerPacient(this.newPacient)
-                    .subscribe( pacient => {
-                       this.initilize();
-                    }, error => this.errorMessage = <any> error);
-       } 
+                .subscribe( pacient => {
+                    this.initilize();
+                }, error => this.errorMessage = <any> error);    
+        }
     }
 
     initilize(){
@@ -125,6 +131,7 @@ export class RegisterPacientComponent implements OnInit{
         this.ubigeoItemByDefault = new Ubigeo();
         this.genderRadioDisabled = true;
         this.submittedDisabled = false;
+        this.applyMedicalTest = false;
     }
 
     setPacientFields(pacient: Pacient){
