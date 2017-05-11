@@ -64,14 +64,14 @@
                 class="text-danger" translate>{{'general.messages.required'}}</small>
             </div>
             <div class="form-group">
-              <label translate>{{'pacient.civilStatus'}}</label>
-              <select [(ngModel)]="newPacient.civilStatusId" class="form-control disabled-field" 
-                required name="civilStatusId" ngControl="civilStatusId" [disabled] ="existPacient"
-                #civilStatus="ngModel">
-                <option *ngFor="let cs of newPacient.civilStatusList" [ngValue]="cs.secondaryId" 
-                  [selected]="cs.secondaryId == newPacient.civilStatusId">{{cs.name}}</option>
+              <label translate>{{'pacient.civilState'}}</label>
+              <select [(ngModel)]="newPacient.civilStateId" class="form-control disabled-field" 
+                required name="civilStateId" ngControl="civilStateId" [disabled] ="existPacient"
+                #civilState="ngModel">
+                <option *ngFor="let cs of newPacient.civilStateList" [ngValue]="cs.secondaryId" 
+                  [selected]="cs.secondaryId == newPacient.civilStateId">{{cs.name}}</option>
               </select>
-              <small *ngIf="civilStatus.errors?.required && submittedDisabled" 
+              <small *ngIf="civilState.errors?.required && submittedDisabled" 
                 class="text-danger" translate>{{'general.messages.required'}}</small>
             </div>
             <div class="form-group">
@@ -85,9 +85,9 @@
           </div>
           <div class="col-md-6">
             <div class="form-group">
-              <label translate>{{'pacient.medicalTestState'}}</label>
-              <input type="text" class="form-control disabled" [(ngModel)]="newPacient.medicalStatusName" 
-                name="medicalStatusName" ngControl="medicalStatusName" [disabled]="true">
+              <label translate>{{'pacient.emrState'}}</label>
+              <input type="text" class="form-control disabled" [(ngModel)]="newPacient.emrStateName" 
+                name="emrStateName" ngControl="emrStateName" [disabled]="true">
             </div>
             <div class="form-group">
               <label translate>{{'pacient.eap'}}</label>
@@ -147,7 +147,7 @@
             </div>
             <ba-card baCardClass="with-scroll">
               <div class="checkbox-demo-row">
-                <ba-checkbox [(ngModel)]="applyMedicalTest" [baCheckboxClass]="'disabled'"
+                <ba-checkbox [(ngModel)]="applyEmr" [baCheckboxClass]="'disabled'"
                   [ngModelOptions]="{standalone: true}" 
                   [label]="'¿Realizar examen médico?'" [disabled]="false"></ba-checkbox>
               </div>

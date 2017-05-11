@@ -23,7 +23,7 @@ export class RegisterPacientComponent implements OnInit{
     ubigeoItemByDefault : Ubigeo;
     genderRadioDisabled : boolean;
     submittedDisabled : boolean;
-    applyMedicalTest: boolean;
+    applyEmr: boolean;
 
     ngOnInit(){
         this.initilize();
@@ -45,7 +45,7 @@ export class RegisterPacientComponent implements OnInit{
                     //this.emrService.getEmrByPacientCode(this.pacientCode)
                     this.setPacientFields(pacient);
                     this.existPacient = true;
-                    this.newPacient.addMedicalStatusItem();
+                    this.newPacient.addEmrStateItem();
                     this.newPacient.addEapItem();
                     this.newPacient.addUbigeoItems();
                     this.genderRadioDisabled = this.newPacient.isMale();
@@ -61,16 +61,16 @@ export class RegisterPacientComponent implements OnInit{
     }
 
     private loadItemsLists(){
-        this.catalogService.getCivilStatusList()
-            .subscribe( (civilStatusList : Array<Catalog> ) => {
-                this.newPacient.civilStatusList = civilStatusList;
-                this.newPacient.addCivilStatusItemByDefault();
+        this.catalogService.getCivilStateList()
+            .subscribe( (civilStateList : Array<Catalog> ) => {
+                this.newPacient.civilStateList = civilStateList;
+                this.newPacient.addCivilStateItemByDefault();
             }, error => this.errorMessage = <any> error);
 
-        this.catalogService.getFirstMedicalStatus()
-            .subscribe( (medicalStatus : Catalog ) => {
-                this.newPacient.medicalStatusName = medicalStatus.name;
-                this.newPacient.medicalStatusId = medicalStatus.secondaryId;
+        this.catalogService.getFirstEmrState()
+            .subscribe( (emrState : Catalog ) => {
+                this.newPacient.emrStateName = emrState.name;
+                this.newPacient.emrStateId = emrState.secondaryId;
             }, error => this.errorMessage = <any> error);
         
         this.catalogService.getEapList()
@@ -111,7 +111,7 @@ export class RegisterPacientComponent implements OnInit{
 
     registerPacient(){
         this.submittedDisabled = true;
-        if(this.applyMedicalTest){
+        if(this.applyEmr){
             //call insert emr record
         }
         if(!this.existPacient){//if don't exist pacient
@@ -131,7 +131,7 @@ export class RegisterPacientComponent implements OnInit{
         this.ubigeoItemByDefault = new Ubigeo();
         this.genderRadioDisabled = true;
         this.submittedDisabled = false;
-        this.applyMedicalTest = false;
+        this.applyEmr = false;
     }
 
     setPacientFields(pacient: Pacient){
@@ -139,11 +139,11 @@ export class RegisterPacientComponent implements OnInit{
         this.newPacient.names = pacient.names;
         this.newPacient.paternalSurname = pacient.paternalSurname;
         this.newPacient.maternalSurname = pacient.maternalSurname;
-        this.newPacient.civilStatusId = pacient.civilStatusId;
-        this.newPacient.civilStatusName = pacient.civilStatusName;
+        this.newPacient.civilStateId = pacient.civilStateId;
+        this.newPacient.civilStateName = pacient.civilStateName;
         this.newPacient.email =  pacient.email;
-        this.newPacient.medicalStatusId = pacient.medicalStatusId;
-        this.newPacient.medicalStatusName = pacient.medicalStatusName;
+        this.newPacient.emrStateId = pacient.emrStateId;
+        this.newPacient.emrStateName = pacient.emrStateName;
         this.newPacient.eapId = pacient.eapId;
         this.newPacient.eapName = pacient.eapName;
         this.newPacient.setFormattedDate(pacient.birthDate);

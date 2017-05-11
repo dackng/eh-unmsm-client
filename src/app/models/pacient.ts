@@ -8,11 +8,11 @@ export class Pacient {
     public names: string;
     public paternalSurname: string;
     public maternalSurname: string;
-    public civilStatusId: number;
-    public civilStatusName: string;
+    public civilStateId: number;
+    public civilStateName: string;
     public email: string;
-    public medicalStatusId: number;
-    public medicalStatusName: string;
+    public emrStateId: number;
+    public emrStateName: string;
     public eapId: number;
     public eapName: string;
     public birthDate: Date;
@@ -21,7 +21,7 @@ export class Pacient {
     public ubigeo: Ubigeo;
     public address : string;
 
-    public civilStatusList : Array<Catalog>;
+    public civilStateList : Array<Catalog>;
     public eapList : Array<Catalog>;
     public departmentsList : Array<Ubigeo>;
     public provincesList : Array<Ubigeo>;
@@ -31,14 +31,14 @@ export class Pacient {
 
     constructor(){
         this.ubigeo = new Ubigeo();
-        this.civilStatusList = [];
+        this.civilStateList = [];
         this.eapList = [];
         this.departmentsList = [];
         this.provincesList = [];
         this.districtsList = [];
         this.initializeGenderList();
         this.eapId = null;
-        this.civilStatusId = null;
+        this.civilStateId = null;
         this.gender = null;
     }
 
@@ -50,8 +50,8 @@ export class Pacient {
         return this.ubigeo.validateCodes();
     }
 
-    addMedicalStatusItem(){
-        this.civilStatusList.push(new Catalog(this.civilStatusId, this.civilStatusName));
+    addEmrStateItem(){
+        this.civilStateList.push(new Catalog(this.civilStateId, this.civilStateName));
     }
 
     addEapItem(){
@@ -91,8 +91,8 @@ export class Pacient {
         return this.gender == this.genderList[0].name ? true : false;
     }
 
-    addCivilStatusItemByDefault(){
-       this.civilStatusList.push(new Catalog(null,"<SELECCIONE>")); 
+    addCivilStateItemByDefault(){
+       this.civilStateList.push(new Catalog(null,"<SELECCIONE>")); 
     }
 
     setFormattedDate(date : Date){

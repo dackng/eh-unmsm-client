@@ -15,20 +15,20 @@ export class CatalogService {
     this.URL = 'https://ehu-catalog-service.herokuapp.com/api';
   }
 
-  getCivilStatusList() : Observable<Array<Catalog>>{
-    return this.http.get(this.URL + '/list/civil-status')
+  getCivilStateList() : Observable<Array<Catalog>>{
+    return this.http.get(this.URL + '/list/civil-state')
       .map(this.extractDataArray)
       .catch(this.handleError);
   }
 
-  getFirstMedicalStatus() : Observable<Catalog>{
-    return this.http.get(this.URL + '/element/first-medical-status')
+  getFirstEmrState() : Observable<Catalog>{
+    return this.http.get(this.URL + '/element/first-emr-state')
       .map(this.extractDataArray)
       .catch(this.handleError);
   }
 
-  getMedicalStatusList() : Observable<Array<Catalog>>{
-    return this.http.get(this.URL + '/list/medical-status')
+  getEmrStateList() : Observable<Array<Catalog>>{
+    return this.http.get(this.URL + '/list/emr-state')
       .map(this.extractDataArray)
       .catch(this.handleError);
   }
