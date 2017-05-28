@@ -4,58 +4,79 @@ import {Observable} from 'rxjs/Observable';
 import {Pacient} from '../../../../models/pacient';
 import {Catalog} from '../../../../models/catalog';
 import {Ubigeo} from '../../../../models/ubigeo';
+import {Emr} from '../../../../models/emr';
 import {PacientService} from '../../../../services/pacient.service';
 import {CatalogService} from '../../../../services/catalog.service';
 import {UbigeoService} from '../../../../services/ubigeo.service';
+import {EmrService} from '../../../../services/emr.service';
 
 @Component({
     selector: 'register-pacient',
     styleUrls: ['../../../../theme/sass/_disabled.scss'],
     templateUrl: './register-pacient.html',
-    providers: [PacientService, CatalogService, UbigeoService]
+    providers: [PacientService, CatalogService, UbigeoService, EmrService]
 })
 
 export class RegisterPacientComponent implements OnInit{ 
-    newPacient : Pacient;
-    pacientCode : number;
-    existPacient: boolean;
+    newPacient: Pacient;
+    emr: Emr;
+    currentHealthPlan: Catalog;
+    pacientCode: number;
+    isPacientExisting: boolean;
     errorMessage: string;
-    ubigeoItemByDefault : Ubigeo;
-    genderRadioDisabled : boolean;
-    submittedDisabled : boolean;
-    applyEmr: boolean;
-
+    ubigeoItemByDefault: Ubigeo;
+    isGenderRadioDisabled: boolean;
+    isFieldDisabled: boolean;
+    isEmrConfirmationMessage: boolean;
+    
     ngOnInit(){
         this.initilize();
     }
 
     constructor (private pacientService: PacientService, private catalogService : CatalogService
-                , private ubigeoService: UbigeoService) {}
+                , private ubigeoService: UbigeoService, private emrService: EmrService) {
+        this.catalogService.getCurrentHealthPlan()//loading the current health plan
+            .subscribe( (catalog : Catalog ) => {
+                this.currentHealthPlan = new Catalog (catalog.secondaryId, catalog.name);
+            }, error => this.errorMessage = <any> error); 
+    }
 
     findPacientByCode(){
         this.newPacient = new Pacient();
+        this.emr = new Emr();
+        this.emr.healthPlanId = this.currentHealthPlan.secondaryId;
         this.catalogService.getGenderList()
-            .subscribe( (genderList : Array<Catalog> ) => {
+            .subscribe( (genderList : Array<string> ) => {
                 this.newPacient.genderList = genderList;
             }, error => this.errorMessage = <any> error);
-        
         this.pacientService.getPacientByCode(this.pacientCode)
             .subscribe( (pacient : Pacient )=> {            
                 if(pacient != null){
-                    //this.emrService.getEmrByPacientCode(this.pacientCode)
+                    this.emr.pacientCode = pacient.code;
+                    this.emrService.getEmrByHealthPlanIdAndPacientCode(this.emr.healthPlanId,this.emr.pacientCode)
+                        .subscribe( (emr: Emr ) => {
+                            if(emr != null){
+                                this.setEmrFields(emr);
+                                this.isEmrConfirmationMessage = false;
+                            }else{
+                                this.isEmrConfirmationMessage = true;
+                            }
+                        }, error => this.errorMessage = <any> error);
                     this.setPacientFields(pacient);
-                    this.existPacient = true;
-                    this.newPacient.addEmrStateItem();
+                    this.isPacientExisting = true;
+                    this.newPacient.addCivilStateItem();
                     this.newPacient.addEapItem();
                     this.newPacient.addUbigeoItems();
-                    this.genderRadioDisabled = this.newPacient.isMale();
+                    this.isGenderRadioDisabled = this.newPacient.isMale();
                 }else{
-                    this.existPacient = false;
+                    this.isEmrConfirmationMessage = true;
+                    this.isPacientExisting = false;
+                    this.emr.pacientCode = this.pacientCode;
                     this.newPacient.code = this.pacientCode;
                     this.newPacient.ubigeo.changeToLima();
                     this.ubigeoItemByDefault.initializeItemByDefault();
                     this.loadItemsLists();
-                    this.genderRadioDisabled = false;
+                    this.isGenderRadioDisabled = false;
                 }
             }, error => this.errorMessage = <any> error);        
     }
@@ -67,12 +88,6 @@ export class RegisterPacientComponent implements OnInit{
                 this.newPacient.addCivilStateItemByDefault();
             }, error => this.errorMessage = <any> error);
 
-        this.catalogService.getFirstEmrState()
-            .subscribe( (emrState : Catalog ) => {
-                this.newPacient.emrStateName = emrState.name;
-                this.newPacient.emrStateId = emrState.secondaryId;
-            }, error => this.errorMessage = <any> error);
-        
         this.catalogService.getEapList()
             .subscribe( (eapList : Array<Catalog> ) => {
                 this.newPacient.eapList = eapList;
@@ -109,29 +124,49 @@ export class RegisterPacientComponent implements OnInit{
             }, error => this.errorMessage = <any> error);
     }
 
-    registerPacient(){
-        this.submittedDisabled = true;
-        if(this.applyEmr){
-            //call insert emr record
-        }
-        if(!this.existPacient){//if don't exist pacient
-            this.newPacient.generateUbigeoCode();
-            this.pacientService.registerPacient(this.newPacient)
-                .subscribe( pacient => {
-                    this.initilize();
-                }, error => this.errorMessage = <any> error);    
+    registerPacient(isFormValided : boolean){
+        this.isFieldDisabled = true;
+        if(isFormValided){
+            if(!this.isPacientExisting){//if don't exist pacient
+                this.newPacient.generateUbigeoCode();
+                this.pacientService.registerPacient(this.newPacient)
+                    .subscribe( pacient => {
+                        if(this.emr.isApplied){
+                            this.catalogService.getFirstEmrState()
+                            .subscribe( (emrState : Catalog ) => {
+                                this.emr.stateId = emrState.secondaryId;
+                                this.emrService.registerEmr(this.emr)
+                                    .subscribe( (emr: Emr ) => {
+                                        this.initilize();
+                                }, error => this.errorMessage = <any> error);
+                            }, error => this.errorMessage = <any> error);
+                        }else{
+                            this.initilize();
+                        }
+                    }, error => this.errorMessage = <any> error);   
+            }else if(this.emr.isApplied){//if exist pacient and is emr applied 
+                this.catalogService.getFirstEmrState()
+                    .subscribe( (emrState : Catalog ) => {
+                        this.emr.stateId = emrState.secondaryId;
+                        this.emrService.registerEmr(this.emr)
+                            .subscribe( (emr: Emr ) => {
+                                this.initilize();
+                            }, error => this.errorMessage = <any> error);
+                    }, error => this.errorMessage = <any> error);
+            }
         }
     }
 
     initilize(){
         this.pacientCode = null;
-        this.existPacient = true;
+        this.emr = new Emr();
+        this.isPacientExisting = true;
         this.errorMessage = null;
         this.newPacient = new Pacient();
         this.ubigeoItemByDefault = new Ubigeo();
-        this.genderRadioDisabled = true;
-        this.submittedDisabled = false;
-        this.applyEmr = false;
+        this.isGenderRadioDisabled = true;
+        this.isFieldDisabled = false;
+        this.isEmrConfirmationMessage = false;
     }
 
     setPacientFields(pacient: Pacient){
@@ -142,8 +177,6 @@ export class RegisterPacientComponent implements OnInit{
         this.newPacient.civilStateId = pacient.civilStateId;
         this.newPacient.civilStateName = pacient.civilStateName;
         this.newPacient.email =  pacient.email;
-        this.newPacient.emrStateId = pacient.emrStateId;
-        this.newPacient.emrStateName = pacient.emrStateName;
         this.newPacient.eapId = pacient.eapId;
         this.newPacient.eapName = pacient.eapName;
         this.newPacient.setFormattedDate(pacient.birthDate);
@@ -151,5 +184,16 @@ export class RegisterPacientComponent implements OnInit{
         this.newPacient.gender = pacient.gender;
         this.newPacient.address = pacient.address;
         this.newPacient.ubigeo = pacient.ubigeo;
+    }
+
+    setEmrFields(emr: Emr){
+        this.emr.employeeCode = emr.employeeCode;
+        this.emr.code = emr.code;
+        this.emr.stateId = emr.stateId;
+        this.emr.stateName = emr.stateName;
+        this.emr.createdAt = emr.createdAt;
+        this.emr.updatedAt = emr.updatedAt;
+        this.emr.healthPlanId = emr.healthPlanId; 
+        this.emr.healthPlanName = emr.healthPlanName;
     }
 }

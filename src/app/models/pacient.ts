@@ -11,8 +11,6 @@ export class Pacient {
     public civilStateId: number;
     public civilStateName: string;
     public email: string;
-    public emrStateId: number;
-    public emrStateName: string;
     public eapId: number;
     public eapName: string;
     public birthDate: Date;
@@ -26,8 +24,9 @@ export class Pacient {
     public departmentsList : Array<Ubigeo>;
     public provincesList : Array<Ubigeo>;
     public districtsList : Array<Ubigeo>;
-    public genderList: Array<Catalog>;
+    public genderList: Array<string>;
     public formattedDate : string;
+    public healthPlanId : number;
 
     constructor(){
         this.ubigeo = new Ubigeo();
@@ -40,6 +39,7 @@ export class Pacient {
         this.eapId = null;
         this.civilStateId = null;
         this.gender = null;
+        this.healthPlanId = null;
     }
 
     generateUbigeoCode(){
@@ -50,7 +50,7 @@ export class Pacient {
         return this.ubigeo.validateCodes();
     }
 
-    addEmrStateItem(){
+    addCivilStateItem(){
         this.civilStateList.push(new Catalog(this.civilStateId, this.civilStateName));
     }
 
@@ -82,13 +82,12 @@ export class Pacient {
 
     initializeGenderList(){
         this.genderList = [];
-        let item = new Catalog(null,"");
-        this.genderList.push(item);//first index for Male
-        this.genderList.push(item);//second index for Female
+        this.genderList.push('');//first index for Male
+        this.genderList.push('');//second index for Female
     }
 
     isMale():boolean{
-        return this.gender == this.genderList[0].name ? true : false;
+        return this.gender == this.genderList[0].toString() ? true : false;
     }
 
     addCivilStateItemByDefault(){

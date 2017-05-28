@@ -39,7 +39,13 @@ export class CatalogService {
       .catch(this.handleError);
   }
 
-  getGenderList() : Observable<Array<Catalog>>{
+  getCurrentHealthPlan() : Observable<Catalog>{
+    return this.http.get(this.URL + '/element/current-health-plan')
+      .map(this.extractDataArray)
+      .catch(this.handleError);
+  }
+
+  getGenderList() : Observable<Array<string>>{
     return this.http.get(this.URL + '/list/gender')
       .map(this.extractDataArray)
       .catch(this.handleError);
