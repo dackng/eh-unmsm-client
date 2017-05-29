@@ -3,12 +3,12 @@
     <label translate>{{'pacient.code'}}</label>
     <div class="input-group">
       <input type="text" class="form-control disabled-field" [(ngModel)]="pacientCode" 
-        [disabled]="!existPacient" name="pacientCode" maxlength="8" [rangeLength]="[8,8]" required
+        [disabled]="isActive" name="pacientCode" maxlength="8" [rangeLength]="[8,8]" required
         ngControl="pacientCode" onkeypress='return event.charCode >= 48 && event.charCode <= 57'
         #pacientCodeField="ngModel"/>
       <span class="input-group-addon addon-right  input-group-addon-primary">
-        <button  class="btn btn-primary" type="button" 
-          [disabled]="pacientCodeField.errors?.required || pacientCodeField.errors?.rangeLength || !existPacient">
+        <button  class="btn btn-primary" type="submit" 
+          [disabled]="pacientCodeField.errors?.required || pacientCodeField.errors?.rangeLength || isActive">
           <i class="fa fa-search"></i>
         </button>
       </span>
@@ -16,17 +16,17 @@
   </div>
 </form>
 <div class="form-group">
-  <label>Nombres</label>
+  <label translate>{{'pacient.names'}}</label>
   <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.names" 
-    required name="names" ngControl="names" [disabled] ="existPacient">
+    required name="names" ngControl="names" [disabled] ="true">
 </div>
 <div class="form-group">
-  <label>Apellido Paterno</label>
+  <label translate>{{'pacient.paternalSurname'}}</label>
   <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.paternalSurname"
-        required name="paternalSurname" ngControl="paternalSurname" [disabled]="existPacient">
+        required name="paternalSurname" ngControl="paternalSurname" [disabled]="true">
 </div>
 <div class="form-group">
-  <label>Apellido Materno</label>
+  <label translate>{{'pacient.maternalSurname'}}</label>
   <input type="text" class="form-control disabled-field"[(ngModel)]="pacient.maternalSurname"
-        required name="maternalSurname" ngControl="maternalSurname" [disabled]="existPacient">
+        required name="maternalSurname" ngControl="maternalSurname" [disabled]="true">
 </div>

@@ -5,6 +5,7 @@ import {Pacient} from '../../../../models/pacient';
 import {Catalog} from '../../../../models/catalog';
 import {Ubigeo} from '../../../../models/ubigeo';
 import {Emr} from '../../../../models/emr';
+
 import {PacientService} from '../../../../services/pacient.service';
 import {CatalogService} from '../../../../services/catalog.service';
 import {UbigeoService} from '../../../../services/ubigeo.service';
@@ -49,20 +50,20 @@ export class RegisterPacientComponent implements OnInit{
             .subscribe( (genderList : Array<string> ) => {
                 this.newPacient.genderList = genderList;
             }, error => this.errorMessage = <any> error);
-        this.pacientService.getPacientByCode(this.pacientCode)
+        this.pacientService.getPacientDetailByCode(this.pacientCode)
             .subscribe( (pacient : Pacient )=> {            
                 if(pacient != null){
                     this.emr.pacientCode = pacient.code;
                     this.emrService.getEmrByHealthPlanIdAndPacientCode(this.emr.healthPlanId,this.emr.pacientCode)
                         .subscribe( (emr: Emr ) => {
                             if(emr != null){
-                                this.setEmrFields(emr);
+                                this.emr.setFieldsDetail(emr);
                                 this.isEmrConfirmationMessage = false;
                             }else{
                                 this.isEmrConfirmationMessage = true;
                             }
                         }, error => this.errorMessage = <any> error);
-                    this.setPacientFields(pacient);
+                    this.newPacient.setFieldsDetail(pacient);
                     this.isPacientExisting = true;
                     this.newPacient.addCivilStateItem();
                     this.newPacient.addEapItem();
@@ -169,31 +170,5 @@ export class RegisterPacientComponent implements OnInit{
         this.isEmrConfirmationMessage = false;
     }
 
-    setPacientFields(pacient: Pacient){
-        this.newPacient.code = pacient.code;
-        this.newPacient.names = pacient.names;
-        this.newPacient.paternalSurname = pacient.paternalSurname;
-        this.newPacient.maternalSurname = pacient.maternalSurname;
-        this.newPacient.civilStateId = pacient.civilStateId;
-        this.newPacient.civilStateName = pacient.civilStateName;
-        this.newPacient.email =  pacient.email;
-        this.newPacient.eapId = pacient.eapId;
-        this.newPacient.eapName = pacient.eapName;
-        this.newPacient.setFormattedDate(pacient.birthDate);
-        this.newPacient.telephone = pacient.telephone;
-        this.newPacient.gender = pacient.gender;
-        this.newPacient.address = pacient.address;
-        this.newPacient.ubigeo = pacient.ubigeo;
-    }
-
-    setEmrFields(emr: Emr){
-        this.emr.employeeCode = emr.employeeCode;
-        this.emr.code = emr.code;
-        this.emr.stateId = emr.stateId;
-        this.emr.stateName = emr.stateName;
-        this.emr.createdAt = emr.createdAt;
-        this.emr.updatedAt = emr.updatedAt;
-        this.emr.healthPlanId = emr.healthPlanId; 
-        this.emr.healthPlanName = emr.healthPlanName;
-    }
+    
 }

@@ -1,34 +1,48 @@
-import {Component, Output, EventEmitter} from '@angular/core';
+import {Component, Output, EventEmitter, OnInit} from '@angular/core';
+
 import {Pacient} from '../../../models/pacient';
+import {PacientService} from '../../../services/pacient.service';
 
 @Component({
   selector: 'find-pacient',
-  template: require('./find-pacient.html')
+  styleUrls: ['../../../theme/sass/_disabled.scss'],
+  template: require('./find-pacient.html'),
+  providers: [PacientService]
 })
-export class FindPacientComponent {
+export class FindPacientComponent implements OnInit{
   pacient : Pacient;
-  @Output() pacient2Notify = new EventEmitter<Pacient>();
   pacientCode : number;
-  existPacient: boolean;
+  isActive: boolean;
   errorMessage: string;
-  
-  constructor() {
+  @Output() pacientNotify = new EventEmitter<Pacient>();
+
+  ngOnInit(){
     this.initilize();
   }
 
+  constructor (private pacientService: PacientService) {
+  }
+
   initilize(){
-      this.pacientCode = null;
-      this.existPacient = true;
-      this.errorMessage = null;
-      this.pacient = new Pacient();
+    this.isActive = false;
+    this.pacientCode = null;
+    this.errorMessage = null;
+    this.pacient = new Pacient();
   }
 
   findPacientByCode(){
-      this.pacient.code=this.pacientCode;
-      this.pacient2Notify.emit(this.pacient);
-
-
-    }    
+    this.isActive = true;
+    this.pacient = new Pacient();
+    this.pacientService.getPacientSummaryByCode(this.pacientCode)
+      .subscribe( (pacient : Pacient )=> {            
+        if(pacient != null){
+          this.pacient.setFieldsSummary(pacient);
+          this.pacientNotify.emit(this.pacient);  
+        }else{               
+          console.log("enviar mensaje que no existe");
+          //SE DEBE ENVIAR UNA MENSAJE Q NO EXISTE O TIENE Q IR AL RECEPCIONISTA
+        }
+      }, error => this.errorMessage = <any> error);
   }
 
 }

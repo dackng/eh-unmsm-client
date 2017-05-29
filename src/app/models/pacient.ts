@@ -97,4 +97,28 @@ export class Pacient {
     setFormattedDate(date : Date){
         this.formattedDate = moment(date).format("DD/MM/YYYY");
     }
+
+    setFieldsDetail(pacient: Pacient){
+        this.code = pacient.code;
+        this.names = pacient.names;
+        this.paternalSurname = pacient.paternalSurname;
+        this.maternalSurname = pacient.maternalSurname;
+        this.civilStateId = pacient.civilStateId;
+        this.civilStateName = pacient.civilStateName;
+        this.email =  pacient.email;
+        this.eapId = pacient.eapId;
+        this.eapName = pacient.eapName;
+        this.setFormattedDate(pacient.birthDate);
+        this.telephone = pacient.telephone;
+        this.gender = pacient.gender;
+        this.address = pacient.address;
+        this.ubigeo = pacient.ubigeo;
+    }
+
+    setFieldsSummary(pacient: Pacient){
+        this.code = pacient.code;
+        this.names = pacient.names;
+        this.paternalSurname = pacient.paternalSurname;
+        this.maternalSurname = pacient.maternalSurname;
+    }
 }

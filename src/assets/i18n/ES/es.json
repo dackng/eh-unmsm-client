@@ -4,9 +4,15 @@
     "messages": {
       "required": "Requerido*"
     },
+    "subtitles":{
+      "options": "OPCIONES"
+    },
     "buttons": {
       "register": "Registrar",
-      "cancel": "Cancelar"
+      "cancel": "Cancelar",
+      "next": "Siguiente",
+      "before": "Anterior",
+      "save_changes": "Guardar cambios"
     },
     "menu": {
       "dashboard": "Dashboard",
@@ -46,6 +52,37 @@
         "name": "Tipo de Paciente",
         "student": "Estudiante",
         "external": "Externo"
+      }
+  },
+  "general_medicine_test": {
+      "weight": "Peso (Kg)",
+      "stature": "Talla (Cm)",
+      "pulse": "Pulso",
+      "lmp": "FUM",
+      "blood_presure":{
+        "name":"PRESIÓN ARTERIAL",
+        "systolic": "Siastólica (Mm/Hg)",
+        "diastolic": "Diastólica (Mm/Hg)"
+      },
+      "visual_acuity": {
+        "name": "AGUDEZA VISUAL",
+        "right_eye": "Ojo derecho",
+        "left_eye": "Ojo izquierdo"
+      },
+      "triage": "TRIAJE",
+      "clinical_evaluation": "EVALUACIÓN CLÍNICA",
+      "symptom_table":{
+        "num": "N°",
+        "symptoms": "SINTOMAS",
+        "appointment": "FECHA DE CONSULTA",
+        "observation": "OBSERVACIÓN"
+      },
+      "symptom":{
+        "subtitle": "AGREGAR SINTOMA",
+        "symptom_type": "Tipo de sintoma",
+        "cie_10": "CIE 10",
+        "appointment": "Fecha de cita",
+        "observation": "Observación"
       }
   },
   "medical_test": {

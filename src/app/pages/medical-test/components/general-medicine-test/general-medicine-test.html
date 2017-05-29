@@ -8,7 +8,7 @@
       <form #registerGeneralMedicineTestForm="ngForm" (ngSubmit)="registerGeneralMedicineTest()">
         <div class="row">
           <div class="col-md-6">
-            <find-pacient (pacient2Notify)="recibiendo($event)"></find-pacient>
+            <find-pacient (pacientNotify)="receiveOutputExternal($event)"></find-pacient>
           </div>
           <div class="col-md-6">
             <!-- MEDICAL TEST PROCESS-->
@@ -24,58 +24,58 @@
           <div class="col-md-12 ">
             <div class="container-fluid">
               <tabs>
-                <tab [tabTitle]="'TRIAJE'" title="TRIAJE" [pageAddress]="pageAddressTab">
+                <tab translate [tabTitle]="'TRIAJE'" title="{{'general_medicine_test.triage'}}" [pageAddress]="pageAddressTab">
                   <div class="row">
                     <div class="col-md-4">
                       <div class="form-group">
-                        <label>Peso (Kg)</label>
-                        <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.names" 
-                          required name="names" ngControl="names" [disabled] ="existPacient">
+                        <label translate>{{'general_medicine_test.weight'}}</label>
+                        <input type="text" class="form-control disabled-field" [(ngModel)]="generalMedicineTest.weight" 
+                          required name="weight" ngControl="weight" [disabled] ="isPacientExisting">
                       </div>
                       <div class="form-group">
-                        <label>Talla (Cm)</label>
-                        <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.names" 
-                          required name="names" ngControl="names" [disabled] ="existPacient">
+                        <label translate>{{'general_medicine_test.stature'}}</label>
+                        <input type="text" class="form-control disabled-field" [(ngModel)]="generalMedicineTest.stature" 
+                          required name="stature" ngControl="stature" [disabled] ="isPacientExisting">
                       </div>
                       <div class="form-group">
-                        <label>Pulso</label>
-                        <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.names" 
-                          required name="names" ngControl="names" [disabled] ="existPacient">
+                        <label translate>{{'general_medicine_test.pulse'}}</label>
+                        <input type="text" class="form-control disabled-field" [(ngModel)]="generalMedicineTest.pulse" 
+                          required name="pulse" ngControl="pulse" [disabled] ="isPacientExisting">
                       </div>
                       <div class="form-group">
-                        <label>FUM</label>
-                        <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.names" 
-                          required name="names" ngControl="names" [disabled] ="existPacient">
+                        <label translate>{{'general_medicine_test.lmp'}}</label>
+                        <input type="text" class="form-control disabled-field" [(ngModel)]="generalMedicineTest.lmp" 
+                          required name="lmp" ngControl="lmp" [disabled] ="isPacientExisting">
                       </div>
                     </div>
                     <div class="col-md-4">
                       <!--BLOOD PRESSURE-->
-                      <ba-card title="PRESIÓN ARTERIAL" baCardClass="card card-primary">
+                      <ba-card translate title="{{'general_medicine_test.blood_presure.name'}}" baCardClass="card card-primary">
                         <div class="form-group">
-                          <label>Sistólica (Mm. Hg)</label>
-                          <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.names" 
-                                required name="names" ngControl="names" [disabled] ="existPacient">
+                          <label translate>{{'general_medicine_test.blood_presure.systolic'}}</label>
+                          <input type="text" class="form-control disabled-field" [(ngModel)]="generalMedicineTest.systolic" 
+                                required name="systolic" ngControl="systolic" [disabled] ="isPacientExisting">
                         </div>
                         <div class="form-group">
-                          <label>Diastólica (Mm. Hg)</label>
-                          <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.names" 
-                              required name="names" ngControl="names" [disabled] ="existPacient">
+                          <label translate>{{'general_medicine_test.blood_presure.diastolic'}}</label>
+                          <input type="text" class="form-control disabled-field" [(ngModel)]="generalMedicineTest.diastolic" 
+                              required name="diastolic" ngControl="diastolic" [disabled] ="isPacientExisting">
                         </div>
                       </ba-card>
                       <!--/BLOOD PRESSURE-->
                     </div>
                     <div class="col-md-4">
                       <!--VISUAL ACUITY-->
-                      <ba-card title="AGUDEZA VISUAL" baCardClass="card card-primary">
+                      <ba-card translate title="{{'general_medicine_test.visual_acuity.name'}}" baCardClass="card card-primary">
                         <div class="form-group">
-                          <label>Ojo derecho</label>
-                          <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.names" 
-                            required name="names" ngControl="names" [disabled] ="existPacient">
+                          <label translate>{{'general_medicine_test.visual_acuity.right_eye'}}</label>
+                          <input type="text" class="form-control disabled-field" [(ngModel)]="generalMedicineTest.rigthEye" 
+                            required name="rightEye" ngControl="rightEye" [disabled] ="isPacientExisting">
                         </div>
                         <div class="form-group">
-                          <label>Ojo izquierdo</label>
-                          <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.names" 
-                            required name="names" ngControl="names" [disabled] ="existPacient">
+                          <label translate>{{'general_medicine_test.visual_acuity.left_eye'}}</label>
+                          <input type="text" class="form-control disabled-field" [(ngModel)]="generalMedicineTest.leftEye" 
+                            required name="leftEye" ngControl="leftEye" [disabled] ="isPacientExisting">
                         </div>
                       </ba-card>
                       <!--/VISUAL ACUITY-->
@@ -86,7 +86,7 @@
                     <button type="button" (click)="initilize()" class="btn btn-info btn-xm">Siguiente</button>
                   </div>
                 </tab>
-                <tab tabTitle="EVALUACIÓN CLÍNICA" title ="EVALUACIÓN CLÍNICA" [pageAddress]="pageAddressTab">
+                <tab translate tabTitle="EVALUACIÓN CLÍNICA" title ="{{'general_medicine_test.clinical_evaluation'}}" [pageAddress]="pageAddressTab">
                   <div class="row text-xs-left">
                     <button type="button" (click)="showAddSymptomModal()" class="btn btn-info btn-xm">Agregar Sintoma</button>
                   </div> 
@@ -95,11 +95,11 @@
                     <table class="table table-hover">
                       <thead>
                         <tr class="black-muted-bg">
-                          <th class="table-id">N°</th>
-                          <th>SINTOMAS</th>
-                          <th>FECHA DE CONSULTA</th>
-                          <th>OBSERVACIÓN</th>
-                          <th>OPCIONES</th>
+                          <th class="table-id" translate>{{'general_medicine_test.symptom_table.num'}}</th>
+                          <th translate>{{'general_medicine_test.symptom_table.symptoms'}}</th>
+                          <th translate>{{'general_medicine_test.symptom_table.appointment'}}</th>
+                          <th translate>{{'general_medicine_test.symptom_table.observation'}}</th>
+                          <th translate>{{'general.subtitles.options'}}</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -125,7 +125,7 @@
                   </div>
                   <br/>
                   <div class="row text-xs-left">
-                    <button type="button" (click)="initilize()" class="btn btn-info btn-xm" [disabled]="existPacient">Anterior</button>
+                    <button type="button" (click)="initilize()" class="btn btn-info btn-xm" [disabled]="isPacientExisting" translate>{{'general.buttons.before'}}</button>
                   </div>
                   <!--/CLINICAL EVALUATION-->
                 </tab>
@@ -136,8 +136,8 @@
         <!-- /TRIAJE AND CLINICAL EVALUATION-->
         <div class="row">
           <div class="col-md-12 text-center">
-            <button type="submit" class="btn btn-primary btn-xm" [disabled]="existPacient">Registrar</button>&nbsp;&nbsp;
-            <button type="button" (click)="initilize()" class="btn btn-primary btn-xm" [disabled]="existPacient">Cancelar</button>
+            <button type="submit" class="btn btn-primary btn-xm" [disabled]="isPacientExisting" translate>{{'general.buttons.register'}}</button>&nbsp;&nbsp;
+            <button type="button" (click)="initilize()" class="btn btn-primary btn-xm" [disabled]="isPacientExisting" translate>{{'general.buttons.cancel'}}</button>
           </div>
         </div>
       </form>
@@ -153,37 +153,37 @@
           <button class="close" aria-label="Close" (click)="hideAddSymptomModal()">
             <span aria-hidden="true">&times;</span>
           </button>
-          <h4 class="modal-title">AGREGAR SINTOMA</h4>
+          <h4 translate class="modal-title">{{'general_medicine_test.symptom.subtitle'}}</h4>
         </div>
         <div class="modal-body">
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
-                <label>Tipo de sintoma</label>
-                <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.names" 
-                  required name="names" ngControl="names" [disabled] ="existPacient">
+                <label translate>{{'general_medicine_test.symptom.symptom_type'}}</label>
+                <input type="text" class="form-control disabled-field" [(ngModel)]="symptom.typeId" 
+                  required name="typeId" ngControl="typeId" [disabled] ="isPacientExisting">
               </div>
               <div class="form-group">
-                <label>CIE 10</label>
+                <label translate>{{'general_medicine_test.symptom.cie_10'}}</label>
                 <select class="form-control">
                   <option>Seleccione</option>
                 </select>
               </div>
               <div class="form-group">
-                <label>Fecha de cita</label>
-                <input type="text" class="form-control disabled-field" [(ngModel)]="pacient.paternalSurname"
-                      required name="paternalSurname" ngControl="paternalSurname" [disabled]="existPacient">
+                <label translate>{{'general_medicine_test.symptom.appointment'}}</label>
+                <input type="text" class="form-control disabled-field" [(ngModel)]="symptom.appointment"
+                      required name="appointment" ngControl="appointment" [disabled]="isPacientExisting">
               </div>
               <div class="form-group">
-                <label>Observación</label>
-                <input type="text" class="form-control disabled-field"[(ngModel)]="pacient.maternalSurname"
-                      required name="maternalSurname" ngControl="maternalSurname" [disabled]="existPacient">
+                <label translate>{{'general_medicine_test.symptom.observation'}}</label>
+                <input type="text" class="form-control disabled-field"[(ngModel)]="symptom.observation"
+                      required name="observation" ngControl="observation" [disabled]="isPacientExisting">
               </div>
             </div>
           </div>
         </div>
-        <div class="modal-footer">
-          <button class="btn btn-primary confirm-btn" (click)="hideAddSymptomModal()">Guardar Cambios</button>
+        <div class="modal-footer text-center">
+          <button class="btn btn-primary btn-xm" (click)="hideAddSymptomModal()" translate>{{'general.buttons.save_changes'}}</button>
         </div>
       </div>
     </div>

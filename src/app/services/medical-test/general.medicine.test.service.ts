@@ -1,34 +1,29 @@
 import {Injectable} from "@angular/core";
-import {Http, Headers, Response, RequestOptions} from '@angular/http';
+import {Http, Headers, Response} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
-import 'rxjs/Rx' 
+import 'rxjs/Rx'
 
-import {Pacient} from '../models/pacient';
+import {GeneralMedicineTest} from '../../models/medical-test/general.medicine.test';
 
 @Injectable()
-export class PacientService {
+export class GeneralMedicineTestService {
   
   URL: string;                                              
 
   constructor (private http: Http) {
-    //this.URL = 'http://192.168.1.42:8014/api';
-    this.URL = 'https://ehu-pacient-service.herokuapp.com/api';
+    //this.URL = 'http://192.168.1.42:8016/api';
+    this.URL = 'https://ehu-general-medicine-test-service.herokuapp.com/api';
   }
 
-  getPacientDetailByCode(code: number) : Observable<Pacient>{
-    return this.http.get(this.URL +'/find-detail/' + code)
+  getGeneralMedicineTestByHealthPlanIdAndPacientCode(healthPlanId: number, pacientCode: number)
+     : Observable<GeneralMedicineTest>{
+    return this.http.get(this.URL +'/find/' + healthPlanId + '/' + pacientCode)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
-  getPacientSummaryByCode(code: number) : Observable<Pacient>{
-    return this.http.get(this.URL +'/find-summary/' + code)
-      .map(this.extractData)
-      .catch(this.handleError);
-  }
-
-  registerPacient(pacient: Pacient) {
-    let bodyString = JSON.stringify(pacient);
+  registerGeneralMedicineTest(generalMedicineTest: GeneralMedicineTest) {
+    let bodyString = JSON.stringify(generalMedicineTest);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     return this.http.post(this.URL + '/register', bodyString, {headers:headers})
       .map(this.extractData)
