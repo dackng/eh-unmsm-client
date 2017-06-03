@@ -43,9 +43,12 @@ export class GeneralMedicineTestComponent implements OnInit{
     constructor(private _logger: Logger, private _basicTablesService: BasicTablesService, private _catalogService: CatalogService
         , private _emrService: EmrService, private _generalMedicineTestService: GeneralMedicineTestService) {
         this.peopleTableData = _basicTablesService.peopleTableData;
+        this._logger.warn("Constructor()");
+        this._logger.warn("===== Calling method CATALOG API:  getCurrentHealthPlan() =====");
         this._catalogService.getCurrentHealthPlan()//loading the current health plan
             .subscribe( (catalog : Catalog ) => {
                 this.currentHealthPlan = new Catalog (catalog.secondaryId, catalog.name);
+                this._logger.warn("OUTPUT=> currentHealthPlan : " + JSON.stringify(this.currentHealthPlan));
         }, error => this.errorMessage = <any> error);
     }
 
@@ -59,22 +62,29 @@ export class GeneralMedicineTestComponent implements OnInit{
     }
 
     receiveOutputExternal(patient: Patient){
+        this._logger.warn("===== Calling EMR API: getEmrByHealthPlanIdAndPatientCode(" + this.currentHealthPlan.secondaryId 
+                    + ", " + patient.code + ") =====");
         this._emrService.getEmrByHealthPlanIdAndPatientCode(this.currentHealthPlan.secondaryId, patient.code)
             .subscribe( (emr: Emr) => {
                 if (emr != null){
+                    this._logger.warn("EMR already registered");
+                    this._logger.warn("===== Calling GeneralMedicineTest API: getGeneralMedicineTestByHealthPlanIdAndPatientCode("
+                            + this.currentHealthPlan.secondaryId + ", " + patient.code + ") =====");
                     this._generalMedicineTestService
                         .getGeneralMedicineTestByHealthPlanIdAndPatientCode(emr.healthPlanId, emr.patientCode)
                         .subscribe( (generalMedicineTest: GeneralMedicineTest) => {
                             if(generalMedicineTest != null){
+                                this._logger.warn("GeneralMedicineTest already registered");
                                 this.generalMedicineTest.setFieldsDetail(generalMedicineTest);
                             }else{
+                                this._logger.warn("GeneralMedicineTest is not registered yet");
                                 this.generalMedicineTest = new GeneralMedicineTest();
                                 this.generalMedicineTest.emrHealthPlanId = this.currentHealthPlan.secondaryId;
                                 this.generalMedicineTest.emrPatientCode = patient.code;
                             }
                         }, error => this.errorMessage = <any> error);                        
                 }else{
-                    //enviar un mensaje que tiene que solicitar la activacion de emr
+                    this._logger.warn("EMR doesn't be registered yet, should register EMR for this patient");
                 }
             }, error => this.errorMessage = <any> error);   
     }

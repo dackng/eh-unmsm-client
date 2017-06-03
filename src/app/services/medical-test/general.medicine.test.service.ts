@@ -12,7 +12,7 @@ export class GeneralMedicineTestService {
 
   constructor (private http: Http) {
     //this.URL = 'http://192.168.1.42:8016/api';
-    this.URL = 'https://ehu-general-medicine-test-service.herokuapp.com/api';
+    this.URL = 'https://ehu-gen-med-test-service.herokuapp.com/api';
   }
 
   getGeneralMedicineTestByHealthPlanIdAndPatientCode(healthPlanId: number, patientCode: number)

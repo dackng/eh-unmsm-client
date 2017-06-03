@@ -1,4 +1,5 @@
 import {Component, Output, EventEmitter, OnInit} from '@angular/core';
+import { Logger } from "angular2-logger/core";
 
 import {Patient} from '../../../models/patient';
 import {PatientService} from '../../../services/patient.service';
@@ -7,7 +8,7 @@ import {PatientService} from '../../../services/patient.service';
   selector: 'find-patient',
   styleUrls: ['../../../theme/sass/_disabled.scss'],
   template: require('./find-patient.html'),
-  providers: [PatientService]
+  providers: [Logger, PatientService]
 })
 export class FindPatientComponent implements OnInit{
   patient : Patient;
@@ -20,7 +21,7 @@ export class FindPatientComponent implements OnInit{
     this.initilize();
   }
 
-  constructor (private patientService: PatientService) {
+  constructor (private _logger: Logger, private patientService: PatientService) {
   }
 
   initilize(){
@@ -33,14 +34,15 @@ export class FindPatientComponent implements OnInit{
   findPatientByCode(){
     this.isActive = true;
     this.patient = new Patient();
+    this._logger.warn("===== Calling method PATIENT API:  getPatientSummaryByCode("+ this.patientCode +") =====");
     this.patientService.getPatientSummaryByCode(this.patientCode)
       .subscribe( (patient : Patient )=> {            
         if(patient != null){
           this.patient.setFieldsSummary(patient);
+          this._logger.warn("OUTPUT => Patient: " + JSON.stringify(this.patient));
           this.patientNotify.emit(this.patient);  
         }else{               
-          console.log("enviar mensaje que no existe");
-          //SE DEBE ENVIAR UNA MENSAJE Q NO EXISTE O TIENE Q IR AL RECEPCIONISTA
+          this._logger.warn("Patient doesn't exist or should go to receptionist");
         }
       }, error => this.errorMessage = <any> error);
   }

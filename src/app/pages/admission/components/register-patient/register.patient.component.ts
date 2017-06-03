@@ -80,7 +80,7 @@ export class RegisterPatientComponent implements OnInit{
                     this.newPatient.addUbigeoItems();
                     this.isGenderRadioDisabled = this.newPatient.isMale();
                 }else{
-                    this._logger.warn("Patient doesn't be registered yet");
+                    this._logger.warn("Patient is not registered yet");
                     this.isEmrConfirmationMessage = true;
                     this.isPatientExisting = false;
                     this.emr.patientCode = this.patientCode;
