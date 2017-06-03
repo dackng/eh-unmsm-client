@@ -27,10 +27,10 @@ export const PAGES_MENU = [
         },
         children: [
           {
-            path: 'register-pacient',
+            path: 'register-patient',
             data: {
               menu: {
-                title: 'register_pacient.option',
+                title: 'register_patient.option',
               }
             }
           }

@@ -15,9 +15,9 @@ export class PsychologicalTestService {
     this.URL = 'https://ehu-psychological-test-service.herokuapp.com/api';
   }
 
-  getPsychologicalTestByHealthPlanIdAndPacientCode(healthPlanId: number, pacientCode: number)
+  getPsychologicalTestByHealthPlanIdAndPatientCode(healthPlanId: number, patientCode: number)
      : Observable<PsychologicalTest>{
-    return this.http.get(this.URL +'/find/' + healthPlanId + '/' + pacientCode)
+    return this.http.get(this.URL +'/find/' + healthPlanId + '/' + patientCode)
       .map(this.extractData)
       .catch(this.handleError);
   }

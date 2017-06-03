@@ -3,32 +3,32 @@ import {Http, Headers, Response, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/Rx' 
 
-import {Pacient} from '../models/pacient';
+import {Patient} from '../models/patient';
 
 @Injectable()
-export class PacientService {
+export class PatientService {
   
   URL: string;                                              
 
   constructor (private http: Http) {
     //this.URL = 'http://192.168.1.42:8014/api';
-    this.URL = 'https://ehu-pacient-service.herokuapp.com/api';
+    this.URL = 'https://ehu-patient-service.herokuapp.com/api';
   }
 
-  getPacientDetailByCode(code: number) : Observable<Pacient>{
+  getPatientDetailByCode(code: number) : Observable<Patient>{
     return this.http.get(this.URL +'/find-detail/' + code)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
-  getPacientSummaryByCode(code: number) : Observable<Pacient>{
+  getPatientSummaryByCode(code: number) : Observable<Patient>{
     return this.http.get(this.URL +'/find-summary/' + code)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
-  registerPacient(pacient: Pacient) {
-    let bodyString = JSON.stringify(pacient);
+  registerPatient(patient: Patient) {
+    let bodyString = JSON.stringify(patient);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     return this.http.post(this.URL + '/register', bodyString, {headers:headers})
       .map(this.extractData)
@@ -41,6 +41,6 @@ export class PacientService {
   }
 
   private handleError() {//if there is error http 404 "Not found" then set null
-      return Observable.of(null);
+    return Observable.of(null);
   }
 }

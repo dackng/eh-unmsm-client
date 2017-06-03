@@ -12,11 +12,28 @@ export class GeneralMedicineTest {
     public leftEye: number;
     public updatedAt: Date;
     public isFinished: boolean;
-    public emrPacientCode: number;
+    public emrPatientCode: number;
     public emrHealthPlanId: number; 
     public symptomList: Array<Symptom>
     
     constructor () {
         this.symptomList = [];
+    }
+    
+    setFieldsDetail(generalMedicineTest: GeneralMedicineTest){
+        this.employeeCode = generalMedicineTest.employeeCode;
+        this.weight = generalMedicineTest.weight;
+        this.stature = generalMedicineTest.stature;
+        this.pulse = generalMedicineTest.pulse;
+        this.lmp = generalMedicineTest.lmp;
+        this.systolic = generalMedicineTest.systolic;
+        this.diastolic = generalMedicineTest.diastolic;
+        this.rightEye = generalMedicineTest.rightEye;
+        this.leftEye = generalMedicineTest.leftEye;
+        this.updatedAt = generalMedicineTest.updatedAt;
+        this.isFinished = generalMedicineTest.isFinished;
+        this.emrPatientCode = generalMedicineTest.emrPatientCode; 
+        this.emrHealthPlanId = generalMedicineTest.emrHealthPlanId;
+        this.symptomList = generalMedicineTest.symptomList;
     }
 }

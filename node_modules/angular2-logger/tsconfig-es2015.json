@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+
+    "emitDecoratorMetadata": true,
+
+    "removeComments": true,
+    "declaration": true,
+    "experimentalDecorators": true,
+    "module": "es2015",
+    "moduleResolution": "node",
+    "outDir": "./dist/esm",
+    "rootDir": ".",
+    "sourceMap": true,
+    "inlineSources": true,
+    "target": "es2015"
+  },
+  "files": [
+    "core.ts"
+  ],
+  "angularCompilerOptions": {
+    "strictMetadataEmit": true
+  }
+}

@@ -1,0 +1,32 @@
+<form #findPatientForm="ngForm" (ngSubmit)="findPatientByCode()">
+  <div class="form-group">
+    <label translate>{{'patient.code'}}</label>
+    <div class="input-group">
+      <input type="text" class="form-control disabled-field" [(ngModel)]="patientCode" 
+        [disabled]="isActive" name="patientCode" maxlength="8" [rangeLength]="[8,8]" required
+        ngControl="patientCode" onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+        #patientCodeField="ngModel"/>
+      <span class="input-group-addon addon-right  input-group-addon-primary">
+        <button  class="btn btn-primary" type="submit" 
+          [disabled]="patientCodeField.errors?.required || patientCodeField.errors?.rangeLength || isActive">
+          <i class="fa fa-search"></i>
+        </button>
+      </span>
+    </div>
+  </div>
+</form>
+<div class="form-group">
+  <label translate>{{'patient.names'}}</label>
+  <input type="text" class="form-control disabled-field" [(ngModel)]="patient.names" 
+    required name="names" ngControl="names" [disabled] ="true">
+</div>
+<div class="form-group">
+  <label translate>{{'patient.paternalSurname'}}</label>
+  <input type="text" class="form-control disabled-field" [(ngModel)]="patient.paternalSurname"
+        required name="paternalSurname" ngControl="paternalSurname" [disabled]="true">
+</div>
+<div class="form-group">
+  <label translate>{{'patient.maternalSurname'}}</label>
+  <input type="text" class="form-control disabled-field"[(ngModel)]="patient.maternalSurname"
+        required name="maternalSurname" ngControl="maternalSurname" [disabled]="true">
+</div>

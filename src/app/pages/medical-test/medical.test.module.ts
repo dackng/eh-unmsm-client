@@ -13,8 +13,8 @@ import { TabComponent } from '../components-shared/component-tabbed/tab/tab.comp
 import { TabsComponent } from '../components-shared/component-tabbed/tabs/tabs.component';
 import { MedicalTestProcessTableComponent } from '../components-shared/medical-test-process-table/medical.test.process.table.component';
 
-import { FindPacientComponent } from '../components-shared/find-pacient/find.pacient.component';
-import { SelectPacientTypeComponent } from '../components-shared/select-pacient-type/select.pacient.type.component';
+import { FindPatientComponent } from '../components-shared/find-patient/find.patient.component';
+import { SelectPatientTypeComponent } from '../components-shared/select-patient-type/select.patient.type.component';
 
 @NgModule({
   imports: [
@@ -32,8 +32,8 @@ import { SelectPacientTypeComponent } from '../components-shared/select-pacient-
     TabComponent,
     TabsComponent,
     MedicalTestProcessTableComponent,
-    FindPacientComponent,
-    SelectPacientTypeComponent
+    FindPatientComponent,
+    SelectPatientTypeComponent
   ]
 })
 export class MedicalTestModule {

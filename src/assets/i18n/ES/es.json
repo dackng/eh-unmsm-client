@@ -20,12 +20,12 @@
       "medical_test": "Examen Médico" 
     }
   },
-  "register_pacient": {
+  "register_patient": {
       "option": "Registrar Paciente",
       "title": "REGISTRAR PACIENTE",
-      "pacient": "Paciente"
+      "patient": "Paciente"
   },
-  "pacient": {
+  "patient": {
       "code": "Código",
       "names": "Nombres",
       "paternalSurname": "Apellido Paterno",

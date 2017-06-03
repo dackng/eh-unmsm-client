@@ -1,0 +1,28 @@
+{
+    "compilerOptions": {
+        "emitDecoratorMetadata": true,
+
+        "removeComments": true,
+        "declaration": true,
+        "experimentalDecorators": true,
+        "module": "amd",
+        "moduleResolution": "node",
+
+        "outFile": "./bundles/angular2-logger.amd.js",
+
+        "rootDir": "./src",
+        "sourceRoot": "./src",
+        "sourceMap": true,
+        "inlineSources": true,
+        "lib": ["es6", "dom"],
+        "target": "es5"
+    },
+    "files": [
+        "app/core/level.ts",
+        "app/core/logger.ts",
+        "app/core/providers.ts"
+    ],
+    "angularCompilerOptions": {
+        "strictMetadataEmit": true
+    }
+}

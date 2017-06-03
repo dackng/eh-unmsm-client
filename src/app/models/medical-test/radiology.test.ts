@@ -9,7 +9,7 @@ export class RadiologyTest {
 	public observation: string;
 	public updatedAt: Date;
 	public isFinished: boolean;
-	public emrPacientCode: number;
+	public emrPatientCode: number;
 	public emrHealthPlanId: number;
 	
     constructor () {}

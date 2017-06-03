@@ -1,6 +1,6 @@
 export class Emr {
 
-    public pacientCode: number;
+    public patientCode: number;
     public employeeCode: string;
     public code: string;
     public stateId: number;

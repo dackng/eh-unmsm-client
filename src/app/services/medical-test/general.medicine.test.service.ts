@@ -15,9 +15,9 @@ export class GeneralMedicineTestService {
     this.URL = 'https://ehu-general-medicine-test-service.herokuapp.com/api';
   }
 
-  getGeneralMedicineTestByHealthPlanIdAndPacientCode(healthPlanId: number, pacientCode: number)
+  getGeneralMedicineTestByHealthPlanIdAndPatientCode(healthPlanId: number, patientCode: number)
      : Observable<GeneralMedicineTest>{
-    return this.http.get(this.URL +'/find/' + healthPlanId + '/' + pacientCode)
+    return this.http.get(this.URL +'/find/' + healthPlanId + '/' + patientCode)
       .map(this.extractData)
       .catch(this.handleError);
   }

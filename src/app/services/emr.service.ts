@@ -15,8 +15,8 @@ export class EmrService {
     this.URL = 'https://ehu-emr-service.herokuapp.com/api';
   }
 
-  getEmrByHealthPlanIdAndPacientCode(healthPlanId: number, pacientCode: number) : Observable<Emr>{
-    return this.http.get(this.URL +'/find/' + healthPlanId + '/' + pacientCode)
+  getEmrByHealthPlanIdAndPatientCode(healthPlanId: number, patientCode: number) : Observable<Emr>{
+    return this.http.get(this.URL +'/find/' + healthPlanId + '/' + patientCode)
       .map(this.extractData)
       .catch(this.handleError);
   }

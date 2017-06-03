@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var logger_1 = require("./logger");
+var level_1 = require("./level");
+exports.OFF_LOGGER_PROVIDERS = [{ provide: logger_1.Options, useValue: { level: level_1.Level.OFF } }, logger_1.Logger];
+exports.ERROR_LOGGER_PROVIDERS = [{ provide: logger_1.Options, useValue: { level: level_1.Level.ERROR } }, logger_1.Logger];
+exports.WARN_LOGGER_PROVIDERS = [{ provide: logger_1.Options, useValue: { level: level_1.Level.WARN } }, logger_1.Logger];
+exports.INFO_LOGGER_PROVIDERS = [{ provide: logger_1.Options, useValue: { level: level_1.Level.INFO } }, logger_1.Logger];
+exports.DEBUG_LOGGER_PROVIDERS = [{ provide: logger_1.Options, useValue: { level: level_1.Level.DEBUG } }, logger_1.Logger];
+exports.LOG_LOGGER_PROVIDERS = [{ provide: logger_1.Options, useValue: { level: level_1.Level.LOG } }, logger_1.Logger];
+//# sourceMappingURL=providers.js.map

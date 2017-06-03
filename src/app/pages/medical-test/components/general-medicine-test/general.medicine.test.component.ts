@@ -1,11 +1,14 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
+import { Logger } from "angular2-logger/core";
 
-import {Pacient} from '../../../../models/pacient';
+import {Patient} from '../../../../models/patient';
 import {Catalog} from '../../../../models/catalog';
+import {Emr} from '../../../../models/emr';
 import {GeneralMedicineTest} from '../../../../models/medical-test/general.medicine.test';
 import {Symptom} from '../../../../models/medical-test/symptom';
 import {GeneralMedicineTestService} from '../../../../services/medical-test/general.medicine.test.service';
+import {EmrService} from '../../../../services/emr.service';
 import {CatalogService} from '../../../../services/catalog.service';
 
 import {BasicTablesService} from './basicTables.service';
@@ -18,7 +21,7 @@ import { ModalDirective } from 'ng2-bootstrap';
                 '../../../../theme/sass/_basicTables.scss',
                 '../../../../theme/sass/_modals.scss'],
     templateUrl: './general-medicine-test.html',
-    providers: [GeneralMedicineTestService, CatalogService, BasicTablesService]
+    providers: [Logger, GeneralMedicineTestService, EmrService, CatalogService, BasicTablesService]
 })
 
 export class GeneralMedicineTestComponent implements OnInit{ 
@@ -26,8 +29,8 @@ export class GeneralMedicineTestComponent implements OnInit{
     generalMedicineTest: GeneralMedicineTest;
     symptom: Symptom;
     currentHealthPlan: Catalog;
-    pacientCode: number;
-    isPacientExisting: boolean;
+    patientCode: number;
+    isPatientExisting: boolean;
     errorMessage: string; 
     
     peopleTableData:Array<any>;//para la tabla de ssintomas
@@ -37,10 +40,10 @@ export class GeneralMedicineTestComponent implements OnInit{
         this.initilize();
     }
 
-    constructor(private _basicTablesService: BasicTablesService
-        , private catalogService: CatalogService) {
+    constructor(private _logger: Logger, private _basicTablesService: BasicTablesService, private _catalogService: CatalogService
+        , private _emrService: EmrService, private _generalMedicineTestService: GeneralMedicineTestService) {
         this.peopleTableData = _basicTablesService.peopleTableData;
-        this.catalogService.getCurrentHealthPlan()//loading the current health plan
+        this._catalogService.getCurrentHealthPlan()//loading the current health plan
             .subscribe( (catalog : Catalog ) => {
                 this.currentHealthPlan = new Catalog (catalog.secondaryId, catalog.name);
         }, error => this.errorMessage = <any> error);
@@ -55,10 +58,25 @@ export class GeneralMedicineTestComponent implements OnInit{
         this.addSymptomModal.hide();
     }
 
-    receiveOutputExternal(pacient: Pacient){
-        this.generalMedicineTest.emrPacientCode = pacient.code;
-        this.generalMedicineTest.emrHealthPlanId = this.currentHealthPlan.secondaryId;
-        console.log(this.generalMedicineTest.emrPacientCode);   
+    receiveOutputExternal(patient: Patient){
+        this._emrService.getEmrByHealthPlanIdAndPatientCode(this.currentHealthPlan.secondaryId, patient.code)
+            .subscribe( (emr: Emr) => {
+                if (emr != null){
+                    this._generalMedicineTestService
+                        .getGeneralMedicineTestByHealthPlanIdAndPatientCode(emr.healthPlanId, emr.patientCode)
+                        .subscribe( (generalMedicineTest: GeneralMedicineTest) => {
+                            if(generalMedicineTest != null){
+                                this.generalMedicineTest.setFieldsDetail(generalMedicineTest);
+                            }else{
+                                this.generalMedicineTest = new GeneralMedicineTest();
+                                this.generalMedicineTest.emrHealthPlanId = this.currentHealthPlan.secondaryId;
+                                this.generalMedicineTest.emrPatientCode = patient.code;
+                            }
+                        }, error => this.errorMessage = <any> error);                        
+                }else{
+                    //enviar un mensaje que tiene que solicitar la activacion de emr
+                }
+            }, error => this.errorMessage = <any> error);   
     }
 
     registerGeneralMedicineTest(){
@@ -66,8 +84,8 @@ export class GeneralMedicineTestComponent implements OnInit{
     }
 
     initilize(){
-        this.pacientCode = null;
-        this.isPacientExisting = true;
+        this.patientCode = null;
+        this.isPatientExisting = true;
         this.errorMessage = null;
         this.generalMedicineTest = new GeneralMedicineTest();
         this.symptom = new Symptom();

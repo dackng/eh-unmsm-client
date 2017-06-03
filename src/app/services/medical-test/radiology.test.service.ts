@@ -15,9 +15,9 @@ export class RadiologyTestService {
     this.URL = 'https://ehu-radiology-test-service.herokuapp.com/api';
   }
 
-  getRadiologyTestByHealthPlanIdAndPacientCode(healthPlanId: number, pacientCode: number)
+  getRadiologyTestByHealthPlanIdAndPatientCode(healthPlanId: number, patientCode: number)
      : Observable<RadiologyTest>{
-    return this.http.get(this.URL +'/find/' + healthPlanId + '/' + pacientCode)
+    return this.http.get(this.URL +'/find/' + healthPlanId + '/' + patientCode)
       .map(this.extractData)
       .catch(this.handleError);
   }

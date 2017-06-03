@@ -7,7 +7,7 @@ import { CustomFormsModule } from 'ng2-validation';
 import { routing } from './admission.routing';
 
 import { AdmissionComponent } from './admission.component';
-import { RegisterPacientComponent } from './components/register-pacient/register.pacient.component';
+import { RegisterPatientComponent } from './components/register-patient/register.patient.component';
 
 @NgModule({
   imports: [
@@ -20,7 +20,7 @@ import { RegisterPacientComponent } from './components/register-pacient/register
   ],
   declarations: [
     AdmissionComponent,
-    RegisterPacientComponent
+    RegisterPatientComponent
   ]
 })
 export class AdmissionModule {

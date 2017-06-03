@@ -2,7 +2,7 @@ import {Ubigeo} from './ubigeo';
 import {Catalog} from './catalog';
 import * as moment from 'moment';
 
-export class Pacient {
+export class Patient {
 
     public code: number;
     public names: string;
@@ -98,27 +98,27 @@ export class Pacient {
         this.formattedDate = moment(date).format("DD/MM/YYYY");
     }
 
-    setFieldsDetail(pacient: Pacient){
-        this.code = pacient.code;
-        this.names = pacient.names;
-        this.paternalSurname = pacient.paternalSurname;
-        this.maternalSurname = pacient.maternalSurname;
-        this.civilStateId = pacient.civilStateId;
-        this.civilStateName = pacient.civilStateName;
-        this.email =  pacient.email;
-        this.eapId = pacient.eapId;
-        this.eapName = pacient.eapName;
-        this.setFormattedDate(pacient.birthDate);
-        this.telephone = pacient.telephone;
-        this.gender = pacient.gender;
-        this.address = pacient.address;
-        this.ubigeo = pacient.ubigeo;
+    setFieldsDetail(patient: Patient){
+        this.code = patient.code;
+        this.names = patient.names;
+        this.paternalSurname = patient.paternalSurname;
+        this.maternalSurname = patient.maternalSurname;
+        this.civilStateId = patient.civilStateId;
+        this.civilStateName = patient.civilStateName;
+        this.email =  patient.email;
+        this.eapId = patient.eapId;
+        this.eapName = patient.eapName;
+        this.setFormattedDate(patient.birthDate);
+        this.telephone = patient.telephone;
+        this.gender = patient.gender;
+        this.address = patient.address;
+        this.ubigeo = patient.ubigeo;
     }
 
-    setFieldsSummary(pacient: Pacient){
-        this.code = pacient.code;
-        this.names = pacient.names;
-        this.paternalSurname = pacient.paternalSurname;
-        this.maternalSurname = pacient.maternalSurname;
+    setFieldsSummary(patient: Patient){
+        this.code = patient.code;
+        this.names = patient.names;
+        this.paternalSurname = patient.paternalSurname;
+        this.maternalSurname = patient.maternalSurname;
     }
 }

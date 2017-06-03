@@ -15,9 +15,9 @@ export class LaboratoryTestService {
     this.URL = 'https://ehu-laboratory-test-service.herokuapp.com/api';
   }
 
-  getLaboratoryTestByHealthPlanIdAndPacientCode(healthPlanId: number, pacientCode: number)
+  getLaboratoryTestByHealthPlanIdAndPatientCode(healthPlanId: number, patientCode: number)
      : Observable<LaboratoryTest>{
-    return this.http.get(this.URL +'/find/' + healthPlanId + '/' + pacientCode)
+    return this.http.get(this.URL +'/find/' + healthPlanId + '/' + patientCode)
       .map(this.extractData)
       .catch(this.handleError);
   }
