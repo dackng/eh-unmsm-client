@@ -56,7 +56,7 @@
   },
   "general_medicine_test": {
       "weight": "Peso (Kg)",
-      "stature": "Talla (Cm)",
+      "stature": "Talla (M)",
       "pulse": "Pulso",
       "lmp": "FUM",
       "blood_presure":{

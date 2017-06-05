@@ -30,22 +30,39 @@
                       <div class="form-group">
                         <label translate>{{'general_medicine_test.weight'}}</label>
                         <input type="text" class="form-control disabled-field" [(ngModel)]="generalMedicineTest.weight" 
-                          required name="weight" ngControl="weight" [disabled] ="isPatientExisting">
+                          required name="weight" ngControl="weight" [disabled] ="isGeneralMedicineTestRegistered"   
+                          #weight="ngModel" pattern="^(?!\.?$)\d{0,3}(\.\d{0,2})?$"/>
+                        <small *ngIf="(weight?.errors?.pattern || weight.errors?.required) && isFieldDisabled " 
+                            class="text-danger" translate>{{'general.messages.required'}}</small>
                       </div>
                       <div class="form-group">
                         <label translate>{{'general_medicine_test.stature'}}</label>
                         <input type="text" class="form-control disabled-field" [(ngModel)]="generalMedicineTest.stature" 
-                          required name="stature" ngControl="stature" [disabled] ="isPatientExisting">
+                          required name="stature" ngControl="stature" [disabled] ="isGeneralMedicineTestRegistered"
+                          #stature="ngModel" pattern="^(?!\.?$)\d{0,1}(\.\d{0,2})?$"/>
+                        <small *ngIf="(stature?.errors?.pattern || stature.errors?.required) && isFieldDisabled" 
+                            class="text-danger" translate>{{'general.messages.required'}}</small>
                       </div>
                       <div class="form-group">
                         <label translate>{{'general_medicine_test.pulse'}}</label>
                         <input type="text" class="form-control disabled-field" [(ngModel)]="generalMedicineTest.pulse" 
-                          required name="pulse" ngControl="pulse" [disabled] ="isPatientExisting">
+                          required name="pulse" ngControl="pulse" [disabled] ="isGeneralMedicineTestRegistered"
+                          onkeypress='return event.charCode >= 48 && event.charCode <= 57' #pulse="ngModel" maxlength="4">
+                        <small *ngIf="pulse.errors?.required && isFieldDisabled" 
+                          class="text-danger" translate>{{'general.messages.required'}}</small>
                       </div>
                       <div class="form-group">
                         <label translate>{{'general_medicine_test.lmp'}}</label>
-                        <input type="text" class="form-control disabled-field" [(ngModel)]="generalMedicineTest.lmp" 
-                          required name="lmp" ngControl="lmp" [disabled] ="isPatientExisting">
+                        <div *ngIf="!isGeneralMedicineTestRegistered">
+                          <input type="date" class="form-control disabled-field" [(ngModel)]="generalMedicineTest.lmp" 
+                            required name="lmp" ngControl="lmp" [disabled] ="isGeneralMedicineTestRegistered" 
+                            #lmp="ngModel">
+                          <small *ngIf="lmp.errors?.required && isFieldDisabled" 
+                            class="text-danger" translate>{{'general.messages.required'}}</small>
+                        </div>
+                        <input *ngIf="isGeneralMedicineTestRegistered" type="text" class="form-control disabled-field" 
+                          [(ngModel)]="generalMedicineTest.formattedDate" [disabled]="isGeneralMedicineTestRegistered"
+                          [ngModelOptions]="{standalone: true}"/>
                       </div>
                     </div>
                     <div class="col-md-4">
@@ -54,12 +71,18 @@
                         <div class="form-group">
                           <label translate>{{'general_medicine_test.blood_presure.systolic'}}</label>
                           <input type="text" class="form-control disabled-field" [(ngModel)]="generalMedicineTest.systolic" 
-                                required name="systolic" ngControl="systolic" [disabled] ="isPatientExisting">
+                              required name="systolic" ngControl="systolic" [disabled] ="isGeneralMedicineTestRegistered"
+                              onkeypress='return event.charCode >= 48 && event.charCode <= 57' #systolic="ngModel" maxlength="4">
+                          <small *ngIf="systolic.errors?.required && isFieldDisabled" 
+                            class="text-danger" translate>{{'general.messages.required'}}</small>
                         </div>
                         <div class="form-group">
                           <label translate>{{'general_medicine_test.blood_presure.diastolic'}}</label>
                           <input type="text" class="form-control disabled-field" [(ngModel)]="generalMedicineTest.diastolic" 
-                              required name="diastolic" ngControl="diastolic" [disabled] ="isPatientExisting">
+                            required name="diastolic" ngControl="diastolic" [disabled] ="isGeneralMedicineTestRegistered"
+                            onkeypress='return event.charCode >= 48 && event.charCode <= 57' #diastolic="ngModel" maxlength="4">
+                          <small *ngIf="diastolic.errors?.required && isFieldDisabled" 
+                            class="text-danger" translate>{{'general.messages.required'}}</small>
                         </div>
                       </ba-card>
                       <!--/BLOOD PRESSURE-->
@@ -70,12 +93,18 @@
                         <div class="form-group">
                           <label translate>{{'general_medicine_test.visual_acuity.right_eye'}}</label>
                           <input type="text" class="form-control disabled-field" [(ngModel)]="generalMedicineTest.rigthEye" 
-                            required name="rightEye" ngControl="rightEye" [disabled] ="isPatientExisting">
+                            required name="rightEye" ngControl="rightEye" [disabled] ="isGeneralMedicineTestRegistered"
+                            #rightEye="ngModel" pattern="^(?!\.?$)\d{0,3}(\.\d{0,2})?$"/>
+                          <small *ngIf="(rightEye?.errors?.pattern || rightEye.errors?.required) && isFieldDisabled " 
+                            class="text-danger" translate>{{'general.messages.required'}}</small>
                         </div>
                         <div class="form-group">
                           <label translate>{{'general_medicine_test.visual_acuity.left_eye'}}</label>
                           <input type="text" class="form-control disabled-field" [(ngModel)]="generalMedicineTest.leftEye" 
-                            required name="leftEye" ngControl="leftEye" [disabled] ="isPatientExisting">
+                            required name="leftEye" ngControl="leftEye" [disabled] ="isGeneralMedicineTestRegistered"
+                            #leftEye="ngModel" pattern="^(?!\.?$)\d{0,3}(\.\d{0,2})?$"/>
+                          <small *ngIf="(leftEye?.errors?.pattern || leftEye.errors?.required) && isFieldDisabled " 
+                            class="text-danger" translate>{{'general.messages.required'}}</small>
                         </div>
                       </ba-card>
                       <!--/VISUAL ACUITY-->
@@ -125,7 +154,7 @@
                   </div>
                   <br/>
                   <div class="row text-xs-left">
-                    <button type="button" (click)="initilize()" class="btn btn-info btn-xm" [disabled]="isPatientExisting" translate>{{'general.buttons.before'}}</button>
+                    <button type="button" (click)="initilize()" class="btn btn-info btn-xm" [disabled]="isGeneralMedicineTestRegistered" translate>{{'general.buttons.before'}}</button>
                   </div>
                   <!--/CLINICAL EVALUATION-->
                 </tab>
@@ -136,8 +165,8 @@
         <!-- /TRIAJE AND CLINICAL EVALUATION-->
         <div class="row">
           <div class="col-md-12 text-center">
-            <button type="submit" class="btn btn-primary btn-xm" [disabled]="isPatientExisting" translate>{{'general.buttons.register'}}</button>&nbsp;&nbsp;
-            <button type="button" (click)="initilize()" class="btn btn-primary btn-xm" [disabled]="isPatientExisting" translate>{{'general.buttons.cancel'}}</button>
+            <button type="submit" class="btn btn-primary btn-xm" [disabled]="isGeneralMedicineTestRegistered" translate>{{'general.buttons.register'}}</button>&nbsp;&nbsp;
+            <button type="button" (click)="initilize()" class="btn btn-primary btn-xm" [disabled]="isGeneralMedicineTestRegistered" translate>{{'general.buttons.cancel'}}</button>
           </div>
         </div>
       </form>
@@ -160,24 +189,33 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label translate>{{'general_medicine_test.symptom.symptom_type'}}</label>
-                <input type="text" class="form-control disabled-field" [(ngModel)]="symptom.typeId" 
-                  required name="typeId" ngControl="typeId" [disabled] ="isPatientExisting">
+                <select [(ngModel)]="symptom.typeId" class="form-control disabled-field" name="symptomType"
+                  required ngControl="symptomType" [disabled]="isGeneralMedicineTestRegistered" #symptomType="ngModel">
+                  <option *ngFor="let symptomType of symptomTypeItemList" [ngValue]="symptomType.secondaryId" 
+                    [selected]="symptomType.secondaryId == symptom.typeId"> {{symptomType.name}}</option>
+                </select>
+                <small *ngIf="symptomType.errors?.required && isFieldDisabled" 
+                  class="text-danger" translate>{{'general.messages.required'}}</small>
               </div>
               <div class="form-group">
                 <label translate>{{'general_medicine_test.symptom.cie_10'}}</label>
-                <select class="form-control">
-                  <option>Seleccione</option>
+                <select [(ngModel)]="symptom.cieId" class="form-control disabled-field" name="cie"
+                  required ngControl="cie" [disabled]="isGeneralMedicineTestRegistered" #cie="ngModel">
+                  <option *ngFor="let cie of cieItemList" [ngValue]="cie.secondaryId" 
+                    [selected]="cie.secondaryId == symptom.cieId"> {{cie.name}}</option>
                 </select>
+                <small *ngIf="cie.errors?.required && isFieldDisabled" 
+                  class="text-danger" translate>{{'general.messages.required'}}</small>
               </div>
               <div class="form-group">
                 <label translate>{{'general_medicine_test.symptom.appointment'}}</label>
                 <input type="text" class="form-control disabled-field" [(ngModel)]="symptom.appointment"
-                      required name="appointment" ngControl="appointment" [disabled]="isPatientExisting">
+                      required name="appointment" ngControl="appointment" [disabled]="isGeneralMedicineTestRegistered">
               </div>
               <div class="form-group">
                 <label translate>{{'general_medicine_test.symptom.observation'}}</label>
                 <input type="text" class="form-control disabled-field"[(ngModel)]="symptom.observation"
-                      required name="observation" ngControl="observation" [disabled]="isPatientExisting">
+                      required name="observation" ngControl="observation" [disabled]="isGeneralMedicineTestRegistered">
               </div>
             </div>
           </div>

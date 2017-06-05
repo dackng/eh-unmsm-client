@@ -30,9 +30,11 @@ export class GeneralMedicineTestComponent implements OnInit{
     symptom: Symptom;
     currentHealthPlan: Catalog;
     patientCode: number;
-    isPatientExisting: boolean;
-    errorMessage: string; 
-    
+    isGeneralMedicineTestRegistered: boolean;
+    isFieldDisabled: boolean;
+    errorMessage: string;
+    symptomTypeItemList: Array<Catalog>;
+    cieItemList: Array<Catalog>;
     peopleTableData:Array<any>;//para la tabla de ssintomas
     @ViewChild('addSymptomModal') addSymptomModal: ModalDirective;
 
@@ -44,16 +46,30 @@ export class GeneralMedicineTestComponent implements OnInit{
         , private _emrService: EmrService, private _generalMedicineTestService: GeneralMedicineTestService) {
         this.peopleTableData = _basicTablesService.peopleTableData;
         this._logger.warn("Constructor()");
+        let itemByDefault = new Catalog(null,"<SELECCIONE>");
         this._logger.warn("===== Calling method CATALOG API:  getCurrentHealthPlan() =====");
         this._catalogService.getCurrentHealthPlan()//loading the current health plan
             .subscribe( (catalog : Catalog ) => {
                 this.currentHealthPlan = new Catalog (catalog.secondaryId, catalog.name);
                 this._logger.warn("OUTPUT=> currentHealthPlan : " + JSON.stringify(this.currentHealthPlan));
         }, error => this.errorMessage = <any> error);
+        this._catalogService.getSymptomTypeList()
+            .subscribe( (symptomTypeItemList : Array<Catalog> ) => {
+                this.symptomTypeItemList = symptomTypeItemList;
+                this.symptomTypeItemList.push(itemByDefault);
+                this._logger.warn("OUTPUT=> symptomTypeItemList : " + JSON.stringify(this.symptomTypeItemList));
+        }, error => this.errorMessage = <any> error);
+        this._catalogService.getCIEList()
+            .subscribe( (cieItemList : Array<Catalog> ) => {
+                this.cieItemList = cieItemList;
+                this.cieItemList.push(itemByDefault);
+                this._logger.warn("OUTPUT=> cieItemList : " + JSON.stringify(this.cieItemList));
+        }, error => this.errorMessage = <any> error);
     }
 
     showAddSymptomModal(): void {
         this.addSymptomModal.config.backdrop = false;
+        this.symptom = new Symptom();
         this.addSymptomModal.show();
     }
 
@@ -62,6 +78,10 @@ export class GeneralMedicineTestComponent implements OnInit{
     }
 
     receiveOutputExternal(patient: Patient){
+        this.validateEMRAndGeneralMedicineTestExistence(patient);   
+    }
+
+    validateEMRAndGeneralMedicineTestExistence(patient: Patient){
         this._logger.warn("===== Calling EMR API: getEmrByHealthPlanIdAndPatientCode(" + this.currentHealthPlan.secondaryId 
                     + ", " + patient.code + ") =====");
         this._emrService.getEmrByHealthPlanIdAndPatientCode(this.currentHealthPlan.secondaryId, patient.code)
@@ -81,21 +101,25 @@ export class GeneralMedicineTestComponent implements OnInit{
                                 this.generalMedicineTest = new GeneralMedicineTest();
                                 this.generalMedicineTest.emrHealthPlanId = this.currentHealthPlan.secondaryId;
                                 this.generalMedicineTest.emrPatientCode = patient.code;
+                                this.isGeneralMedicineTestRegistered = false;
                             }
                         }, error => this.errorMessage = <any> error);                        
                 }else{
                     this._logger.warn("EMR doesn't be registered yet, should register EMR for this patient");
                 }
-            }, error => this.errorMessage = <any> error);   
+            }, error => this.errorMessage = <any> error);
     }
 
     registerGeneralMedicineTest(){
-         
+        this.isFieldDisabled = true;
+        this._logger.warn("===== Calling GeneralMedicineTest API: registerGeneralMedicineTest()");
+        this._logger.warn("INPUT => GeneralMedicineTest: "+JSON.stringify(this.generalMedicineTest)); 
     }
 
     initilize(){
         this.patientCode = null;
-        this.isPatientExisting = true;
+        this.isGeneralMedicineTestRegistered = true;
+        this.isFieldDisabled = false;
         this.errorMessage = null;
         this.generalMedicineTest = new GeneralMedicineTest();
         this.symptom = new Symptom();

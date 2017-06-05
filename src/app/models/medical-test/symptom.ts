@@ -8,5 +8,8 @@ export class Symptom {
 	public appointment: Date;
 	public observation: string; 
     
-    constructor () {}
+    constructor () {
+		this.typeId = null;
+		this.cieId = null;
+	}
 }

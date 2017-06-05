@@ -1,4 +1,5 @@
 import {Symptom} from './symptom';
+import * as moment from 'moment';
 export class GeneralMedicineTest {
 
     public employeeCode: string;
@@ -15,6 +16,8 @@ export class GeneralMedicineTest {
     public emrPatientCode: number;
     public emrHealthPlanId: number; 
     public symptomList: Array<Symptom>
+
+    public formattedDate : string;
     
     constructor () {
         this.symptomList = [];
@@ -25,7 +28,7 @@ export class GeneralMedicineTest {
         this.weight = generalMedicineTest.weight;
         this.stature = generalMedicineTest.stature;
         this.pulse = generalMedicineTest.pulse;
-        this.lmp = generalMedicineTest.lmp;
+        this.setFormattedDate(generalMedicineTest.lmp);
         this.systolic = generalMedicineTest.systolic;
         this.diastolic = generalMedicineTest.diastolic;
         this.rightEye = generalMedicineTest.rightEye;
@@ -36,4 +39,9 @@ export class GeneralMedicineTest {
         this.emrHealthPlanId = generalMedicineTest.emrHealthPlanId;
         this.symptomList = generalMedicineTest.symptomList;
     }
+
+    setFormattedDate(date : Date){
+        this.formattedDate = moment(date).format("DD/MM/YYYY");
+    }
+
 }

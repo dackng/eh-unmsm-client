@@ -51,6 +51,18 @@ export class CatalogService {
       .catch(this.handleError);
   }
 
+  getSymptomTypeList() : Observable<Array<Catalog>>{
+    return this.http.get(this.URL + '/list/symptom-type')
+      .map(this.extractDataArray)
+      .catch(this.handleError);
+  }
+
+  getCIEList() : Observable<Array<Catalog>>{
+    return this.http.get(this.URL + '/list/cie')
+      .map(this.extractDataArray)
+      .catch(this.handleError);
+  }
+
   private extractDataObject(res: Response) {
     let body = res.json();
     return body || { };
