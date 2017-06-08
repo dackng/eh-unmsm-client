@@ -21,7 +21,7 @@ export class FindPatientComponent implements OnInit{
     this.initilize();
   }
 
-  constructor (private _logger: Logger, private patientService: PatientService) {
+  constructor (private _logger: Logger, private _patientService: PatientService) {
   }
 
   initilize(){
@@ -35,7 +35,7 @@ export class FindPatientComponent implements OnInit{
     this.isActive = true;
     this.patient = new Patient();
     this._logger.warn("===== Calling method PATIENT API:  getPatientSummaryByCode("+ this.patientCode +") =====");
-    this.patientService.getPatientSummaryByCode(this.patientCode)
+    this._patientService.getPatientSummaryByCode(this.patientCode)
       .subscribe( (patient : Patient )=> {            
         if(patient != null){
           this.patient.setFieldsSummary(patient);

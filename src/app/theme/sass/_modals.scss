@@ -1,12 +1,14 @@
 @import "./conf/conf";
 
 .modal {
-  padding-top: 100px;
+  padding-top: 80px;
   background:rgba(0,0,0,0.5);
 
   .modal-content {
     color: $dropdown-text;
-
+    width: 900px;
+    margin: auto;
+  
     .modal-header {
       border: none;
     }

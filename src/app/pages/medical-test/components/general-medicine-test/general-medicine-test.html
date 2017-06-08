@@ -117,7 +117,7 @@
                 </tab>
                 <tab translate tabTitle="EVALUACIÓN CLÍNICA" title ="{{'general_medicine_test.clinical_evaluation'}}" [pageAddress]="pageAddressTab">
                   <div class="row text-xs-left">
-                    <button type="button" (click)="showAddSymptomModal()" class="btn btn-info btn-xm">Agregar Sintoma</button>
+                    <button [disabled]="isGeneralMedicineTestRegistered" type="button" (click)="showAddSymptomModal()" class="btn btn-info btn-xm">Agregar Sintoma</button>
                   </div> 
                   <br/>
                   <div class="horizontal-scroll">
@@ -132,25 +132,30 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr *ngFor="let item of peopleTableData">
-                          <td class="table-id center">{{ item.id }}</td>
-                          <td>{{ item.firstName }}</td>
-                          <td>{{ item.firstName }}</td>
-                          <td>{{ item.lastName }}</td>
-                          <td>
-                            <button type="button" class="btn btn-info btn-icon btn-xm">
-                              <i class="ion-search"></i>
-                            </button>
-                            <button type="button" class="btn btn-success btn-icon btn-xm">
-                              <i class="ion-edit"></i>
-                            </button>
-                            <button type="button" class="btn btn-danger btn-icon btn-xm">
-                              <i class="ion-trash-a"></i>
-                            </button>
-                          </td>
-                        </tr>
+                        <ng-container *ngIf="generalMedicineTest.symptomList != null">
+                          <tr *ngFor="let item of generalMedicineTest.symptomList">
+                            <td class="table-id center">1</td>
+                            <td>{{ item.typeName }}</td>
+                            <td>{{ item.appointment }}</td>
+                            <td>{{ item.observation }}</td>
+                            <td>
+                              <button type="button" class="btn btn-info btn-icon btn-xm">
+                                <i class="ion-search"></i>
+                              </button>
+                              <button type="button" class="btn btn-success btn-icon btn-xm">
+                                <i class="ion-edit"></i>
+                              </button>
+                              <button type="button" (click)="removeSymptom(item)" class="btn btn-danger btn-icon btn-xm">
+                                <i class="ion-trash-a"></i>
+                              </button>
+                            </td>
+                          </tr>
+                        </ng-container>
                       </tbody>
                     </table>
+                    <ng-container *ngIf="generalMedicineTest.symptomList.length == 0">
+                      <label class="row col-md-12 text-center" translate>{{'general.messages.no_symptoms'}}</label>
+                    </ng-container>
                   </div>
                   <br/>
                   <div class="row text-xs-left">
@@ -175,55 +180,71 @@
 
   <!-- ADD SYMPTOM MODAL-->
   <div bsModal #addSymptomModal="bs-modal" class="modal fade" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-       
-      <div class="modal-content">
-        <div class="modal-header">
-          <button class="close" aria-label="Close" (click)="hideAddSymptomModal()">
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <h4 translate class="modal-title">{{'general_medicine_test.symptom.subtitle'}}</h4>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="form-group">
-                <label translate>{{'general_medicine_test.symptom.symptom_type'}}</label>
-                <select [(ngModel)]="symptom.typeId" class="form-control disabled-field" name="symptomType"
-                  required ngControl="symptomType" [disabled]="isGeneralMedicineTestRegistered" #symptomType="ngModel">
-                  <option *ngFor="let symptomType of symptomTypeItemList" [ngValue]="symptomType.secondaryId" 
-                    [selected]="symptomType.secondaryId == symptom.typeId"> {{symptomType.name}}</option>
-                </select>
-                <small *ngIf="symptomType.errors?.required && isFieldDisabled" 
-                  class="text-danger" translate>{{'general.messages.required'}}</small>
+    <div class="modal-dialog modal-lg">
+      <form #addSymptomForm="ngForm" (ngSubmit)="addSymptom()">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button class="close" aria-label="Close" (click)="hideAddSymptomModal()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 translate class="modal-title">{{'general_medicine_test.symptom.subtitle'}}</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-7">
+                <div class="form-group">
+                  <label translate>{{'general_medicine_test.symptom.symptom_type'}}</label>
+                  <select [(ngModel)]="symptom.typeId" class="form-control disabled-field" name="symptomType"
+                    required ngControl="symptomType" [disabled]="isGeneralMedicineTestRegistered" #symptomType="ngModel">
+                    <option *ngFor="let symptomType of symptomTypeItemList" [ngValue]="symptomType.secondaryId" 
+                      [selected]="symptomType.secondaryId == symptom.typeId"> {{symptomType.name}}</option>
+                  </select>
+                  <small *ngIf="symptomType.errors?.required && isFieldDisabled" 
+                    class="text-danger" translate>{{'general.messages.required'}}</small>
+                </div>
               </div>
-              <div class="form-group">
-                <label translate>{{'general_medicine_test.symptom.cie_10'}}</label>
-                <select [(ngModel)]="symptom.cieId" class="form-control disabled-field" name="cie"
-                  required ngControl="cie" [disabled]="isGeneralMedicineTestRegistered" #cie="ngModel">
-                  <option *ngFor="let cie of cieItemList" [ngValue]="cie.secondaryId" 
-                    [selected]="cie.secondaryId == symptom.cieId"> {{cie.name}}</option>
-                </select>
-                <small *ngIf="cie.errors?.required && isFieldDisabled" 
-                  class="text-danger" translate>{{'general.messages.required'}}</small>
+              <div class="col-md-5">
+                <div class="form-group">
+                  <label translate>{{'general_medicine_test.symptom.appointment'}}</label> 
+                  <div *ngIf="!isGeneralMedicineTestRegistered">
+                    <input  class="form-control disabled-field" type="date" [(ngModel)]="symptom.appointment" 
+                      required name="appointment" ngControl="appointment" [disabled]="isGeneralMedicineTestRegistered" #appointment="ngModel">
+                    <small *ngIf="appointment.errors?.required && isFieldDisabled" 
+                      class="text-danger" translate>{{'general.messages.required'}}</small>
+                  </div>
+                  <input *ngIf="isGeneralMedicineTestRegistered" type="text" class="form-control disabled-field" 
+                    [(ngModel)]="symptom.appointment" [disabled]="isGeneralMedicineTestRegistered"
+                    [ngModelOptions]="{standalone: true}"/>
+                </div>
               </div>
-              <div class="form-group">
-                <label translate>{{'general_medicine_test.symptom.appointment'}}</label>
-                <input type="text" class="form-control disabled-field" [(ngModel)]="symptom.appointment"
-                      required name="appointment" ngControl="appointment" [disabled]="isGeneralMedicineTestRegistered">
-              </div>
-              <div class="form-group">
-                <label translate>{{'general_medicine_test.symptom.observation'}}</label>
-                <input type="text" class="form-control disabled-field"[(ngModel)]="symptom.observation"
-                      required name="observation" ngControl="observation" [disabled]="isGeneralMedicineTestRegistered">
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label translate>{{'general_medicine_test.symptom.cie_10'}}</label>
+                  <select [(ngModel)]="symptom.cieId" class="form-control disabled-field" name="cie"
+                    required ngControl="cie" [disabled]="isGeneralMedicineTestRegistered" #cie="ngModel">
+                    <option *ngFor="let cie of cieItemList" [ngValue]="cie.secondaryId" 
+                      [selected]="cie.secondaryId == symptom.cieId"> {{cie.name}}</option>
+                  </select>
+                  <small *ngIf="cie.errors?.required && isFieldDisabled" 
+                    class="text-danger" translate>{{'general.messages.required'}}</small>
+                </div>
+                <div class="form-group">
+                  <label translate>{{'general_medicine_test.symptom.observation'}}</label>
+                  <textarea class="form-control disabled-field" [(ngModel)]="symptom.observation"
+                     required name="observation" ngControl="observation" [disabled]="isGeneralMedicineTestRegistered"
+                     rows="10" cols="80">                             
+                  </textarea>
+                </div>
               </div>
             </div>
           </div>
+          <div class="modal-footer text-center">
+            <button type="submit" class="btn btn-primary btn-xm" translate>{{'general.buttons.save_changes'}}</button>
+          </div>
         </div>
-        <div class="modal-footer text-center">
-          <button class="btn btn-primary btn-xm" (click)="hideAddSymptomModal()" translate>{{'general.buttons.save_changes'}}</button>
-        </div>
-      </div>
+      </form>
     </div>
   </div>
   <!-- /ADD SYMPTOM MODAL-->

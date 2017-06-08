@@ -2,7 +2,8 @@
   "general": {
     "home": "Home",
     "messages": {
-      "required": "Requerido*"
+      "required": "Requerido*",
+      "no_symptoms":"No hay síntomas"
     },
     "subtitles":{
       "options": "OPCIONES"

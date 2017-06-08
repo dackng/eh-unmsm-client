@@ -67,14 +67,27 @@ export class GeneralMedicineTestComponent implements OnInit{
         }, error => this.errorMessage = <any> error);
     }
 
-    showAddSymptomModal(): void {
+    showAddSymptomModal(){
         this.addSymptomModal.config.backdrop = false;
         this.symptom = new Symptom();
         this.addSymptomModal.show();
     }
 
-    hideAddSymptomModal(): void {
+    hideAddSymptomModal(){
         this.addSymptomModal.hide();
+    }
+
+    addSymptom(){
+        this._findValueSelected();
+        this.generalMedicineTest.symptomList.push(this.symptom);
+        this.hideAddSymptomModal();
+    }
+
+    removeSymptom(symptom: Symptom){
+        let index: number = this.generalMedicineTest.symptomList.indexOf(symptom);
+        if (index !== -1) {
+            this.generalMedicineTest.symptomList.splice(index, 1);
+        }      
     }
 
     receiveOutputExternal(patient: Patient){
@@ -123,5 +136,14 @@ export class GeneralMedicineTestComponent implements OnInit{
         this.errorMessage = null;
         this.generalMedicineTest = new GeneralMedicineTest();
         this.symptom = new Symptom();
+    }
+
+    //Find value item selected
+    private _findValueSelected(){
+        for(let symptom of this.symptomTypeItemList){
+            if(symptom.secondaryId == this.symptom.typeId){
+                this.symptom.typeName = symptom.name;break;
+            }
+        }
     }
 }
