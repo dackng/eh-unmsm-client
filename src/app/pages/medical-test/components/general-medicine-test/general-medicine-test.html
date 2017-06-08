@@ -134,7 +134,7 @@
                       <tbody>
                         <ng-container *ngIf="generalMedicineTest.symptomList != null">
                           <tr *ngFor="let item of generalMedicineTest.symptomList">
-                            <td class="table-id center">1</td>
+                            <td class="table-id center">{{generalMedicineTest.symptomList.indexOf(item)}}</td>
                             <td>{{ item.typeName }}</td>
                             <td>{{ item.appointment }}</td>
                             <td>{{ item.observation }}</td>

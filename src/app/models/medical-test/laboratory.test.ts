@@ -12,4 +12,17 @@ export class LaboratoryTest {
 	public emrHealthPlanId: number; 
     
     constructor () {}
+
+	setFieldsDetail(laboratoryTest: LaboratoryTest){
+        this.employeeCode = laboratoryTest.employeeCode;
+        this.serologicalTestId = laboratoryTest.serologicalTestId;
+		this.hemoglobin = laboratoryTest.hemoglobin;
+		this.hemoglobinStateId = laboratoryTest.hemoglobinStateId;
+		this.bloodCountId = laboratoryTest.bloodCountId;
+		this.observation = laboratoryTest.observation;
+        this.updatedAt = laboratoryTest.updatedAt;
+        this.isFinished = laboratoryTest.isFinished;
+        this.emrPatientCode = laboratoryTest.emrPatientCode; 
+        this.emrHealthPlanId = laboratoryTest.emrHealthPlanId;
+    }
 }
