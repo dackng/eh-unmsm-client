@@ -26,6 +26,7 @@ export class LaboratoryTestComponent implements OnInit{
     currentHealthPlan: Catalog;
     patientCode: number;
     isLaboratoryTestRegistered: boolean;
+    symptomTypeItemList: Array<Catalog>;
     isFieldDisabled: boolean;
     errorMessage: string;
 

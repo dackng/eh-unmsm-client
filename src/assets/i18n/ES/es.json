@@ -86,6 +86,13 @@
         "observation": "Observación"
       }
   },
+  "laboratory_test":{
+      "subtitle": "REGISTRO DE LABORATORIO",
+      "serological_test": "Examen serológico",
+      "hemoglobin": "Hemoglobina",
+      "blood_count": "Hemograma",      
+      "observation": "Observación"
+  },
   "medical_test": {
       "option": "Examen de Medicina General",
       "title": "REGISTRAR PACIENTE",
