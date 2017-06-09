@@ -133,8 +133,8 @@
                       </thead>
                       <tbody>
                         <ng-container *ngIf="generalMedicineTest.symptomList != null">
-                          <tr *ngFor="let item of generalMedicineTest.symptomList">
-                            <td class="table-id center">{{generalMedicineTest.symptomList.indexOf(item)}}</td>
+                          <tr *ngFor="let item of generalMedicineTest.symptomList; let i=index">
+                            <td class="table-id center">{{ i+1 }}</td>
                             <td>{{ item.typeName }}</td>
                             <td>{{ item.appointment }}</td>
                             <td>{{ item.observation }}</td>
@@ -181,7 +181,7 @@
   <!-- ADD SYMPTOM MODAL-->
   <div bsModal #addSymptomModal="bs-modal" class="modal fade" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-      <form #addSymptomForm="ngForm" (ngSubmit)="addSymptom()">
+      <form #addSymptomForm="ngForm" (ngSubmit)="addSymptom(addSymptomForm.form.valid)">
         <div class="modal-content">
           <div class="modal-header">
             <button class="close" aria-label="Close" (click)="hideAddSymptomModal()">
@@ -199,7 +199,7 @@
                     <option *ngFor="let symptomType of symptomTypeItemList" [ngValue]="symptomType.secondaryId" 
                       [selected]="symptomType.secondaryId == symptom.typeId"> {{symptomType.name}}</option>
                   </select>
-                  <small *ngIf="symptomType.errors?.required && isFieldDisabled" 
+                  <small *ngIf="symptomType.errors?.required && isModalInvalidated" 
                     class="text-danger" translate>{{'general.messages.required'}}</small>
                 </div>
               </div>
@@ -209,7 +209,7 @@
                   <div *ngIf="!isGeneralMedicineTestRegistered">
                     <input  class="form-control disabled-field" type="date" [(ngModel)]="symptom.appointment" 
                       required name="appointment" ngControl="appointment" [disabled]="isGeneralMedicineTestRegistered" #appointment="ngModel">
-                    <small *ngIf="appointment.errors?.required && isFieldDisabled" 
+                    <small *ngIf="appointment.errors?.required && isModalInvalidated" 
                       class="text-danger" translate>{{'general.messages.required'}}</small>
                   </div>
                   <input *ngIf="isGeneralMedicineTestRegistered" type="text" class="form-control disabled-field" 
@@ -227,13 +227,13 @@
                     <option *ngFor="let cie of cieItemList" [ngValue]="cie.secondaryId" 
                       [selected]="cie.secondaryId == symptom.cieId"> {{cie.name}}</option>
                   </select>
-                  <small *ngIf="cie.errors?.required && isFieldDisabled" 
+                  <small *ngIf="cie.errors?.required && isModalInvalidated" 
                     class="text-danger" translate>{{'general.messages.required'}}</small>
                 </div>
                 <div class="form-group">
                   <label translate>{{'general_medicine_test.symptom.observation'}}</label>
                   <textarea class="form-control disabled-field" [(ngModel)]="symptom.observation"
-                     required name="observation" ngControl="observation" [disabled]="isGeneralMedicineTestRegistered"
+                     name="observation" ngControl="observation" [disabled]="isGeneralMedicineTestRegistered"
                      rows="10" cols="80">                             
                   </textarea>
                 </div>

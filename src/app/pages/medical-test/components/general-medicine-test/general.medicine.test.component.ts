@@ -32,6 +32,7 @@ export class GeneralMedicineTestComponent implements OnInit{
     patientCode: number;
     isGeneralMedicineTestRegistered: boolean;
     isFieldDisabled: boolean;
+    isModalInvalidated: boolean;
     errorMessage: string;
     symptomTypeItemList: Array<Catalog>;
     cieItemList: Array<Catalog>;
@@ -69,6 +70,7 @@ export class GeneralMedicineTestComponent implements OnInit{
 
     showAddSymptomModal(){
         this.addSymptomModal.config.backdrop = false;
+        this.isModalInvalidated = false;
         this.symptom = new Symptom();
         this.addSymptomModal.show();
     }
@@ -77,10 +79,14 @@ export class GeneralMedicineTestComponent implements OnInit{
         this.addSymptomModal.hide();
     }
 
-    addSymptom(){
-        this._findValueSelected();
-        this.generalMedicineTest.symptomList.push(this.symptom);
-        this.hideAddSymptomModal();
+    addSymptom(isFormValided : boolean){
+        this.isModalInvalidated = true;
+        if(isFormValided){
+            this._findValueSelected();
+            this.generalMedicineTest.symptomList.push(this.symptom);
+            this.hideAddSymptomModal();
+        }
+        
     }
 
     removeSymptom(symptom: Symptom){
