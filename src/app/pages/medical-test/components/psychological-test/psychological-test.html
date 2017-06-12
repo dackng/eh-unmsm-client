@@ -1,0 +1,98 @@
+<div class="widgets">
+  <!--SELECT PATIENT TYPE-->
+  <select-patient-type></select-patient-type>
+  <!--/SELECT PATIENT TYPE-->
+
+  <div>
+    <ba-card title="PACIENTE" baCardClass="with-scroll">
+      <form #registerPsychologicalTestForm="ngForm" (ngSubmit)="registerPsychologicalTest()">
+        <div class="row">
+          <div class="col-md-6">
+            <find-patient (patientNotify)="receiveOutputExternal($event)"></find-patient>
+          </div>
+          <div class="col-md-6">
+            <!-- MEDICAL TEST PROCESS-->
+            <ba-card title="PROCESO DE EXAMEN MEDICO" baCardClass="with-scroll card card-primary">
+              <medical-test-process-table></medical-test-process-table>
+            </ba-card>
+            <!-- /MEDICAL TEST PROCESS-->
+          </div>
+        </div>    
+        
+        <!--PSYCHOLOGICAL TEST RECORD-->
+        <ba-card translate title="{{'psychological_test.subtitle'}}" baCardClass="with-scroll card card-primary">
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-group">
+                <label translate>{{'psychological_test.depression_result'}}</label>&nbsp;&nbsp;
+                <input type="text" class="form-control disabled-field" [(ngModel)]="psychologicalTest.depressionResult" 
+                  required name="depressionResult" maxlength="3" ngControl="depressionResult" [disabled] ="isPsychologicalTestRegistered"
+                  #depressionResult="ngModel" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+                <small *ngIf="depressionResult.errors?.required" 
+                  class="text-danger" translate>{{'general.messages.required'}}</small>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <label>&nbsp;</label>
+              <div class="form-group">
+                <input type="text" class="form-control disabled" [(ngModel)]="psychologicalTest.depressionStateName" 
+                  name="depressionStateName" ngControl="depressionStateName" [disabled]="true">
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <label translate>{{'psychological_test.anxiety_result'}}</label>&nbsp;&nbsp;
+                <input type="text" class="form-control disabled-field" [(ngModel)]="psychologicalTest.anxietyResult" 
+                  required name="anxietyResult" maxlength="3" ngControl="anxietyResult" [disabled] ="isPsychologicalTestRegistered"
+                  #anxietyResult="ngModel" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+                <small *ngIf="anxietyResult.errors?.required" 
+                  class="text-danger" translate>{{'general.messages.required'}}</small>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <label>&nbsp;</label>
+              <div class="form-group">
+                <input type="text" class="form-control disabled" [(ngModel)]="psychologicalTest.anxietyStateName" 
+                  name="anxietyStateName" ngControl="anxietyStateName" [disabled]="true">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label translate>{{'psychological_test.diagnosis'}}</label>&nbsp;&nbsp;
+                <select [(ngModel)]="psychologicalTest.diagnosisId" #diagnosisId="ngModel"
+                  class="form-control disabled-field" name="diagnosisId" [disabled]="isPsychologicalTestRegistered" 
+                  ngControl="diagnosisId" >
+                  <option *ngFor="let diagnosis of diagnosisItemList" 
+                    [selected]="diagnosis.secondaryId == psychologicalTest.typeId"
+                    [ngValue] = "diagnosis.secondaryId">{{diagnosis.name}}</option>
+                </select>
+                <small *ngIf="diagnosisId.errors?.required" 
+                    class="text-danger" translate>{{'general.messages.required'}}</small>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label translate>{{'psychological_test.observation'}}</label>&nbsp;&nbsp;
+                <input class="form-control disabled-field" [(ngModel)]="psychologicalTest.observation"
+                   name="observation" ngControl="observation" [disabled]="isPsychologicalTestRegistered" #observation="ngModel">
+              </div>
+            </div>
+          </div>
+        </ba-card>
+        <!-- /PSYCHOLOGICAL TEST RECORD-->
+        
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <button type="submit" class="btn btn-primary btn-xm" [disabled]="isPsychologicalTestRegistered" translate>{{'general.buttons.register'}}</button>&nbsp;&nbsp;
+            <button type="button" (click)="initilize()" class="btn btn-primary btn-xm" [disabled]="isPsychologicalTestRegistered" translate>{{'general.buttons.cancel'}}</button>
+          </div>
+        </div>
+      </form>
+    </ba-card>
+  </div>
+
+</div>

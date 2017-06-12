@@ -1,5 +1,7 @@
 import {Symptom} from './symptom';
 import * as moment from 'moment';
+import {Utils} from './../utils';
+
 export class GeneralMedicineTest {
 
     public employeeCode: string;
@@ -28,7 +30,7 @@ export class GeneralMedicineTest {
         this.weight = generalMedicineTest.weight;
         this.stature = generalMedicineTest.stature;
         this.pulse = generalMedicineTest.pulse;
-        this.setFormattedDate(generalMedicineTest.lmp);
+        this.formattedDate = Utils.formatDate(generalMedicineTest.lmp);
         this.systolic = generalMedicineTest.systolic;
         this.diastolic = generalMedicineTest.diastolic;
         this.rightEye = generalMedicineTest.rightEye;
@@ -39,9 +41,4 @@ export class GeneralMedicineTest {
         this.emrHealthPlanId = generalMedicineTest.emrHealthPlanId;
         this.symptomList = generalMedicineTest.symptomList;
     }
-
-    setFormattedDate(date : Date){
-        this.formattedDate = moment(date).format("DD/MM/YYYY");
-    }
-
 }

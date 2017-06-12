@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 
-import {BasicTablesService} from '../../../pages/medical-test/components/general-medicine-test/basicTables.service';
+import {BasicTablesService} from '../../../services/basicTables.service';
 
 @Component({
   selector: 'medical-test-process-table',

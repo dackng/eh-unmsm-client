@@ -139,10 +139,10 @@
                             <td>{{ item.appointment }}</td>
                             <td>{{ item.observation }}</td>
                             <td>
-                              <button type="button" class="btn btn-info btn-icon btn-xm">
+                              <button type="button" (click)="consultSymptom(generalMedicineTest.symptomList.indexOf(item))" class="btn btn-info btn-icon btn-xm">
                                 <i class="ion-search"></i>
                               </button>
-                              <button type="button" class="btn btn-success btn-icon btn-xm">
+                              <button type="button" (click)="showEditSymptomModal(generalMedicineTest.symptomList.indexOf(item))" class="btn btn-success btn-icon btn-xm">
                                 <i class="ion-edit"></i>
                               </button>
                               <button type="button" (click)="removeSymptom(item)" class="btn btn-danger btn-icon btn-xm">
@@ -178,10 +178,10 @@
     </ba-card>
   </div>
 
-  <!-- ADD SYMPTOM MODAL-->
+  <!-- SYMPTOM MODAL-->
   <div bsModal #addSymptomModal="bs-modal" class="modal fade" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-      <form #addSymptomForm="ngForm" (ngSubmit)="addSymptom(addSymptomForm.form.valid)">
+      <form #addSymptomForm="ngForm" (ngSubmit)="saveSymptomChanges(addSymptomForm.form.valid)">
         <div class="modal-content">
           <div class="modal-header">
             <button class="close" aria-label="Close" (click)="hideAddSymptomModal()">
@@ -195,7 +195,7 @@
                 <div class="form-group">
                   <label translate>{{'general_medicine_test.symptom.symptom_type'}}</label>
                   <select [(ngModel)]="symptom.typeId" class="form-control disabled-field" name="symptomType"
-                    required ngControl="symptomType" [disabled]="isGeneralMedicineTestRegistered" #symptomType="ngModel">
+                    required ngControl="symptomType" [disabled]="isGeneralMedicineTestRegistered || symptom.isRegistered" #symptomType="ngModel">
                     <option *ngFor="let symptomType of symptomTypeItemList" [ngValue]="symptomType.secondaryId" 
                       [selected]="symptomType.secondaryId == symptom.typeId"> {{symptomType.name}}</option>
                   </select>
@@ -208,7 +208,7 @@
                   <label translate>{{'general_medicine_test.symptom.appointment'}}</label> 
                   <div *ngIf="!isGeneralMedicineTestRegistered">
                     <input  class="form-control disabled-field" type="date" [(ngModel)]="symptom.appointment" 
-                      required name="appointment" ngControl="appointment" [disabled]="isGeneralMedicineTestRegistered" #appointment="ngModel">
+                      required name="appointment" ngControl="appointment" [disabled]="isGeneralMedicineTestRegistered || symptom.isRegistered" #appointment="ngModel">
                     <small *ngIf="appointment.errors?.required && isModalInvalidated" 
                       class="text-danger" translate>{{'general.messages.required'}}</small>
                   </div>
@@ -223,7 +223,7 @@
                 <div class="form-group">
                   <label translate>{{'general_medicine_test.symptom.cie_10'}}</label>
                   <select [(ngModel)]="symptom.cieId" class="form-control disabled-field" name="cie"
-                    required ngControl="cie" [disabled]="isGeneralMedicineTestRegistered" #cie="ngModel">
+                    required ngControl="cie" [disabled]="isGeneralMedicineTestRegistered || symptom.isRegistered" #cie="ngModel">
                     <option *ngFor="let cie of cieItemList" [ngValue]="cie.secondaryId" 
                       [selected]="cie.secondaryId == symptom.cieId"> {{cie.name}}</option>
                   </select>
@@ -233,20 +233,20 @@
                 <div class="form-group">
                   <label translate>{{'general_medicine_test.symptom.observation'}}</label>
                   <textarea class="form-control disabled-field" [(ngModel)]="symptom.observation"
-                     name="observation" ngControl="observation" [disabled]="isGeneralMedicineTestRegistered"
+                     name="observation" ngControl="observation" [disabled]="isGeneralMedicineTestRegistered || symptom.isRegistered"
                      rows="10" cols="80">                             
                   </textarea>
                 </div>
               </div>
             </div>
           </div>
-          <div class="modal-footer text-center">
+          <div class="modal-footer text-center" *ngIf="!symptom.isRegistered">
             <button type="submit" class="btn btn-primary btn-xm" translate>{{'general.buttons.save_changes'}}</button>
           </div>
         </div>
       </form>
     </div>
   </div>
-  <!-- /ADD SYMPTOM MODAL-->
+  <!-- /SYMPTOM MODAL-->
 
 </div>

@@ -5,8 +5,8 @@ import { Logger } from "angular2-logger/core";
 import {Patient} from '../../../../models/patient';
 import {Catalog} from '../../../../models/catalog';
 import {Emr} from '../../../../models/emr';
-import {LaboratoryTest} from '../../../../models/medical-test/laboratory.test';
-import {LaboratoryTestService} from '../../../../services/medical-test/laboratory.test.service';
+import {PsychologicalTest} from '../../../../models/medical-test/psychological.test';
+import {PsychologicalTestService} from '../../../../services/medical-test/psychological.test.service';
 import {EmrService} from '../../../../services/emr.service';
 import {CatalogService} from '../../../../services/catalog.service';
 
@@ -14,21 +14,20 @@ import {BasicTablesService} from '../../../../services/basicTables.service';
 import { ModalDirective } from 'ng2-bootstrap';
 
 @Component({
-    selector: 'laboratory',
+    selector: 'psychological',
     styleUrls: ['../../../../theme/sass/_disabled.scss', 
                 '../../../../theme/sass/_basicTables.scss',
                 '../../../../theme/sass/_modals.scss'],
-    templateUrl: './laboratory-test.html',
-    providers: [Logger, LaboratoryTestService, EmrService, CatalogService, BasicTablesService]
+    templateUrl: './psychological-test.html',
+    providers: [Logger, PsychologicalTestService, EmrService, CatalogService, BasicTablesService]
 })
 
-export class LaboratoryTestComponent implements OnInit{ 
-    laboratoryTest: LaboratoryTest;
+export class PsychologicalTestComponent implements OnInit{ 
+    psychologicalTest: PsychologicalTest;
     currentHealthPlan: Catalog;
     patientCode: number;
-    isLaboratoryTestRegistered: boolean;
-    serologicalItemList: Array<Catalog>;
-    bloodCountItemList: Array<Catalog>;
+    isPsychologicalTestRegistered: boolean;
+    diagnosisItemList: Array<Catalog>;
     isFieldDisabled: boolean;
     errorMessage: string;
 
@@ -37,7 +36,7 @@ export class LaboratoryTestComponent implements OnInit{
     }
 
     constructor(private _logger: Logger, private _basicTablesService: BasicTablesService, private _catalogService: CatalogService
-        , private _emrService: EmrService, private _laboratoryTestService: LaboratoryTestService) {
+        , private _emrService: EmrService, private _psychologicalTestService: PsychologicalTestService) {
         this._logger.warn("Constructor()");
         let itemByDefault = new Catalog(null,"<SELECCIONE>");
         this._logger.warn("===== Calling method CATALOG API:  getCurrentHealthPlan() =====");
@@ -49,30 +48,30 @@ export class LaboratoryTestComponent implements OnInit{
     }
 
     receiveOutputExternal(patient: Patient){
-        this.validateEMRAndLaboratoryTestExistence(patient);   
+        this.validateEMRAndPsychologicalTestExistence(patient);   
     }
 
-    validateEMRAndLaboratoryTestExistence(patient: Patient){
+    validateEMRAndPsychologicalTestExistence(patient: Patient){
         this._logger.warn("===== Calling EMR API: getEmrByHealthPlanIdAndPatientCode(" + this.currentHealthPlan.secondaryId 
                     + ", " + patient.code + ") =====");
         this._emrService.getEmrByHealthPlanIdAndPatientCode(this.currentHealthPlan.secondaryId, patient.code)
             .subscribe( (emr: Emr) => {
                 if (emr != null){
                     this._logger.warn("EMR already registered");
-                    this._logger.warn("===== Calling LaboratoryTest API: getLaboratoryTestByHealthPlanIdAndPatientCode("
+                    this._logger.warn("===== Calling RadiologyTest API: getRadiologyTestByHealthPlanIdAndPatientCode("
                             + this.currentHealthPlan.secondaryId + ", " + patient.code + ") =====");
-                    this._laboratoryTestService
-                        .getLaboratoryTestByHealthPlanIdAndPatientCode(emr.healthPlanId, emr.patientCode)
-                        .subscribe( (laboratoryTest: LaboratoryTest) => {
-                            if(laboratoryTest != null){
-                                this._logger.warn("LaboratoryTest already registered");
-                                this.laboratoryTest.setFieldsDetail(laboratoryTest);
+                    this._psychologicalTestService
+                        .getPsychologicalTestByHealthPlanIdAndPatientCode(emr.healthPlanId, emr.patientCode)
+                        .subscribe( (psychologicalTest: PsychologicalTest) => {
+                            if(psychologicalTest != null){
+                                this._logger.warn("PsychologicalTest already registered");
+                                this.psychologicalTest.setFieldsDetail(psychologicalTest);
                             }else{
-                                this._logger.warn("LaboratoryTest is not registered yet");
-                                this.laboratoryTest = new LaboratoryTest();
-                                this.laboratoryTest.emrHealthPlanId = this.currentHealthPlan.secondaryId;
-                                this.laboratoryTest.emrPatientCode = patient.code;
-                                this.isLaboratoryTestRegistered = false;
+                                this._logger.warn("RadiologyTest is not registered yet");
+                                this.psychologicalTest = new PsychologicalTest();
+                                this.psychologicalTest.emrHealthPlanId = this.currentHealthPlan.secondaryId;
+                                this.psychologicalTest.emrPatientCode = patient.code;
+                                this.isPsychologicalTestRegistered = false;
                             }
                         }, error => this.errorMessage = <any> error);                        
                 }else{
@@ -81,17 +80,17 @@ export class LaboratoryTestComponent implements OnInit{
             }, error => this.errorMessage = <any> error);
     }
 
-    registerLaboratoryTest(){
+    registerPsychologicalTest(){
         this.isFieldDisabled = true;
-        this._logger.warn("===== Calling LaboratoryTest API: registerLaboratoryTest()");
-        this._logger.warn("INPUT => LaboratoryTest: "+JSON.stringify(this.laboratoryTest)); 
+        this._logger.warn("===== Calling PsychologicalTest API: registerPsychologicalTest()");
+        this._logger.warn("INPUT => PsychologicalTest: "+JSON.stringify(this.psychologicalTest)); 
     }
 
     initilize(){
         this.patientCode = null;
-        this.isLaboratoryTestRegistered = true;
+        this.isPsychologicalTestRegistered = true;
         this.isFieldDisabled = false;
         this.errorMessage = null;
-        this.laboratoryTest = new LaboratoryTest();
+        this.psychologicalTest = new PsychologicalTest();
     }
 }

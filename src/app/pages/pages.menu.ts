@@ -52,7 +52,31 @@ export const PAGES_MENU = [
             path: 'general-medicine-test',
             data: {
               menu: {
-                title: 'medical_test.option',
+                title: 'general_medicine_test.option',
+              }
+            }
+          },
+          {
+            path: 'laboratory-test',
+            data: {
+              menu: {
+                title: 'laboratory_test.option',
+              }
+            }
+          },
+          {
+            path: 'radiology-test',
+            data: {
+              menu: {
+                title: 'radiology_test.option',
+              }
+            }
+          },
+          {
+            path: 'psychological-test',
+            data: {
+              menu: {
+                title: 'psychological_test.option',
               }
             }
           }

@@ -9,6 +9,9 @@ import { routing }       from './medical.test.routing';
 
 import { MedicalTestComponent } from './medical.test.component';
 import { GeneralMedicineTestComponent } from './components/general-medicine-test/general.medicine.test.component';
+import { LaboratoryTestComponent } from './components/laboratory-test/laboratory.test.component';
+import { RadiologyTestComponent } from './components/radiology-test/radiology.test.component';
+import { PsychologicalTestComponent } from './components/psychological-test/psychological.test.component';
 import { TabComponent } from '../components-shared/component-tabbed/tab/tab.component';
 import { TabsComponent } from '../components-shared/component-tabbed/tabs/tabs.component';
 import { MedicalTestProcessTableComponent } from '../components-shared/medical-test-process-table/medical.test.process.table.component';
@@ -29,6 +32,9 @@ import { SelectPatientTypeComponent } from '../components-shared/select-patient-
   declarations: [
     MedicalTestComponent,
     GeneralMedicineTestComponent,
+    LaboratoryTestComponent,
+    RadiologyTestComponent,
+    PsychologicalTestComponent,
     TabComponent,
     TabsComponent,
     MedicalTestProcessTableComponent,

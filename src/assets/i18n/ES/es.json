@@ -56,6 +56,7 @@
       }
   },
   "general_medicine_test": {
+      "option": "Medicina General",
       "weight": "Peso (Kg)",
       "stature": "Talla (M)",
       "pulse": "Pulso",
@@ -79,7 +80,7 @@
         "observation": "OBSERVACIÓN"
       },
       "symptom":{
-        "subtitle": "AGREGAR SINTOMA",
+        "subtitle": "SINTOMA",
         "symptom_type": "Tipo de sintoma",
         "cie_10": "CIE 10",
         "appointment": "Fecha de cita",
@@ -87,15 +88,28 @@
       }
   },
   "laboratory_test":{
+      "option": "Laboratorio",
       "subtitle": "REGISTRO DE LABORATORIO",
       "serological_test": "Examen serológico",
       "hemoglobin": "Hemoglobina",
       "blood_count": "Hemograma",      
       "observation": "Observación"
   },
+  "radiology_test":{
+      "option": "Radiología",
+      "subtitle": "REGISTRO DE RADIOLOGÍA",
+      "radiology_type": "Examen radiológico",
+      "observation": "Observación"
+  },
+  "psychological_test":{
+      "option": "Psicología",
+      "subtitle": "REGISTRO DE PSICOLOGÍA",
+      "depression_result": "Resultado de depresión",
+      "anxiety_result": "Resultado de ansiedad",
+      "diagnosis":"Diagnóstico",
+      "observation": "Observación"
+  },
   "medical_test": {
-      "option": "Examen de Medicina General",
-      "title": "REGISTRAR PACIENTE",
       
       "signup_link": "New to ng2-admin? Sign up!",
       "email": "Email",

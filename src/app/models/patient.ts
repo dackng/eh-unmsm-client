@@ -1,5 +1,6 @@
 import {Ubigeo} from './ubigeo';
 import {Catalog} from './catalog';
+import {Utils} from './utils';
 import * as moment from 'moment';
 
 export class Patient {
@@ -51,15 +52,15 @@ export class Patient {
     }
 
     addCivilStateItem(){
-        this.civilStateList.push(new Catalog(this.civilStateId, this.civilStateName));
+        this.civilStateList.push(Utils.createCatalog(this.civilStateId, this.civilStateName));
     }
 
     addEapItem(){
-        this.eapList.push(new Catalog(this.eapId, this.eapName));
+        this.eapList.push(Utils.createCatalog(this.eapId, this.eapName));
     }
 
     addEapItemByDefault(){
-       this.eapList.push(new Catalog(null,"<SELECCIONE>")); 
+       this.eapList.push(Utils.getSelectItemByDefault()); 
     }
 
     addUbigeoItems(){
@@ -91,11 +92,7 @@ export class Patient {
     }
 
     addCivilStateItemByDefault(){
-       this.civilStateList.push(new Catalog(null,"<SELECCIONE>")); 
-    }
-
-    setFormattedDate(date : Date){
-        this.formattedDate = moment(date).format("DD/MM/YYYY");
+       this.civilStateList.push(Utils.getSelectItemByDefault()); 
     }
 
     setFieldsDetail(patient: Patient){
@@ -108,7 +105,7 @@ export class Patient {
         this.email =  patient.email;
         this.eapId = patient.eapId;
         this.eapName = patient.eapName;
-        this.setFormattedDate(patient.birthDate);
+        this.formattedDate = Utils.formatDate(patient.birthDate);
         this.telephone = patient.telephone;
         this.gender = patient.gender;
         this.address = patient.address;

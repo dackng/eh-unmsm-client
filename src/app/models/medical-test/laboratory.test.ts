@@ -4,6 +4,7 @@ export class LaboratoryTest {
 	public serologicalTestId: number;
 	public hemoglobin: number;
 	public hemoglobinStateId: number;
+	public hemoglobinStateName;
 	public bloodCountId: number;
 	public observation: string;
 	public updatedAt: Date;
@@ -18,6 +19,7 @@ export class LaboratoryTest {
         this.serologicalTestId = laboratoryTest.serologicalTestId;
 		this.hemoglobin = laboratoryTest.hemoglobin;
 		this.hemoglobinStateId = laboratoryTest.hemoglobinStateId;
+		this.hemoglobinStateName = laboratoryTest.hemoglobinStateName;
 		this.bloodCountId = laboratoryTest.bloodCountId;
 		this.observation = laboratoryTest.observation;
         this.updatedAt = laboratoryTest.updatedAt;

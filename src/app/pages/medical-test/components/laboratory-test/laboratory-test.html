@@ -5,7 +5,7 @@
 
   <div>
     <ba-card title="PACIENTE" baCardClass="with-scroll">
-      <form #registerGeneralMedicineTestForm="ngForm" (ngSubmit)="registerLaboratoryTest()">
+      <form #registerLaboratoryTestForm="ngForm" (ngSubmit)="registerLaboratoryTest()">
         <div class="row">
           <div class="col-md-6">
             <find-patient (patientNotify)="receiveOutputExternal($event)"></find-patient>
@@ -25,57 +25,62 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label translate>{{'laboratory_test.serological_test'}}</label>&nbsp;&nbsp;
-                <select [(ngModel)]="laboratoryTest.serologicalTestId" #serologicalTest="ngModel"
-                  class="form-control disabled-field" name="serologicalTest" [disabled]="isLaboratoryTestRegistered" 
-                  ngControl="serologicalTest" >
-                  <option *ngFor="let dpm of newPatient.departmentsList" 
-                    [selected]="dpm.departmentCode == newPatient.ubigeo.departmentCode"
-                    [ngValue] = "dpm.departmentCode">{{dpm.departmentDescription}}</option>
+                <select [(ngModel)]="laboratoryTest.serologicalTestId" #serologicalTestId="ngModel"
+                  class="form-control disabled-field" name="serologicalTestId" [disabled]="isLaboratoryTestRegistered" 
+                  ngControl="serologicalTestId" >
+                  <option *ngFor="let serological of serologicalItemList" 
+                    [selected]="serological.secondaryId == laboratoryTest.serologicalTestId"
+                    [ngValue] = "serological.secondaryId">{{serological.name}}</option>
                 </select>
+                <small *ngIf="serologicalTestId.errors?.required" 
+                    class="text-danger" translate>{{'general.messages.required'}}</small>
               </div>
             </div>
             <div class="col-md-4">
               <div class="form-group">
-                <label translate>{{'patient.ubigeo.province'}}</label>&nbsp;&nbsp;
-                <select [(ngModel)]="newPatient.ubigeo.provinceCode" required #provinceCode="ngModel" 
-                  class="form-control disabled-field" name="provinceCode" (ngModelChange) = "loadDistrictsList($event)"
-                  ngControl="provinceCode" [disabled]="isLaboratoryTestRegistered">
-                  <option *ngFor="let pv of newPatient.provincesList" [ngValue]="pv.provinceCode"
-                    [selected]="pv.provinceCode == newPatient.ubigeo.provinceCode">
-                    {{pv.provinceDescription}}</option>
+                <label translate>{{'laboratory_test.blood_count'}}</label>&nbsp;&nbsp;
+                <select [(ngModel)]="laboratoryTest.bloodCount" #bloodCount="ngModel"
+                  class="form-control disabled-field" name="bloodCount" [disabled]="isLaboratoryTestRegistered" 
+                  ngControl="bloodCount" >
+                  <option *ngFor="let bloodCount of bloodCountItemList" 
+                    [selected]="bloodCount.secondaryId == laboratoryTest.bloodCountId"
+                    [ngValue] = "bloodCount.secondaryId">{{bloodCount.name}}</option>
                 </select>
-                <small *ngIf="provinceCode.errors?.required && isFieldDisabled" 
+                <small *ngIf="bloodCount.errors?.required" 
+                    class="text-danger" translate>{{'general.messages.required'}}</small>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-group">
+                <label translate>{{'laboratory_test.hemoglobin'}}</label>&nbsp;&nbsp;
+                <input type="text" class="form-control disabled-field" [(ngModel)]="laboratoryTest.hemoglobin" 
+                  required name="hemoglobin" maxlength="3" ngControl="hemoglobin" [disabled] ="isLaboratoryTestRegistered"
+                  #hemoglobin="ngModel" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+                <small *ngIf="hemoglobin.errors?.required" 
                   class="text-danger" translate>{{'general.messages.required'}}</small>
               </div>
             </div>
             <div class="col-md-4">
+              <label>&nbsp;</label>
               <div class="form-group">
-                <label translate>{{'patient.ubigeo.district'}}</label>&nbsp;&nbsp;
-                <select [(ngModel)]="newPatient.ubigeo.districtCode" required #districtCode="ngModel"
-                  class="form-control disabled-field" name="districtCode"
-                  ngControl="districtCode" [disabled]="isLaboratoryTestRegistered">
-                  <option *ngFor="let dt of newPatient.districtsList" [ngValue]="dt.districtCode" 
-                    [selected]="dt.districtCode == newPatient.ubigeo.districtCode">
-                    {{dt.districtDescription}}</option>
-                </select>
-                <small *ngIf="districtCode.errors?.required && isFieldDisabled" 
-                  class="text-danger" translate>{{'general.messages.required'}}</small>
+                <input type="text" class="form-control disabled" [(ngModel)]="laboratoryTest.hemoglobinStateName" 
+                  name="hemoglobinStateName" ngControl="hemoglobinStateName" [disabled]="true">
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
-                <label translate>{{'patient.address'}}</label>&nbsp;&nbsp;
-                <input class="form-control disabled-field" [(ngModel)]="newPatient.address"
-                  required name="address" ngControl="address" [disabled]="isLaboratoryTestRegistered" #address="ngModel">
-                <small *ngIf="address.errors?.required && isFieldDisabled" 
-                  class="text-danger" translate>{{'general.messages.required'}}</small>
+                <label translate>{{'laboratory_test.observation'}}</label>&nbsp;&nbsp;
+                <input class="form-control disabled-field" [(ngModel)]="laboratoryTest.observation"
+                   name="observation" ngControl="observation" [disabled]="isLaboratoryTestRegistered" #observation="ngModel">
               </div>
             </div>
           </div>
         </ba-card>
-        <!-- /LABORATORY-->
+        <!-- /LABORATORY TEST RECORD-->
         
         <div class="row">
           <div class="col-md-12 text-center">

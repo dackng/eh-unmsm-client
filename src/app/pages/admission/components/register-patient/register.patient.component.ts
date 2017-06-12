@@ -6,6 +6,7 @@ import {Patient} from '../../../../models/patient';
 import {Catalog} from '../../../../models/catalog';
 import {Ubigeo} from '../../../../models/ubigeo';
 import {Emr} from '../../../../models/emr';
+import {Utils} from '../../../../models/utils';
 
 import {PatientService} from '../../../../services/patient.service';
 import {CatalogService} from '../../../../services/catalog.service';
@@ -41,7 +42,7 @@ export class RegisterPatientComponent implements OnInit{
         this._logger.warn("===== Calling method CATALOG API:  getCurrentHealthPlan() =====");
         this._catalogService.getCurrentHealthPlan()//loading the current health plan
             .subscribe( (catalog : Catalog ) => {
-                this.currentHealthPlan = new Catalog (catalog.secondaryId, catalog.name);
+                this.currentHealthPlan = Utils.createCatalog(catalog.secondaryId, catalog.name);
                 this._logger.warn("OUTPUT=> currentHealthPlan : " + JSON.stringify(this.currentHealthPlan));
             }, error => this.errorMessage = <any> error); 
     }
