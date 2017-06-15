@@ -33,6 +33,8 @@ export class FindPatientComponent implements OnInit, OnDestroy{
 
   initilize(){
     this.patient = new Patient();
+    this.patientCode = null;
+    this.isActive = false;
     this.errorMessage = null;
     this.subscriptionForReceiveInput = this.commonService.notifyObservable$.subscribe((res) => {
         this.patientCode = res.initilizePatientCode;
