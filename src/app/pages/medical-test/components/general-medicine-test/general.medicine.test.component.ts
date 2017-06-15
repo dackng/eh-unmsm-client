@@ -159,14 +159,14 @@ export class GeneralMedicineTestComponent implements OnInit{
         this._logger.warn("INPUT => GeneralMedicineTest: "+JSON.stringify(this.generalMedicineTest)); 
     }
 
-    initilize(){
-        this._commonService.notifyOther({initilizePatientCode:null
-            , initilizePatient: new Patient(), initilizeIsActive:false});
+    initilize(){        
         this.isGeneralMedicineTestRegistered = true;
         this.isFieldDisabled = false;
         this.errorMessage = null;
         this.generalMedicineTest = new GeneralMedicineTest();
         this.symptom = new Symptom();
+        this._commonService.notifyOther({initilizePatientCode:null
+            , initilizePatient: new Patient(), initilizeIsActive:false});
     }
 
     //Find value item selected

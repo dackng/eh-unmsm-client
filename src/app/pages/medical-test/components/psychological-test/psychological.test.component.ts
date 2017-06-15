@@ -9,6 +9,7 @@ import {PsychologicalTest} from '../../../../models/medical-test/psychological.t
 import {PsychologicalTestService} from '../../../../services/medical-test/psychological.test.service';
 import {EmrService} from '../../../../services/emr.service';
 import {CatalogService} from '../../../../services/catalog.service';
+import {CommonService} from '../../../../services/common.service';
 
 import {BasicTablesService} from '../../../../services/basicTables.service';
 import { ModalDirective } from 'ng2-bootstrap';
@@ -36,7 +37,7 @@ export class PsychologicalTestComponent implements OnInit{
     }
 
     constructor(private _logger: Logger, private _basicTablesService: BasicTablesService, private _catalogService: CatalogService
-        , private _emrService: EmrService, private _psychologicalTestService: PsychologicalTestService) {
+        , private _emrService: EmrService, private _psychologicalTestService: PsychologicalTestService, private _commonService: CommonService) {
         this._logger.warn("Constructor()");
         let itemByDefault = new Catalog(null,"<SELECCIONE>");
         this._logger.warn("===== Calling method CATALOG API:  getCurrentHealthPlan() =====");
@@ -92,5 +93,7 @@ export class PsychologicalTestComponent implements OnInit{
         this.isFieldDisabled = false;
         this.errorMessage = null;
         this.psychologicalTest = new PsychologicalTest();
+        this._commonService.notifyOther({initilizePatientCode:null
+            , initilizePatient: new Patient(), initilizeIsActive:false});
     }
 }
