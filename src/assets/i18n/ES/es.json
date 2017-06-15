@@ -76,8 +76,7 @@
       "symptom_table":{
         "num": "N°",
         "symptoms": "SINTOMAS",
-        "appointment": "FECHA DE CONSULTA",
-        "observation": "OBSERVACIÓN"
+        "appointment": "FECHA DE CONSULTA"
       },
       "symptom":{
         "subtitle": "SINTOMA",

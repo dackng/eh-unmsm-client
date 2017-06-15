@@ -21,12 +21,6 @@ export class Symptom {
 		this.indexForEdit= null;
 	}
 
-	setFieldsSummary(symptom: Symptom){
-		this.typeName = symptom.typeName;
-		this.cieName = symptom.cieName;
-		this.formattedDate = Utils.formatDate(this.appointment);
-		this.observation = symptom.observation;
-	}
 	setFieldsDetail(symptom: Symptom){
 		this.id = symptom.id;
 		this.typeId = symptom.typeId;

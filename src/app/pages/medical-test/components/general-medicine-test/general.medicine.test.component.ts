@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, Output, EventEmitter, OnInit, ViewChild} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import { Logger } from "angular2-logger/core";
 
@@ -11,6 +11,7 @@ import {Symptom} from '../../../../models/medical-test/symptom';
 import {GeneralMedicineTestService} from '../../../../services/medical-test/general.medicine.test.service';
 import {EmrService} from '../../../../services/emr.service';
 import {CatalogService} from '../../../../services/catalog.service';
+import {CommonService} from '../../../../services/common.service';
 
 import {BasicTablesService} from '../../../../services/basicTables.service';
 
@@ -22,15 +23,15 @@ import { ModalDirective } from 'ng2-bootstrap';
                 '../../../../theme/sass/_basicTables.scss',
                 '../../../../theme/sass/_modals.scss'],
     templateUrl: './general-medicine-test.html',
-    providers: [Logger, GeneralMedicineTestService, EmrService, CatalogService, BasicTablesService]
+    providers: [Logger, GeneralMedicineTestService, EmrService, CatalogService, CommonService, BasicTablesService]
 })
 
 export class GeneralMedicineTestComponent implements OnInit{ 
     pageAddressTab: string = "/pages/medical-test/general-medicine-test";
+
     generalMedicineTest: GeneralMedicineTest;
     symptom: Symptom;
     currentHealthPlan: Catalog;
-    patientCode: number;
     isGeneralMedicineTestRegistered: boolean;
     isFieldDisabled: boolean;
     isModalInvalidated: boolean;
@@ -44,7 +45,8 @@ export class GeneralMedicineTestComponent implements OnInit{
     }
 
     constructor(private _logger: Logger, private _basicTablesService: BasicTablesService, private _catalogService: CatalogService
-        , private _emrService: EmrService, private _generalMedicineTestService: GeneralMedicineTestService) {
+        , private _emrService: EmrService, private _generalMedicineTestService: GeneralMedicineTestService
+        , private _commonService: CommonService) {
         this._logger.warn("Constructor()");
         let itemByDefault = Utils.getSelectItemByDefault();
         this._logger.warn("===== Calling method CATALOG API:  getCurrentHealthPlan() =====");
@@ -68,7 +70,6 @@ export class GeneralMedicineTestComponent implements OnInit{
     }
 
     showAddSymptomModal(){
-        console.log("MOSTRAR MODAL AGREGAR SINTOMA");
         this.addSymptomModal.config.backdrop = false;
         this.isModalInvalidated = false;
         this.symptom = new Symptom();
@@ -76,22 +77,18 @@ export class GeneralMedicineTestComponent implements OnInit{
     }
 
     hideAddSymptomModal(){
-        console.log("OCULTAR MODAL");
         this.addSymptomModal.hide();
     }
 
     //First, valid form then valid if symptom don't have index for edit because this depend for add or edit
     saveSymptomChanges(isFormValided : boolean){
         this.isModalInvalidated = true;
-        console.log("GUARDAR CAMBIOS");
         if(isFormValided){
             this._findValueSelected();
             this.symptom.isRegistered = true;
             if(this.symptom.indexForEdit == null){
-                console.log("AGREGAR SINTOMA");
                 this._addSymptom();
             }else{
-                console.log("EDITAR SINTOMA");
                 this._editSymptom();
             }        
             this.hideAddSymptomModal();
@@ -99,18 +96,14 @@ export class GeneralMedicineTestComponent implements OnInit{
     }
 
     consultSymptom(index: number){
-        console.log("CONSULTAR");
-        console.log("INDEX=>"+index);
-        console.log("symptomList=>"+JSON.stringify(this.generalMedicineTest.symptomList));
         this.addSymptomModal.config.backdrop = false;
         this.symptom = new Symptom();
-        this.symptom.setFieldsSummary(this.generalMedicineTest.symptomList[index]);
+        this.symptom.setFieldsDetail(this.generalMedicineTest.symptomList[index]);
         this.symptom.isRegistered = true;
         this.addSymptomModal.show();
     }
 
     showEditSymptomModal(index: number){
-        console.log("MOSTRAR MODAL EDITAR")
         this.addSymptomModal.config.backdrop = false;
         this.symptom = new Symptom();
         this.symptom.isRegistered = false;
@@ -167,7 +160,8 @@ export class GeneralMedicineTestComponent implements OnInit{
     }
 
     initilize(){
-        this.patientCode = null;
+        this._commonService.notifyOther({initilizePatientCode:null
+            , initilizePatient: new Patient(), initilizeIsActive:false});
         this.isGeneralMedicineTestRegistered = true;
         this.isFieldDisabled = false;
         this.errorMessage = null;
@@ -177,13 +171,8 @@ export class GeneralMedicineTestComponent implements OnInit{
 
     //Find value item selected
     private _findValueSelected(){
-        //let symptom = this.symptomTypeItemList.find(item => item.secondaryId == this.symptom.typeId);
-        //this.symptom.typeName = symptom.name;
-        for(let symptom of this.symptomTypeItemList){
-            if(symptom.secondaryId == this.symptom.typeId){
-                this.symptom.typeName = symptom.name;break;
-            }
-        }
+        let symptom = this.symptomTypeItemList.find(item => item.secondaryId == this.symptom.typeId);
+        this.symptom.typeName = symptom.name;
     }
 
     private _addSymptom(){
