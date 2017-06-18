@@ -92,7 +92,7 @@
                       <ba-card translate title="{{'general_medicine_test.visual_acuity.name'}}" baCardClass="card card-primary">
                         <div class="form-group">
                           <label translate>{{'general_medicine_test.visual_acuity.right_eye'}}</label>
-                          <input type="text" class="form-control disabled-field" [(ngModel)]="generalMedicineTest.rigthEye" 
+                          <input type="text" class="form-control disabled-field" [(ngModel)]="generalMedicineTest.rightEye" 
                             required name="rightEye" ngControl="rightEye" [disabled] ="isGeneralMedicineTestRegistered"
                             #rightEye="ngModel" pattern="^(?!\.?$)\d{0,3}(\.\d{0,2})?$"/>
                           <small *ngIf="(rightEye?.errors?.pattern || rightEye.errors?.required) && isFieldDisabled " 
@@ -131,19 +131,19 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <ng-container *ngIf="generalMedicineTest.symptomList != null">
-                          <tr *ngFor="let item of generalMedicineTest.symptomList; let i=index">
+                        <ng-container *ngIf="generalMedicineTest.symptoms != null">
+                          <tr *ngFor="let item of generalMedicineTest.symptoms; let i=index">
                             <td class="table-id center">{{ i+1 }}</td>
                             <td>{{ item.typeName }}</td>
-                            <td>{{ item.appointment }}</td>
+                            <td>{{ item.formattedDate }}</td>
                             <td>
-                              <button type="button" (click)="consultSymptom(generalMedicineTest.symptomList.indexOf(item))" class="btn btn-info btn-icon btn-xm">
+                              <button type="button" (click)="consultSymptom(generalMedicineTest.symptoms.indexOf(item))" class="btn btn-info btn-icon btn-xm">
                                 <i class="ion-search"></i>
                               </button>
-                              <button type="button" (click)="showEditSymptomModal(generalMedicineTest.symptomList.indexOf(item))" class="btn btn-success btn-icon btn-xm">
+                              <button *ngIf="!isGeneralMedicineTestRegistered" type="button" (click)="showEditSymptomModal(generalMedicineTest.symptoms.indexOf(item))" class="btn btn-success btn-icon btn-xm">
                                 <i class="ion-edit"></i>
                               </button>
-                              <button type="button" (click)="removeSymptom(item)" class="btn btn-danger btn-icon btn-xm">
+                              <button *ngIf="!isGeneralMedicineTestRegistered" type="button" (click)="removeSymptom(item)" class="btn btn-danger btn-icon btn-xm">
                                 <i class="ion-trash-a"></i>
                               </button>
                             </td>
@@ -151,7 +151,7 @@
                         </ng-container>
                       </tbody>
                     </table>
-                    <ng-container *ngIf="generalMedicineTest.symptomList.length == 0">
+                    <ng-container *ngIf="generalMedicineTest.symptoms.length == 0">
                       <label class="row col-md-12 text-center" translate>{{'general.messages.no_symptoms'}}</label>
                     </ng-container>
                   </div>
@@ -205,13 +205,13 @@
                 <div class="form-group">
                   <label translate>{{'general_medicine_test.symptom.appointment'}}</label> 
                   <div *ngIf="!isGeneralMedicineTestRegistered">
-                    <input  class="form-control disabled-field" type="date" [(ngModel)]="symptom.appointment" 
+                    <input class="form-control disabled-field" type="datetime-local" [(ngModel)]="symptom.appointment" 
                       required name="appointment" ngControl="appointment" [disabled]="isGeneralMedicineTestRegistered || symptom.isRegistered" #appointment="ngModel">
                     <small *ngIf="appointment.errors?.required && isModalInvalidated" 
                       class="text-danger" translate>{{'general.messages.required'}}</small>
                   </div>
                   <input *ngIf="isGeneralMedicineTestRegistered" type="text" class="form-control disabled-field" 
-                    [(ngModel)]="symptom.appointment" [disabled]="isGeneralMedicineTestRegistered"
+                    [(ngModel)]="symptom.formattedDate" [disabled]="isGeneralMedicineTestRegistered"
                     [ngModelOptions]="{standalone: true}"/>
                 </div>
               </div>

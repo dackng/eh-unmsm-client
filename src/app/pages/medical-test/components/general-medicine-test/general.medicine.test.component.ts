@@ -98,7 +98,7 @@ export class GeneralMedicineTestComponent implements OnInit{
     consultSymptom(index: number){
         this.addSymptomModal.config.backdrop = false;
         this.symptom = new Symptom();
-        this.symptom.setFieldsDetail(this.generalMedicineTest.symptomList[index]);
+        this.symptom.setFieldsDetail(this.generalMedicineTest.symptoms[index]);
         this.symptom.isRegistered = true;
         this.addSymptomModal.show();
     }
@@ -108,15 +108,15 @@ export class GeneralMedicineTestComponent implements OnInit{
         this.symptom = new Symptom();
         this.symptom.isRegistered = false;
         this.isModalInvalidated = false;
-        this.symptom.setFieldsDetail(this.generalMedicineTest.symptomList[index]);
+        this.symptom.setFieldsDetail(this.generalMedicineTest.symptoms[index]);
         this.symptom.indexForEdit = index;
         this.addSymptomModal.show();
     }
 
     removeSymptom(symptom: Symptom){
-        let index: number = this.generalMedicineTest.symptomList.indexOf(symptom);
+        let index: number = this.generalMedicineTest.symptoms.indexOf(symptom);
         if (index !== -1) {
-            this.generalMedicineTest.symptomList.splice(index, 1);
+            this.generalMedicineTest.symptoms.splice(index, 1);
         }      
     }
 
@@ -139,6 +139,9 @@ export class GeneralMedicineTestComponent implements OnInit{
                             if(generalMedicineTest != null){
                                 this._logger.warn("GeneralMedicineTest already registered");
                                 this.generalMedicineTest.setFieldsDetail(generalMedicineTest);
+                                this.generalMedicineTest.completeFields(this.symptomTypeItemList);
+                                this._commonService.notifyOther({initilizePatientCode:patient.code
+                                    , initilizePatient: patient, initilizeIsActive:false});
                             }else{
                                 this._logger.warn("GeneralMedicineTest is not registered yet");
                                 this.generalMedicineTest = new GeneralMedicineTest();
@@ -156,7 +159,12 @@ export class GeneralMedicineTestComponent implements OnInit{
     registerGeneralMedicineTest(){
         this.isFieldDisabled = true;
         this._logger.warn("===== Calling GeneralMedicineTest API: registerGeneralMedicineTest()");
-        this._logger.warn("INPUT => GeneralMedicineTest: "+JSON.stringify(this.generalMedicineTest)); 
+        this._logger.warn("INPUT => GeneralMedicineTest: "+JSON.stringify(this.generalMedicineTest));
+        this._generalMedicineTestService.registerGeneralMedicineTest(this.generalMedicineTest)
+            .subscribe(patient => {
+                this._logger.warn("*****GeneralMedicineTest registered successful*****");
+                this.initilize();
+            }, error => this.errorMessage = <any> error); 
     }
 
     initilize(){        
@@ -176,11 +184,11 @@ export class GeneralMedicineTestComponent implements OnInit{
     }
 
     private _addSymptom(){
-        this.generalMedicineTest.symptomList.push(this.symptom);
+        this.generalMedicineTest.symptoms.push(this.symptom);
     }
     
     private _editSymptom(){
-        this.generalMedicineTest.symptomList[this.symptom.indexForEdit].setFieldsDetail(this.symptom);
+        this.generalMedicineTest.symptoms[this.symptom.indexForEdit].setFieldsDetail(this.symptom);
         this.symptom.indexForEdit = null;
     }
 }

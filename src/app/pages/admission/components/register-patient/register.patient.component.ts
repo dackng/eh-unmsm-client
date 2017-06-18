@@ -32,6 +32,12 @@ export class RegisterPatientComponent implements OnInit{
     isFieldDisabled: boolean;
     isEmrConfirmationMessage: boolean;
     
+    civilStateItemList : Array<Catalog>;
+    eapItemList : Array<Catalog>;
+    departmentItemList : Array<Ubigeo>;
+    provinceItemList : Array<Ubigeo>;
+    districtItemList : Array<Ubigeo>;
+    genderItemList: Array<string>;
     ngOnInit(){
         this.initilize();
     }
@@ -39,22 +45,41 @@ export class RegisterPatientComponent implements OnInit{
     constructor (private _logger: Logger, private _patientService: PatientService, private _catalogService : CatalogService
                 , private _ubigeoService: UbigeoService, private _emrService: EmrService) {
         this._logger.warn("Constructor()");
+        this.ubigeoItemByDefault = new Ubigeo();
+        this.ubigeoItemByDefault.initializeItemByDefault();
         this._logger.warn("===== Calling method CATALOG API:  getCurrentHealthPlan() =====");
         this._catalogService.getCurrentHealthPlan()//loading the current health plan
             .subscribe( (catalog : Catalog ) => {
                 this.currentHealthPlan = Utils.createCatalog(catalog.secondaryId, catalog.name);
                 this._logger.warn("OUTPUT=> currentHealthPlan : " + JSON.stringify(this.currentHealthPlan));
-            }, error => this.errorMessage = <any> error); 
+            }, error => this.errorMessage = <any> error);
+        this._logger.warn("===== Calling method CATALOG API: getCivilStateList() =====");
+        this._catalogService.getCivilStateList()
+            .subscribe( (civilStateItemList : Array<Catalog> ) => {
+                this.civilStateItemList = civilStateItemList;                
+                this.civilStateItemList.push(Utils.getSelectItemByDefault());
+                this._logger.warn("OUTPUT=> civilStateItemList : " + JSON.stringify(this.civilStateItemList));
+            }, error => this.errorMessage = <any> error);
+        this._logger.warn("===== Calling method CATALOG API: getEapList() =====");
+        this._catalogService.getEapList()
+            .subscribe( (eapItemList : Array<Catalog> ) => {
+                this.eapItemList = eapItemList;
+                this.eapItemList.push(Utils.getSelectItemByDefault());
+                this._logger.warn("OUTPUT=> eapItemList : " + JSON.stringify(this.eapItemList));
+            }, error => this.errorMessage = <any> error);
+        this._initializeGenderList();
+        this._logger.warn("===== Calling method CATALOG API: getGenderList() =====");
+        this._catalogService.getGenderList()
+            .subscribe( (genderItemList : Array<string> ) => {
+                this.genderItemList = genderItemList;
+                this._logger.warn("OUTPUT=> genderItemList : " + JSON.stringify(this.genderItemList));
+            }, error => this.errorMessage = <any> error);
     }
 
     findPatientByCode(){
         this.newPatient = new Patient();
         this.emr = new Emr();
         this.emr.healthPlanId = this.currentHealthPlan.secondaryId;
-        this._catalogService.getGenderList()
-            .subscribe( (genderList : Array<string> ) => {
-                this.newPatient.genderList = genderList;
-            }, error => this.errorMessage = <any> error);
         this._logger.warn("===== Calling method PATIENT API:  getPatientDetailByCode("+ this.patientCode +") =====");
         this._patientService.getPatientDetailByCode(this.patientCode)
             .subscribe( (patient : Patient )=> {            
@@ -76,10 +101,8 @@ export class RegisterPatientComponent implements OnInit{
                         }, error => this.errorMessage = <any> error);
                     this.newPatient.setFieldsDetail(patient);
                     this.isPatientExisting = true;
-                    this.newPatient.addCivilStateItem();
-                    this.newPatient.addEapItem();
-                    this.newPatient.addUbigeoItems();
-                    this.isGenderRadioDisabled = this.newPatient.isMale();
+                    this._addUbigeoItems(); 
+                    this.isGenderRadioDisabled = this.isMale();
                 }else{
                     this._logger.warn("Patient is not registered yet");
                     this.isEmrConfirmationMessage = true;
@@ -87,33 +110,20 @@ export class RegisterPatientComponent implements OnInit{
                     this.emr.patientCode = this.patientCode;
                     this.newPatient.code = this.patientCode;
                     this.newPatient.ubigeo.changeToLima();
-                    this.ubigeoItemByDefault.initializeItemByDefault();
-                    this.loadItemsLists();
                     this.isGenderRadioDisabled = false;
+                    this.loadItemsLists();
                 }
             }, error => this.errorMessage = <any> error);        
     }
 
     private loadItemsLists(){
-        this._logger.warn("===== Calling method CATALOG API: getCivilStateList() =====");
-        this._catalogService.getCivilStateList()
-            .subscribe( (civilStateList : Array<Catalog> ) => {
-                this.newPatient.civilStateList = civilStateList;
-                this.newPatient.addCivilStateItemByDefault();
-            }, error => this.errorMessage = <any> error);
-        this._logger.warn("===== Calling method CATALOG API: getEapList() =====");
-        this._catalogService.getEapList()
-            .subscribe( (eapList : Array<Catalog> ) => {
-                this.newPatient.eapList = eapList;
-                this.newPatient.addEapItemByDefault();
-            }, error => this.errorMessage = <any> error);
         this._logger.warn("===== Calling method UBIGEO API: getDepartmentsList() =====");
         this._ubigeoService.getDepartmentsList()
-            .subscribe( (departmentsList : Array<Ubigeo> ) => {
-                this.newPatient.departmentsList = departmentsList;
-                this.newPatient.provincesList = [];
+            .subscribe( (departmentItemList : Array<Ubigeo> ) => {
+                this.departmentItemList = departmentItemList;
+                this.provinceItemList = [];
                 this.loadProvincesList(this.newPatient.ubigeo.departmentCode);
-                this.newPatient.districtsList = [];
+                this.districtItemList = [];
                 this.loadDistrictsList(this.newPatient.ubigeo.provinceCode);
             }, error => this.errorMessage = <any> error);
     }
@@ -121,20 +131,20 @@ export class RegisterPatientComponent implements OnInit{
     loadProvincesList(value){
         this.newPatient.ubigeo.departmentCode = value;
         this._ubigeoService.getProvincesListByDepartmentCode(this.newPatient.ubigeo.departmentCode)
-            .subscribe( (provincesList : Array<Ubigeo>) => {
-                this.newPatient.provincesList = provincesList;
-                this.newPatient.addProvinceItemByDefault(this.ubigeoItemByDefault);
-                this.newPatient.districtsList = [];
-                this.newPatient.addDistrictItemByDefault(this.ubigeoItemByDefault);
+            .subscribe( (provinceItemList : Array<Ubigeo>) => {
+                this.provinceItemList = provinceItemList;
+                this._addProvinceItemByDefault();
+                this.districtItemList = [];
+                this._addDistrictItemByDefault();
             }, error => this.errorMessage = <any> error);
     }
 
     loadDistrictsList(value){
         this.newPatient.ubigeo.provinceCode = value;
         this._ubigeoService.getDistrictsListByProvinceCode(this.newPatient.ubigeo.provinceCode)
-            .subscribe( (districtsList : Array<Ubigeo>) => {
-                this.newPatient.districtsList = districtsList;
-                this.newPatient.addDistrictItemByDefault(this.ubigeoItemByDefault);
+            .subscribe( (districtItemList : Array<Ubigeo>) => {
+                this.districtItemList = districtItemList;
+                this._addDistrictItemByDefault();
             }, error => this.errorMessage = <any> error);
     }
 
@@ -187,11 +197,40 @@ export class RegisterPatientComponent implements OnInit{
         this.isPatientExisting = true;
         this.errorMessage = null;
         this.newPatient = new Patient();
-        this.ubigeoItemByDefault = new Ubigeo();
         this.isGenderRadioDisabled = true;
         this.isFieldDisabled = false;
         this.isEmrConfirmationMessage = false;
+
+        this.departmentItemList = [];
+        this.provinceItemList = [];
+        this.districtItemList = [];
     }
 
-    
+    private _addProvinceItemByDefault(){
+        if(!this.newPatient.ubigeo.isLima()){
+            this.provinceItemList.push(this.ubigeoItemByDefault);
+            this.newPatient.ubigeo.provinceCode = null;
+        }
+    }
+
+    private _addDistrictItemByDefault(){
+        this.districtItemList.push(this.ubigeoItemByDefault);
+        this.newPatient.ubigeo.districtCode = null;
+    }
+
+    private _addUbigeoItems(){
+        this.departmentItemList.push(this.newPatient.ubigeo);
+        this.provinceItemList.push(this.newPatient.ubigeo);
+        this.districtItemList.push(this.newPatient.ubigeo);
+    }
+
+    private _initializeGenderList(){
+        this.genderItemList = [];
+        this.genderItemList.push('');//first index for Male
+        this.genderItemList.push('');//second index for Female
+    }
+
+    isMale():boolean{
+        return this.newPatient.gender == this.genderItemList[0].toString() ? true : false;
+    }
 }

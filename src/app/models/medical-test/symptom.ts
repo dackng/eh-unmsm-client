@@ -28,6 +28,7 @@ export class Symptom {
 		this.cieId = symptom.cieId;
 		this.cieName = symptom.cieName;
 		this.appointment = symptom.appointment;
+		this.formattedDate = Utils.formatHourDate(symptom.appointment);
 		this.observation = symptom.observation;
 	}
 }

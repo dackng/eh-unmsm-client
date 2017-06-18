@@ -11,7 +11,7 @@ export class GeneralMedicineTestService {
   URL: string;                                              
 
   constructor (private http: Http) {
-    //this.URL = 'http://192.168.1.42:8016/api';
+    //this.URL = 'http://localhost:8017/api';
     this.URL = 'https://ehu-gen-med-test-service.herokuapp.com/api';
   }
 

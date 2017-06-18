@@ -54,7 +54,8 @@ export class FindPatientComponent implements OnInit, OnDestroy{
           this._logger.warn("OUTPUT => Patient: " + JSON.stringify(this.patient));
           this.patientNotify.emit(this.patient);  
         }else{               
-          this._logger.warn("Patient doesn't exist or should go to receptionist");
+          this._logger.warn("Patient isn't exist or should go to receptionist");
+          this.initilize();
         }
       }, error => this.errorMessage = <any> error);
   }

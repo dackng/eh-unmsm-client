@@ -68,7 +68,7 @@
               <select [(ngModel)]="newPatient.civilStateId" class="form-control disabled-field" 
                 required name="civilStateId" ngControl="civilStateId" [disabled] ="isPatientExisting"
                 #civilState="ngModel">
-                <option *ngFor="let cs of newPatient.civilStateList" [ngValue]="cs.secondaryId" 
+                <option *ngFor="let cs of civilStateItemList" [ngValue]="cs.secondaryId" 
                   [selected]="cs.secondaryId == newPatient.civilStateId">{{cs.name}}</option>
               </select>
               <small *ngIf="civilState.errors?.required && isFieldDisabled" 
@@ -100,7 +100,7 @@
               <label translate>{{'patient.eap'}}</label>
               <select [(ngModel)]="newPatient.eapId" class="form-control disabled-field" name="eapId"
                 required ngControl="eapId" [disabled]="isPatientExisting" #eap="ngModel">
-                <option *ngFor="let eap of newPatient.eapList" [ngValue]="eap.secondaryId" 
+                <option *ngFor="let eap of eapItemList" [ngValue]="eap.secondaryId" 
                   [selected]="eap.secondaryId == newPatient.eapId"> {{eap.name}}</option>
               </select>
               <small *ngIf="eap.errors?.required && isFieldDisabled" 
@@ -134,7 +134,7 @@
               <div class="col-md-4">
                 <label class="radio-inline custom-radio nowrap">
                   <input type="radio" name="gender" ngControl="gender" [(ngModel)]="newPatient.gender" 
-                    value = {{newPatient.genderList[0].toString()}} [checked]="newPatient.isMale()" 
+                    value = {{genderItemList[0].toString()}} [checked]="isMale()" 
                     [disabled]="!isGenderRadioDisabled">
                   <span translate>{{'patient.gender.male'}}</span>
                 </label>
@@ -142,7 +142,7 @@
               <div class="col-md-4">
                 <label class="radio-inline custom-radio nowrap">
                   <input type="radio" name="gender" ngControl="gender" [(ngModel)]="newPatient.gender"
-                    value = {{newPatient.genderList[1].toString()}} [checked]="!newPatient.isMale()"
+                    value = {{genderItemList[1].toString()}} [checked]="!isMale()"
                     [disabled]="isGenderRadioDisabled">
                   <span translate>{{'patient.gender.female'}}</span>
                 </label>
@@ -164,7 +164,7 @@
                 <select [(ngModel)]="newPatient.ubigeo.departmentCode" #departmentCode="ngModel"
                   class="form-control disabled-field" name="departmentCode"  [disabled]="isPatientExisting" 
                   ngControl="departmentCode" (ngModelChange)="loadProvincesList($event)">
-                  <option *ngFor="let dpm of newPatient.departmentsList" 
+                  <option *ngFor="let dpm of departmentItemList" 
                     [selected]="dpm.departmentCode == newPatient.ubigeo.departmentCode"
                     [ngValue] = "dpm.departmentCode">{{dpm.departmentDescription}}</option>
                 </select>
@@ -176,7 +176,7 @@
                 <select [(ngModel)]="newPatient.ubigeo.provinceCode" required #provinceCode="ngModel" 
                   class="form-control disabled-field" name="provinceCode" (ngModelChange) = "loadDistrictsList($event)"
                   ngControl="provinceCode" [disabled]="isPatientExisting">
-                  <option *ngFor="let pv of newPatient.provincesList" [ngValue]="pv.provinceCode"
+                  <option *ngFor="let pv of provinceItemList" [ngValue]="pv.provinceCode"
                     [selected]="pv.provinceCode == newPatient.ubigeo.provinceCode">
                     {{pv.provinceDescription}}</option>
                 </select>
@@ -190,7 +190,7 @@
                 <select [(ngModel)]="newPatient.ubigeo.districtCode" required #districtCode="ngModel"
                   class="form-control disabled-field" name="districtCode"
                   ngControl="districtCode" [disabled]="isPatientExisting">
-                  <option *ngFor="let dt of newPatient.districtsList" [ngValue]="dt.districtCode" 
+                  <option *ngFor="let dt of districtItemList" [ngValue]="dt.districtCode" 
                     [selected]="dt.districtCode == newPatient.ubigeo.districtCode">
                     {{dt.districtDescription}}</option>
                 </select>
