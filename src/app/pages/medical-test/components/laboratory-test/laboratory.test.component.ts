@@ -69,6 +69,10 @@ export class LaboratoryTestComponent implements OnInit{
                             if(laboratoryTest != null){
                                 this._logger.warn("LaboratoryTest already registered");
                                 this.laboratoryTest.setFieldsDetail(laboratoryTest);
+                                this._commonService.notifyOther(
+                                    //sending signal for write other patient code
+                                    {initilizePatientCode:patient.code 
+                                    , initilizePatient: patient, initilizeIsActive:false});
                             }else{
                                 this._logger.warn("LaboratoryTest is not registered yet");
                                 this.laboratoryTest = new LaboratoryTest();

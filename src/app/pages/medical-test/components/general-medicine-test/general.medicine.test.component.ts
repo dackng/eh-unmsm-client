@@ -140,7 +140,9 @@ export class GeneralMedicineTestComponent implements OnInit{
                                 this._logger.warn("GeneralMedicineTest already registered");
                                 this.generalMedicineTest.setFieldsDetail(generalMedicineTest);
                                 this.generalMedicineTest.completeFields(this.symptomTypeItemList);
-                                this._commonService.notifyOther({initilizePatientCode:patient.code
+                                this._commonService.notifyOther(
+                                    //sending signal for write other patient code
+                                    {initilizePatientCode:patient.code 
                                     , initilizePatient: patient, initilizeIsActive:false});
                             }else{
                                 this._logger.warn("GeneralMedicineTest is not registered yet");

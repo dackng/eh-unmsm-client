@@ -20,7 +20,8 @@ import { ModalDirective } from 'ng2-bootstrap';
                 '../../../../theme/sass/_basicTables.scss',
                 '../../../../theme/sass/_modals.scss'],
     templateUrl: './radiology-test.html',
-    providers: [Logger, RadiologyTestService, EmrService, CatalogService, BasicTablesService]
+    providers: [Logger, RadiologyTestService, EmrService, CatalogService, CommonService, 
+        BasicTablesService]
 })
 
 export class RadiologyTestComponent implements OnInit{ 
@@ -67,6 +68,10 @@ export class RadiologyTestComponent implements OnInit{
                             if(radiologyTest != null){
                                 this._logger.warn("RadiologyTest already registered");
                                 this.radiologyTest.setFieldsDetail(radiologyTest);
+                                this._commonService.notifyOther(
+                                    //sending signal for write other patient code
+                                    {initilizePatientCode:patient.code 
+                                    , initilizePatient: patient, initilizeIsActive:false});
                             }else{
                                 this._logger.warn("RadiologyTest is not registered yet");
                                 this.radiologyTest = new RadiologyTest();

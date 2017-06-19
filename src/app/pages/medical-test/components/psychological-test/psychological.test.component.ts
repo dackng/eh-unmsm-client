@@ -20,7 +20,8 @@ import { ModalDirective } from 'ng2-bootstrap';
                 '../../../../theme/sass/_basicTables.scss',
                 '../../../../theme/sass/_modals.scss'],
     templateUrl: './psychological-test.html',
-    providers: [Logger, PsychologicalTestService, EmrService, CatalogService, BasicTablesService]
+    providers: [Logger, PsychologicalTestService, EmrService, CatalogService, CommonService, 
+        BasicTablesService]
 })
 
 export class PsychologicalTestComponent implements OnInit{ 
@@ -67,6 +68,10 @@ export class PsychologicalTestComponent implements OnInit{
                             if(psychologicalTest != null){
                                 this._logger.warn("PsychologicalTest already registered");
                                 this.psychologicalTest.setFieldsDetail(psychologicalTest);
+                                this._commonService.notifyOther(
+                                    //sending signal for write other patient code
+                                    {initilizePatientCode:patient.code 
+                                    , initilizePatient: patient, initilizeIsActive:false});
                             }else{
                                 this._logger.warn("RadiologyTest is not registered yet");
                                 this.psychologicalTest = new PsychologicalTest();
