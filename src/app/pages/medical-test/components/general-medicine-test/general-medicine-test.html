@@ -5,7 +5,8 @@
 
   <div>
     <ba-card title="PACIENTE" baCardClass="with-scroll">
-      <form #registerGeneralMedicineTestForm="ngForm" (ngSubmit)="registerGeneralMedicineTest()">
+      <form #registerGeneralMedicineTestForm="ngForm" 
+          (ngSubmit)="registerGeneralMedicineTest(registerGeneralMedicineTestForm.form.valid)">
         <div class="row">
           <div class="col-md-6">
             <find-patient (patientNotify)="receiveOutputExternal($event)"></find-patient>
@@ -55,7 +56,7 @@
                         <label translate>{{'general_medicine_test.lmp'}}</label>
                         <div *ngIf="!isGeneralMedicineTestRegistered">
                           <input type="date" class="form-control disabled-field" [(ngModel)]="generalMedicineTest.lmp" 
-                            required name="lmp" ngControl="lmp" [disabled] ="isGeneralMedicineTestRegistered" 
+                             name="lmp" ngControl="lmp" [disabled] ="isGeneralMedicineTestRegistered" 
                             #lmp="ngModel">
                           <small *ngIf="lmp.errors?.required && isFieldDisabled" 
                             class="text-danger" translate>{{'general.messages.required'}}</small>

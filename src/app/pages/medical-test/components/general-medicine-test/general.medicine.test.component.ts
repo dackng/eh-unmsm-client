@@ -28,7 +28,7 @@ import { ModalDirective } from 'ng2-bootstrap';
 
 export class GeneralMedicineTestComponent implements OnInit{ 
     pageAddressTab: string = "/pages/medical-test/general-medicine-test";
-
+    emrUpdated: Emr;
     generalMedicineTest: GeneralMedicineTest;
     symptom: Symptom;
     currentHealthPlan: Catalog;
@@ -130,6 +130,7 @@ export class GeneralMedicineTestComponent implements OnInit{
         this._emrService.getEmrByHealthPlanIdAndPatientCode(this.currentHealthPlan.secondaryId, patient.code)
             .subscribe( (emr: Emr) => {
                 if (emr != null){
+                    this.emrUpdated = emr;
                     this._logger.warn("EMR already registered");
                     this._logger.warn("===== Calling GeneralMedicineTest API: getGeneralMedicineTestByHealthPlanIdAndPatientCode("
                             + this.currentHealthPlan.secondaryId + ", " + patient.code + ") =====");
@@ -158,15 +159,21 @@ export class GeneralMedicineTestComponent implements OnInit{
             }, error => this.errorMessage = <any> error);
     }
 
-    registerGeneralMedicineTest(){
+    registerGeneralMedicineTest(isFormValided : boolean){
         this.isFieldDisabled = true;
-        this._logger.warn("===== Calling GeneralMedicineTest API: registerGeneralMedicineTest()");
-        this._logger.warn("INPUT => GeneralMedicineTest: "+JSON.stringify(this.generalMedicineTest));
-        this._generalMedicineTestService.registerGeneralMedicineTest(this.generalMedicineTest)
-            .subscribe(patient => {
-                this._logger.warn("*****GeneralMedicineTest registered successful*****");
-                this.initilize();
-            }, error => this.errorMessage = <any> error); 
+        if(isFormValided){
+            this._logger.warn("===== Calling GeneralMedicineTest API: registerGeneralMedicineTest()");
+            this._logger.warn("INPUT => GeneralMedicineTest: "+JSON.stringify(this.generalMedicineTest));
+            this._generalMedicineTestService.registerGeneralMedicineTest(this.generalMedicineTest)
+                .subscribe(test => {
+                    this._logger.warn("*****GeneralMedicineTest registered successful*****");
+                    this._emrService.validateEmrState(this.generalMedicineTest.emrHealthPlanId,
+                        this.generalMedicineTest.emrPatientCode, this.emrUpdated).subscribe(emr => {
+                            this._logger.warn("*****EMR state valid successful*****");
+                            this.initilize();
+                        }, error => this.errorMessage = <any> error);
+                }, error => this.errorMessage = <any> error);
+        } 
     }
 
     initilize(){        
@@ -174,6 +181,7 @@ export class GeneralMedicineTestComponent implements OnInit{
         this.isFieldDisabled = false;
         this.errorMessage = null;
         this.generalMedicineTest = new GeneralMedicineTest();
+        this.emrUpdated = new Emr();
         this.symptom = new Symptom();
         this._commonService.notifyOther({initilizePatientCode:null
             , initilizePatient: new Patient(), initilizeIsActive:false});
@@ -186,6 +194,8 @@ export class GeneralMedicineTestComponent implements OnInit{
     }
 
     private _addSymptom(){
+        this.symptom.formattedDate = Utils.formatHourDate(this.symptom.appointment);
+        console.log(JSON.stringify(this.symptom));
         this.generalMedicineTest.symptoms.push(this.symptom);
     }
     

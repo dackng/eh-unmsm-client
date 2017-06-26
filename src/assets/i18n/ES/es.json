@@ -3,7 +3,8 @@
     "home": "Home",
     "messages": {
       "required": "Requerido*",
-      "no_symptoms":"No hay síntomas"
+      "no_symptoms":"No hay síntomas",
+      "health_plan":"Plan de salud"
     },
     "subtitles":{
       "options": "OPCIONES"
@@ -91,7 +92,7 @@
       "subtitle": "REGISTRO DE LABORATORIO",
       "serological_test": "Examen serológico",
       "hemoglobin": "Hemoglobina",
-      "blood_count": "Hemograma",      
+      "blood_type": "Grupo sanguíneo",      
       "observation": "Observación"
   },
   "radiology_test":{

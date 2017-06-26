@@ -18,7 +18,7 @@ export class Utils {
     }
 
     static formatHourDate(date: Date) { 
-        return moment(date).format("DD/MM/YYYY hh:mm [h]");
+        return moment(date).format("DD/MM/YYYY HH:mm [h]");
     }
 
     static createCatalog(secondaryId: number, name: string){

@@ -1,5 +1,6 @@
 export class PsychologicalTest {
 
+	public id: number;
     public employeeCode: string;
 	public depressionResult: number;
 	public depressionStateId: number;
@@ -17,6 +18,7 @@ export class PsychologicalTest {
     constructor () {}
 
 	setFieldsDetail(psychologicalTest: PsychologicalTest){
+		this.id = psychologicalTest.id;
 		this.employeeCode = psychologicalTest.employeeCode;
 		this.depressionResult = psychologicalTest.depressionResult;
 		this.depressionStateId = psychologicalTest.depressionStateId;

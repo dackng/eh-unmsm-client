@@ -29,6 +29,14 @@ export class EmrService {
       .catch(this.handleError);
   }
 
+  validateEmrState(healthPlanId: number, patientCode: number, emr: Emr) {
+    let bodyString = JSON.stringify(emr);
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    return this.http.put(this.URL + '/find/' + healthPlanId + '/' + patientCode, bodyString, {headers:headers})
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
   private extractData(res: Response) { 
     let body = res.json();
     return body || { };

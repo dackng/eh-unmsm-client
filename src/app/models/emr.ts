@@ -1,10 +1,10 @@
 export class Emr {
 
+    public id: number;
     public patientCode: number;
     public employeeCode: string;
     public code: string;
     public stateId: number;
-    public stateName: string;
     public createdAt: Date;
     public updatedAt: Date;
     public healthPlanId: number; 
@@ -13,6 +13,7 @@ export class Emr {
     public isApplied : boolean;
     constructor () {
         this.isApplied = false;
+        this.stateId = null;
     }
 
     existEmr(){
@@ -20,10 +21,10 @@ export class Emr {
     }
 
     setFieldsDetail(emr: Emr){
+        this.id = emr.id;
         this.employeeCode = emr.employeeCode;
         this.code = emr.code;
         this.stateId = emr.stateId;
-        this.stateName = emr.stateName;
         this.createdAt = emr.createdAt;
         this.updatedAt = emr.updatedAt;
         this.healthPlanId = emr.healthPlanId; 

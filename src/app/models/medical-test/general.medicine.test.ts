@@ -4,6 +4,7 @@ import {Utils} from './../utils';
 
 export class GeneralMedicineTest {
 
+    public id: number;
     public employeeCode: string;
     public weight: number;
     public stature: number;
@@ -25,6 +26,7 @@ export class GeneralMedicineTest {
     }
     
     setFieldsDetail(generalMedicineTest: GeneralMedicineTest){
+        this.id = generalMedicineTest.id;
         this.employeeCode = generalMedicineTest.employeeCode;
         this.weight = generalMedicineTest.weight;
         this.stature = generalMedicineTest.stature;

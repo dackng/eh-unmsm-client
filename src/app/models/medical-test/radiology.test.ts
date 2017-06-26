@@ -1,6 +1,7 @@
 export class RadiologyTest {
 
-    public typeId: number;
+    public id: number;
+	public typeId: number;
 	public employeeCode: string;
 	public observation: string;
 	public updatedAt: Date;
@@ -11,6 +12,7 @@ export class RadiologyTest {
     constructor () {}
 
 	setFieldsDetail(radiologyTest: RadiologyTest){
+		this.id = radiologyTest.id;
 		this.typeId = radiologyTest.typeId;
 		this.employeeCode = radiologyTest.employeeCode;
 		this.observation = radiologyTest.observation;

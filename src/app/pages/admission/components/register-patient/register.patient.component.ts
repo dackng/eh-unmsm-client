@@ -32,6 +32,7 @@ export class RegisterPatientComponent implements OnInit{
     isFieldDisabled: boolean;
     isEmrConfirmationMessage: boolean;
     
+    emrStateItemList: Array<Catalog>;
     civilStateItemList : Array<Catalog>;
     eapItemList : Array<Catalog>;
     departmentItemList : Array<Ubigeo>;
@@ -73,6 +74,12 @@ export class RegisterPatientComponent implements OnInit{
             .subscribe( (genderItemList : Array<string> ) => {
                 this.genderItemList = genderItemList;
                 this._logger.warn("OUTPUT=> genderItemList : " + JSON.stringify(this.genderItemList));
+            }, error => this.errorMessage = <any> error);
+        this._logger.warn("===== Calling method CATALOG API: getEmrStateList() =====");
+        this._catalogService.getEmrStateList()
+            .subscribe( (emrStateItemList : Array<Catalog> ) => {
+                this.emrStateItemList = emrStateItemList;
+                this._logger.warn("OUTPUT=> emrStateItemList : " + JSON.stringify(this.emrStateItemList));
             }, error => this.errorMessage = <any> error);
     }
 
@@ -200,6 +207,7 @@ export class RegisterPatientComponent implements OnInit{
         this.isGenderRadioDisabled = true;
         this.isFieldDisabled = false;
         this.isEmrConfirmationMessage = false;
+        this.currentHealthPlan = new Catalog(0,"");
 
         this.departmentItemList = [];
         this.provinceItemList = [];

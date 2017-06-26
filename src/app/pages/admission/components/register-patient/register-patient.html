@@ -4,14 +4,21 @@
     <div class="col-md-12">
       <ba-card baCardClass="with-scroll">
         <div class="row">
-          <div class="text-center">
-            <form class="form-inline">
+          <div class="col-md-6">
+            <div class="form-group">
               <label translate>{{'patient.type.name'}}</label>&nbsp;&nbsp;
               <select class="form-control">
                 <option translate>{{'patient.type.student'}}</option>
                 <option translate>{{'patient.type.external'}}</option>
               </select>
-            </form>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label translate>{{'general.messages.health_plan'}}</label>&nbsp;&nbsp;
+              <input type="text" class="form-control disabled" [(ngModel)]="currentHealthPlan.name" 
+                name="currentHealthPlan" ngControl="currentHealthPlan" [disabled]="true">
+            </div>
           </div>
         </div>
       </ba-card>
@@ -93,8 +100,11 @@
             </ba-card>
             <div *ngIf="!isEmrConfirmationMessage" class="form-group">
               <label translate>{{'patient.emrState'}}</label>
-              <input type="text" class="form-control disabled" [(ngModel)]="emr.stateName" 
-                name="emrStateName" ngControl="emrStateName" [disabled]="true">
+              <select [(ngModel)]="emr.stateId" class="form-control disabled-field" name="stateId"
+                required ngControl="stateEmr" [disabled]="true" #stateEmr="ngModel">
+                <option *ngFor="let stateEmr of emrStateItemList" [ngValue]="stateEmr.secondaryId" 
+                  [selected]="stateEmr.secondaryId == emr.stateId"> {{stateEmr.name}}</option>
+              </select>
             </div>
             <div class="form-group">
               <label translate>{{'patient.eap'}}</label>

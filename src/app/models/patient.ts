@@ -5,15 +5,14 @@ import * as moment from 'moment';
 
 export class Patient {
 
+    public id: number;
     public code: number;
     public names: string;
     public paternalSurname: string;
     public maternalSurname: string;
     public civilStateId: number;
-    public civilStateName: string;
     public email: string;
     public eapId: number;
-    public eapName: string;
     public birthDate: Date;
     public telephone: number;
     public gender: string;
@@ -39,15 +38,14 @@ export class Patient {
     }
 
     setFieldsDetail(patient: Patient){
+        this.id = patient.id;
         this.code = patient.code;
         this.names = patient.names;
         this.paternalSurname = patient.paternalSurname;
         this.maternalSurname = patient.maternalSurname;
         this.civilStateId = patient.civilStateId;
-        this.civilStateName = patient.civilStateName;
         this.email =  patient.email;
         this.eapId = patient.eapId;
-        this.eapName = patient.eapName;
         this.formattedDate = Utils.formatDate(patient.birthDate);
         this.telephone = patient.telephone;
         this.gender = patient.gender;

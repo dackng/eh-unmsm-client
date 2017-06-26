@@ -38,15 +38,15 @@
             </div>
             <div class="col-md-4">
               <div class="form-group">
-                <label translate>{{'laboratory_test.blood_count'}}</label>&nbsp;&nbsp;
-                <select [(ngModel)]="laboratoryTest.bloodCount" #bloodCount="ngModel"
-                  class="form-control disabled-field" name="bloodCount" [disabled]="isLaboratoryTestRegistered" 
-                  ngControl="bloodCount" >
-                  <option *ngFor="let bloodCount of bloodCountItemList" 
-                    [selected]="bloodCount.secondaryId == laboratoryTest.bloodCountId"
-                    [ngValue] = "bloodCount.secondaryId">{{bloodCount.name}}</option>
+                <label translate>{{'laboratory_test.blood_type'}}</label>&nbsp;&nbsp;
+                <select [(ngModel)]="laboratoryTest.bloodTypeId" #bloodType="ngModel"
+                  class="form-control disabled-field" name="bloodType" [disabled]="isLaboratoryTestRegistered" 
+                  ngControl="bloodType" >
+                  <option *ngFor="let bloodType of bloodTypeItemList" 
+                    [selected]="bloodType.secondaryId == laboratoryTest.bloodTypeId"
+                    [ngValue] = "bloodType.secondaryId">{{bloodType.name}}</option>
                 </select>
-                <small *ngIf="bloodCount.errors?.required" 
+                <small *ngIf="bloodType.errors?.required" 
                     class="text-danger" translate>{{'general.messages.required'}}</small>
               </div>
             </div>

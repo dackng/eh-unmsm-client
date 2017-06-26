@@ -63,6 +63,24 @@ export class CatalogService {
       .catch(this.handleError);
   }
 
+  getSerologicalTestList() : Observable<Array<Catalog>>{
+    return this.http.get(this.URL + '/list/serological-test')
+      .map(this.extractDataArray)
+      .catch(this.handleError);
+  }
+
+  getBloodTypeList() : Observable<Array<Catalog>>{
+    return this.http.get(this.URL + '/list/blood-type')
+      .map(this.extractDataArray)
+      .catch(this.handleError);
+  }
+
+  getRadiologyTypeList() : Observable<Array<Catalog>>{
+    return this.http.get(this.URL + '/list/radiology-type')
+      .map(this.extractDataArray)
+      .catch(this.handleError);
+  }
+
   private extractDataObject(res: Response) {
     let body = res.json();
     return body || { };

@@ -47,6 +47,13 @@ export class RadiologyTestComponent implements OnInit{
                 this.currentHealthPlan = new Catalog (catalog.secondaryId, catalog.name);
                 this._logger.warn("OUTPUT=> currentHealthPlan : " + JSON.stringify(this.currentHealthPlan));
         }, error => this.errorMessage = <any> error);
+        this._logger.warn("===== Calling method CATALOG API:  getRadiologyTypeList() =====");
+        this._catalogService.getRadiologyTypeList()
+            .subscribe( (radiologyTypeItemList : Array<Catalog> ) => {
+                this.radiologyTypeItemList = radiologyTypeItemList;
+                this.radiologyTypeItemList.push(itemByDefault);
+                this._logger.warn("OUTPUT=> radiologyTypeItemList : " + JSON.stringify(this.radiologyTypeItemList));
+        }, error => this.errorMessage = <any> error);
     }
 
     receiveOutputExternal(patient: Patient){

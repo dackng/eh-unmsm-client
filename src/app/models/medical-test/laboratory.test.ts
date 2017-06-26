@@ -1,11 +1,12 @@
 export class LaboratoryTest {
 
-    public employeeCode: string;
+    public id: number;
+	public employeeCode: string;
 	public serologicalTestId: number;
 	public hemoglobin: number;
 	public hemoglobinStateId: number;
 	public hemoglobinStateName;
-	public bloodCountId: number;
+	public bloodTypeId: number;
 	public observation: string;
 	public updatedAt: Date;
 	public isFinished: boolean;
@@ -15,12 +16,13 @@ export class LaboratoryTest {
     constructor () {}
 
 	setFieldsDetail(laboratoryTest: LaboratoryTest){
-        this.employeeCode = laboratoryTest.employeeCode;
+        this.id = laboratoryTest.id;
+		this.employeeCode = laboratoryTest.employeeCode;
         this.serologicalTestId = laboratoryTest.serologicalTestId;
 		this.hemoglobin = laboratoryTest.hemoglobin;
 		this.hemoglobinStateId = laboratoryTest.hemoglobinStateId;
 		this.hemoglobinStateName = laboratoryTest.hemoglobinStateName;
-		this.bloodCountId = laboratoryTest.bloodCountId;
+		this.bloodTypeId = laboratoryTest.bloodTypeId;
 		this.observation = laboratoryTest.observation;
         this.updatedAt = laboratoryTest.updatedAt;
         this.isFinished = laboratoryTest.isFinished;

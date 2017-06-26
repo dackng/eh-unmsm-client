@@ -30,7 +30,7 @@ export class LaboratoryTestComponent implements OnInit{
     patientCode: number;
     isLaboratoryTestRegistered: boolean;
     serologicalItemList: Array<Catalog>;
-    bloodCountItemList: Array<Catalog>;
+    bloodTypeItemList: Array<Catalog>;
     isFieldDisabled: boolean;
     errorMessage: string;
 
@@ -47,6 +47,20 @@ export class LaboratoryTestComponent implements OnInit{
             .subscribe( (catalog : Catalog ) => {
                 this.currentHealthPlan = new Catalog (catalog.secondaryId, catalog.name);
                 this._logger.warn("OUTPUT=> currentHealthPlan : " + JSON.stringify(this.currentHealthPlan));
+        }, error => this.errorMessage = <any> error);
+        this._logger.warn("===== Calling method CATALOG API:  getSerologicalTestList() =====");
+        this._catalogService.getSerologicalTestList()
+            .subscribe( (serologicalItemList : Array<Catalog> ) => {
+                this.serologicalItemList = serologicalItemList;
+                this.serologicalItemList.push(itemByDefault);
+                this._logger.warn("OUTPUT=> serologicalItemList : " + JSON.stringify(this.serologicalItemList));
+        }, error => this.errorMessage = <any> error);
+        this._logger.warn("===== Calling method CATALOG API:  getBloodTypeList() =====");
+        this._catalogService.getBloodTypeList()
+            .subscribe( (bloodTypeItemList : Array<Catalog> ) => {
+                this.bloodTypeItemList = bloodTypeItemList;
+                this.bloodTypeItemList.push(itemByDefault);
+                this._logger.warn("OUTPUT=> bloodTypeItemList : " + JSON.stringify(this.bloodTypeItemList));
         }, error => this.errorMessage = <any> error);
     }
 
