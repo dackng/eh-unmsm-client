@@ -49,6 +49,13 @@ export class PsychologicalTestComponent implements OnInit{
                 this.currentHealthPlan = Utils.createCatalog(catalog.secondaryId, catalog.name);
                 this._logger.warn("OUTPUT=> currentHealthPlan : " + JSON.stringify(this.currentHealthPlan));
         }, error => this.errorMessage = <any> error);
+        this._logger.warn("===== Calling method CATALOG API:  getPsychologicalDiagnosisList() =====");
+        this._catalogService.getPsychologicalDiagnosisList()
+            .subscribe( (diagnosisItemList : Array<Catalog> ) => {
+                this.diagnosisItemList = diagnosisItemList;
+                this.diagnosisItemList.push(itemByDefault);
+                this._logger.warn("OUTPUT=> diagnosisItemList : " + JSON.stringify(this.diagnosisItemList));
+        }, error => this.errorMessage = <any> error);   
     }
 
     receiveOutputExternal(patient: Patient){

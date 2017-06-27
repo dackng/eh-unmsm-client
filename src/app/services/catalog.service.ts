@@ -81,6 +81,12 @@ export class CatalogService {
       .catch(this.handleError);
   }
 
+  getPsychologicalDiagnosisList() : Observable<Array<Catalog>>{
+    return this.http.get(this.URL + '/list/psychological-diagnosis')
+      .map(this.extractDataArray)
+      .catch(this.handleError);
+  }
+
   private extractDataObject(res: Response) {
     let body = res.json();
     return body || { };
