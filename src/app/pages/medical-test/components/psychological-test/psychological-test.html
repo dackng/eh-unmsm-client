@@ -5,7 +5,7 @@
 
   <div>
     <ba-card title="PACIENTE" baCardClass="with-scroll">
-      <form #registerPsychologicalTestForm="ngForm" (ngSubmit)="registerPsychologicalTest()">
+      <form #registerPsychologicalTestForm="ngForm" (ngSubmit)="registerPsychologicalTest(registerPsychologicalTestForm.form.valid)">
         <div class="row">
           <div class="col-md-6">
             <find-patient (patientNotify)="receiveOutputExternal($event)"></find-patient>
@@ -28,7 +28,7 @@
                 <input type="text" class="form-control disabled-field" [(ngModel)]="psychologicalTest.depressionResult" 
                   required name="depressionResult" maxlength="3" ngControl="depressionResult" [disabled] ="isPsychologicalTestRegistered"
                   #depressionResult="ngModel" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
-                <small *ngIf="depressionResult.errors?.required" 
+                <small *ngIf="depressionResult.errors?.required && isFieldDisabled" 
                   class="text-danger" translate>{{'general.messages.required'}}</small>
               </div>
             </div>
@@ -45,7 +45,7 @@
                 <input type="text" class="form-control disabled-field" [(ngModel)]="psychologicalTest.anxietyResult" 
                   required name="anxietyResult" maxlength="3" ngControl="anxietyResult" [disabled] ="isPsychologicalTestRegistered"
                   #anxietyResult="ngModel" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
-                <small *ngIf="anxietyResult.errors?.required" 
+                <small *ngIf="anxietyResult.errors?.required && isFieldDisabled" 
                   class="text-danger" translate>{{'general.messages.required'}}</small>
               </div>
             </div>
@@ -63,12 +63,12 @@
                 <label translate>{{'psychological_test.diagnosis'}}</label>&nbsp;&nbsp;
                 <select [(ngModel)]="psychologicalTest.diagnosisId" #diagnosisId="ngModel"
                   class="form-control disabled-field" name="diagnosisId" [disabled]="isPsychologicalTestRegistered" 
-                  ngControl="diagnosisId" >
+                  ngControl="diagnosisId" required>
                   <option *ngFor="let diagnosis of diagnosisItemList" 
                     [selected]="diagnosis.secondaryId == psychologicalTest.typeId"
                     [ngValue] = "diagnosis.secondaryId">{{diagnosis.name}}</option>
                 </select>
-                <small *ngIf="diagnosisId.errors?.required" 
+                <small *ngIf="diagnosisId.errors?.required && isFieldDisabled" 
                     class="text-danger" translate>{{'general.messages.required'}}</small>
               </div>
             </div>

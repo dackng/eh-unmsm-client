@@ -5,7 +5,7 @@
 
   <div>
     <ba-card title="PACIENTE" baCardClass="with-scroll">
-      <form #registerLaboratoryTestForm="ngForm" (ngSubmit)="registerLaboratoryTest()">
+      <form #registerLaboratoryTestForm="ngForm" (ngSubmit)="registerLaboratoryTest(registerLaboratoryTestForm.form.valid)">
         <div class="row">
           <div class="col-md-6">
             <find-patient (patientNotify)="receiveOutputExternal($event)"></find-patient>
@@ -25,14 +25,14 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label translate>{{'laboratory_test.serological_test'}}</label>&nbsp;&nbsp;
-                <select [(ngModel)]="laboratoryTest.serologicalTestId" #serologicalTestId="ngModel"
+                <select [(ngModel)]="laboratoryTest.serologicalTestId" #serologicalTestId="ngModel" required
                   class="form-control disabled-field" name="serologicalTestId" [disabled]="isLaboratoryTestRegistered" 
                   ngControl="serologicalTestId" >
                   <option *ngFor="let serological of serologicalItemList" 
                     [selected]="serological.secondaryId == laboratoryTest.serologicalTestId"
                     [ngValue] = "serological.secondaryId">{{serological.name}}</option>
                 </select>
-                <small *ngIf="serologicalTestId.errors?.required" 
+                <small *ngIf="serologicalTestId.errors?.required && isFieldDisabled" 
                     class="text-danger" translate>{{'general.messages.required'}}</small>
               </div>
             </div>
@@ -41,12 +41,12 @@
                 <label translate>{{'laboratory_test.blood_type'}}</label>&nbsp;&nbsp;
                 <select [(ngModel)]="laboratoryTest.bloodTypeId" #bloodType="ngModel"
                   class="form-control disabled-field" name="bloodType" [disabled]="isLaboratoryTestRegistered" 
-                  ngControl="bloodType" >
+                  ngControl="bloodType" required>
                   <option *ngFor="let bloodType of bloodTypeItemList" 
                     [selected]="bloodType.secondaryId == laboratoryTest.bloodTypeId"
                     [ngValue] = "bloodType.secondaryId">{{bloodType.name}}</option>
                 </select>
-                <small *ngIf="bloodType.errors?.required" 
+                <small *ngIf="bloodType.errors?.required && isFieldDisabled" 
                     class="text-danger" translate>{{'general.messages.required'}}</small>
               </div>
             </div>
@@ -58,7 +58,7 @@
                 <input type="text" class="form-control disabled-field" [(ngModel)]="laboratoryTest.hemoglobin" 
                   required name="hemoglobin" maxlength="3" ngControl="hemoglobin" [disabled] ="isLaboratoryTestRegistered"
                   #hemoglobin="ngModel" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
-                <small *ngIf="hemoglobin.errors?.required" 
+                <small *ngIf="hemoglobin.errors?.required && isFieldDisabled" 
                   class="text-danger" translate>{{'general.messages.required'}}</small>
               </div>
             </div>

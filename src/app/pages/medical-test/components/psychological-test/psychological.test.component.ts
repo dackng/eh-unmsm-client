@@ -5,6 +5,7 @@ import { Logger } from "angular2-logger/core";
 import {Patient} from '../../../../models/patient';
 import {Catalog} from '../../../../models/catalog';
 import {Emr} from '../../../../models/emr';
+import {Utils} from '../../../../models/utils';
 import {PsychologicalTest} from '../../../../models/medical-test/psychological.test';
 import {PsychologicalTestService} from '../../../../services/medical-test/psychological.test.service';
 import {EmrService} from '../../../../services/emr.service';
@@ -25,6 +26,7 @@ import { ModalDirective } from 'ng2-bootstrap';
 })
 
 export class PsychologicalTestComponent implements OnInit{ 
+    emrUpdated: Emr;
     psychologicalTest: PsychologicalTest;
     currentHealthPlan: Catalog;
     patientCode: number;
@@ -40,11 +42,11 @@ export class PsychologicalTestComponent implements OnInit{
     constructor(private _logger: Logger, private _basicTablesService: BasicTablesService, private _catalogService: CatalogService
         , private _emrService: EmrService, private _psychologicalTestService: PsychologicalTestService, private _commonService: CommonService) {
         this._logger.warn("Constructor()");
-        let itemByDefault = new Catalog(null,"<SELECCIONE>");
+        let itemByDefault = Utils.getSelectItemByDefault();
         this._logger.warn("===== Calling method CATALOG API:  getCurrentHealthPlan() =====");
         this._catalogService.getCurrentHealthPlan()//loading the current health plan
             .subscribe( (catalog : Catalog ) => {
-                this.currentHealthPlan = new Catalog (catalog.secondaryId, catalog.name);
+                this.currentHealthPlan = Utils.createCatalog(catalog.secondaryId, catalog.name);
                 this._logger.warn("OUTPUT=> currentHealthPlan : " + JSON.stringify(this.currentHealthPlan));
         }, error => this.errorMessage = <any> error);
     }
@@ -59,6 +61,7 @@ export class PsychologicalTestComponent implements OnInit{
         this._emrService.getEmrByHealthPlanIdAndPatientCode(this.currentHealthPlan.secondaryId, patient.code)
             .subscribe( (emr: Emr) => {
                 if (emr != null){
+                    this.emrUpdated = emr;
                     this._logger.warn("EMR already registered");
                     this._logger.warn("===== Calling RadiologyTest API: getRadiologyTestByHealthPlanIdAndPatientCode("
                             + this.currentHealthPlan.secondaryId + ", " + patient.code + ") =====");
@@ -86,10 +89,22 @@ export class PsychologicalTestComponent implements OnInit{
             }, error => this.errorMessage = <any> error);
     }
 
-    registerPsychologicalTest(){
+    registerPsychologicalTest(isFormValided : boolean){
         this.isFieldDisabled = true;
-        this._logger.warn("===== Calling PsychologicalTest API: registerPsychologicalTest()");
-        this._logger.warn("INPUT => PsychologicalTest: "+JSON.stringify(this.psychologicalTest)); 
+        if(isFormValided){
+            this._logger.warn("===== Calling PsychologicalTest API: registerPsychologicalTest()");
+            this._logger.warn("INPUT => PsychologicalTest: "+JSON.stringify(this.psychologicalTest));
+            /*
+            this._psychologicalTestService.registerPsychologicalTest(this.psychologicalTest)
+                .subscribe(test => {
+                    this._logger.warn("*****PsychologicalTest registered successful*****");
+                    this._emrService.validateEmrState(this.psychologicalTest.emrHealthPlanId,
+                        this.psychologicalTest.emrPatientCode, this.emrUpdated).subscribe(emr => {
+                            this._logger.warn("*****EMR state valid successful*****");
+                            this.initilize();
+                        }, error => this.errorMessage = <any> error);
+                }, error => this.errorMessage = <any> error);*/
+        } 
     }
 
     initilize(){
@@ -98,6 +113,7 @@ export class PsychologicalTestComponent implements OnInit{
         this.isFieldDisabled = false;
         this.errorMessage = null;
         this.psychologicalTest = new PsychologicalTest();
+        this.emrUpdated = new Emr();
         this._commonService.notifyOther({initilizePatientCode:null
             , initilizePatient: new Patient(), initilizeIsActive:false});
     }

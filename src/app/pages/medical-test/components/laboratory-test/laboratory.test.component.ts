@@ -5,6 +5,7 @@ import { Logger } from "angular2-logger/core";
 import {Patient} from '../../../../models/patient';
 import {Catalog} from '../../../../models/catalog';
 import {Emr} from '../../../../models/emr';
+import {Utils} from '../../../../models/utils';
 import {LaboratoryTest} from '../../../../models/medical-test/laboratory.test';
 import {LaboratoryTestService} from '../../../../services/medical-test/laboratory.test.service';
 import {EmrService} from '../../../../services/emr.service';
@@ -25,6 +26,7 @@ import { ModalDirective } from 'ng2-bootstrap';
 })
 
 export class LaboratoryTestComponent implements OnInit{ 
+    emrUpdated: Emr;
     laboratoryTest: LaboratoryTest;
     currentHealthPlan: Catalog;
     patientCode: number;
@@ -41,11 +43,11 @@ export class LaboratoryTestComponent implements OnInit{
     constructor(private _logger: Logger, private _basicTablesService: BasicTablesService, private _catalogService: CatalogService
         , private _emrService: EmrService, private _laboratoryTestService: LaboratoryTestService, private _commonService: CommonService) {
         this._logger.warn("Constructor()");
-        let itemByDefault = new Catalog(null,"<SELECCIONE>");
+        let itemByDefault = Utils.getSelectItemByDefault();
         this._logger.warn("===== Calling method CATALOG API:  getCurrentHealthPlan() =====");
         this._catalogService.getCurrentHealthPlan()//loading the current health plan
             .subscribe( (catalog : Catalog ) => {
-                this.currentHealthPlan = new Catalog (catalog.secondaryId, catalog.name);
+                this.currentHealthPlan = Utils.createCatalog(catalog.secondaryId, catalog.name);
                 this._logger.warn("OUTPUT=> currentHealthPlan : " + JSON.stringify(this.currentHealthPlan));
         }, error => this.errorMessage = <any> error);
         this._logger.warn("===== Calling method CATALOG API:  getSerologicalTestList() =====");
@@ -74,6 +76,7 @@ export class LaboratoryTestComponent implements OnInit{
         this._emrService.getEmrByHealthPlanIdAndPatientCode(this.currentHealthPlan.secondaryId, patient.code)
             .subscribe( (emr: Emr) => {
                 if (emr != null){
+                    this.emrUpdated = emr;
                     this._logger.warn("EMR already registered");
                     this._logger.warn("===== Calling LaboratoryTest API: getLaboratoryTestByHealthPlanIdAndPatientCode("
                             + this.currentHealthPlan.secondaryId + ", " + patient.code + ") =====");
@@ -101,10 +104,22 @@ export class LaboratoryTestComponent implements OnInit{
             }, error => this.errorMessage = <any> error);
     }
 
-    registerLaboratoryTest(){
+    registerLaboratoryTest(isFormValided : boolean){
         this.isFieldDisabled = true;
-        this._logger.warn("===== Calling LaboratoryTest API: registerLaboratoryTest()");
-        this._logger.warn("INPUT => LaboratoryTest: "+JSON.stringify(this.laboratoryTest)); 
+        if(isFormValided){
+            this._logger.warn("===== Calling LaboratoryTest API: registerLaboratoryTest()");
+            this._logger.warn("INPUT => LaboratoryTest: "+JSON.stringify(this.laboratoryTest));
+            /*
+            this._laboratoryTestService.registerLaboratoryTest(this.laboratoryTest)
+                .subscribe(test => {
+                    this._logger.warn("*****LaboratoryTest registered successful*****");
+                    this._emrService.validateEmrState(this.laboratoryTest.emrHealthPlanId,
+                        this.laboratoryTest.emrPatientCode, this.emrUpdated).subscribe(emr => {
+                            this._logger.warn("*****EMR state valid successful*****");
+                            this.initilize();
+                        }, error => this.errorMessage = <any> error);
+                }, error => this.errorMessage = <any> error);*/
+        } 
     }
 
     initilize(){
@@ -113,6 +128,7 @@ export class LaboratoryTestComponent implements OnInit{
         this.isFieldDisabled = false;
         this.errorMessage = null;
         this.laboratoryTest = new LaboratoryTest();
+        this.emrUpdated = new Emr();
         this._commonService.notifyOther({initilizePatientCode:null
             , initilizePatient: new Patient(), initilizeIsActive:false});
     }

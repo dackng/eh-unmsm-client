@@ -5,7 +5,7 @@
 
   <div>
     <ba-card title="PACIENTE" baCardClass="with-scroll">
-      <form #registerRadiologyTestForm="ngForm" (ngSubmit)="registerRadiologyTest()">
+      <form #registerRadiologyTestForm="ngForm" (ngSubmit)="registerRadiologyTest(registerRadiologyTestForm.form.valid)">
         <div class="row">
           <div class="col-md-6">
             <find-patient (patientNotify)="receiveOutputExternal($event)"></find-patient>
@@ -25,14 +25,14 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label translate>{{'radiology_test.radiology_type'}}</label>&nbsp;&nbsp;
-                <select [(ngModel)]="radiologyTest.typeId" #typeId="ngModel"
+                <select [(ngModel)]="radiologyTest.typeId" #typeId="ngModel" required
                   class="form-control disabled-field" name="typeId" [disabled]="isRadiologyTestRegistered" 
                   ngControl="typeId" >
                   <option *ngFor="let type of radiologyTypeItemList" 
                     [selected]="type.secondaryId == radiologyTest.typeId"
                     [ngValue] = "type.secondaryId">{{type.name}}</option>
                 </select>
-                <small *ngIf="typeId.errors?.required" 
+                <small *ngIf="typeId.errors?.required && isFieldDisabled" 
                     class="text-danger" translate>{{'general.messages.required'}}</small>
               </div>
             </div>
