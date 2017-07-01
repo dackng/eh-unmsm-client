@@ -2,9 +2,8 @@
   <div class="col-md-12">
     <ba-card baCardClass="with-scroll">
       <div class="row">
-        <div class="col-md-4"></div>
-        <div class="col-md-4">
-          <form class="form-inline">
+        <div class="col-md-6">
+          <form class="form-group">
             <label translate>{{'patient.type.name'}}</label>&nbsp;&nbsp;
             <select class="form-control">
               <option translate>{{'patient.type.student'}}</option>
@@ -12,7 +11,13 @@
             </select>
           </form>
         </div>
-        <div class="col-md-4 "></div>
+        <div class="col-md-6">
+            <div class="form-group">
+              <label translate>{{'general.messages.health_plan'}}</label>&nbsp;&nbsp;
+              <input type="text" class="form-control disabled" [(ngModel)]="currentHealthPlan.name" 
+                name="currentHealthPlan" ngControl="currentHealthPlan" [disabled]="true">
+            </div>
+        </div>
       </div>
     </ba-card>
   </div>

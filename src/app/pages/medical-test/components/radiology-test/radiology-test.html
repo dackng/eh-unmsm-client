@@ -1,6 +1,6 @@
 <div class="widgets">
   <!--SELECT PATIENT TYPE-->
-  <select-patient-type></select-patient-type>
+  <select-patient-type (currentHealthPlanNotify)="receiveOutputExternalOfCurrentHealthPlan($event)"></select-patient-type>
   <!--/SELECT PATIENT TYPE-->
 
   <div>
@@ -8,7 +8,7 @@
       <form #registerRadiologyTestForm="ngForm" (ngSubmit)="registerRadiologyTest(registerRadiologyTestForm.form.valid)">
         <div class="row">
           <div class="col-md-6">
-            <find-patient (patientNotify)="receiveOutputExternal($event)"></find-patient>
+            <find-patient (patientNotify)="receiveOutputExternalOfPatient($event)"></find-patient>
           </div>
           <div class="col-md-6">
             <!-- MEDICAL TEST PROCESS-->

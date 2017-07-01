@@ -49,12 +49,6 @@ export class GeneralMedicineTestComponent implements OnInit{
         , private _commonService: CommonService) {
         this._logger.warn("Constructor()");
         let itemByDefault = Utils.getSelectItemByDefault();
-        this._logger.warn("===== Calling method CATALOG API:  getCurrentHealthPlan() =====");
-        this._catalogService.getCurrentHealthPlan()//loading the current health plan
-            .subscribe( (catalog : Catalog ) => {
-                this.currentHealthPlan = Utils.createCatalog(catalog.secondaryId, catalog.name);
-                this._logger.warn("OUTPUT=> currentHealthPlan : " + JSON.stringify(this.currentHealthPlan));
-        }, error => this.errorMessage = <any> error);
         this._catalogService.getSymptomTypeList()
             .subscribe( (symptomTypeItemList : Array<Catalog> ) => {
                 this.symptomTypeItemList = symptomTypeItemList;
@@ -120,8 +114,13 @@ export class GeneralMedicineTestComponent implements OnInit{
         }      
     }
 
-    receiveOutputExternal(patient: Patient){
+    receiveOutputExternalOfPatient(patient: Patient){
         this.validateEMRAndGeneralMedicineTestExistence(patient);   
+    }
+
+    receiveOutputExternalOfCurrentHealthPlan(currentHealthPlan: Catalog){
+        this.currentHealthPlan = currentHealthPlan;
+        this._logger.warn("ReceiveOutput currentHealthPlan="+JSON.stringify(this.currentHealthPlan));   
     }
 
     validateEMRAndGeneralMedicineTestExistence(patient: Patient){

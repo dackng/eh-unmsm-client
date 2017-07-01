@@ -43,12 +43,6 @@ export class PsychologicalTestComponent implements OnInit{
         , private _emrService: EmrService, private _psychologicalTestService: PsychologicalTestService, private _commonService: CommonService) {
         this._logger.warn("Constructor()");
         let itemByDefault = Utils.getSelectItemByDefault();
-        this._logger.warn("===== Calling method CATALOG API:  getCurrentHealthPlan() =====");
-        this._catalogService.getCurrentHealthPlan()//loading the current health plan
-            .subscribe( (catalog : Catalog ) => {
-                this.currentHealthPlan = Utils.createCatalog(catalog.secondaryId, catalog.name);
-                this._logger.warn("OUTPUT=> currentHealthPlan : " + JSON.stringify(this.currentHealthPlan));
-        }, error => this.errorMessage = <any> error);
         this._logger.warn("===== Calling method CATALOG API:  getPsychologicalDiagnosisList() =====");
         this._catalogService.getPsychologicalDiagnosisList()
             .subscribe( (diagnosisItemList : Array<Catalog> ) => {
@@ -58,8 +52,13 @@ export class PsychologicalTestComponent implements OnInit{
         }, error => this.errorMessage = <any> error);   
     }
 
-    receiveOutputExternal(patient: Patient){
+    receiveOutputExternalOfPatient(patient: Patient){
         this.validateEMRAndPsychologicalTestExistence(patient);   
+    }
+
+    receiveOutputExternalOfCurrentHealthPlan(currentHealthPlan: Catalog){
+        this.currentHealthPlan = currentHealthPlan;
+        this._logger.warn("ReceiveOutput currentHealthPlan="+JSON.stringify(this.currentHealthPlan));   
     }
 
     validateEMRAndPsychologicalTestExistence(patient: Patient){
