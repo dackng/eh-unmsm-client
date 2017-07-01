@@ -101,7 +101,6 @@ export class PsychologicalTestComponent implements OnInit{
         if(isFormValided){
             this._logger.warn("===== Calling PsychologicalTest API: registerPsychologicalTest()");
             this._logger.warn("INPUT => PsychologicalTest: "+JSON.stringify(this.psychologicalTest));
-            /*
             this._psychologicalTestService.registerPsychologicalTest(this.psychologicalTest)
                 .subscribe(test => {
                     this._logger.warn("*****PsychologicalTest registered successful*****");
@@ -110,7 +109,7 @@ export class PsychologicalTestComponent implements OnInit{
                             this._logger.warn("*****EMR state valid successful*****");
                             this.initilize();
                         }, error => this.errorMessage = <any> error);
-                }, error => this.errorMessage = <any> error);*/
+                }, error => this.errorMessage = <any> error);
         } 
     }
 

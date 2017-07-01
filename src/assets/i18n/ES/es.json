@@ -91,7 +91,8 @@
       "option": "Laboratorio",
       "subtitle": "REGISTRO DE LABORATORIO",
       "serological_test": "Examen serológico",
-      "hemoglobin": "Hemoglobina",
+      "hemoglobin": "Hemoglobina (g/L)",
+      "hemoglobin_state":"Estado de hemoglobina",
       "blood_type": "Grupo sanguíneo",      
       "observation": "Observación"
   },

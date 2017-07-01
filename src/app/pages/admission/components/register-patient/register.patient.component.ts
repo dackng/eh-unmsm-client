@@ -239,6 +239,6 @@ export class RegisterPatientComponent implements OnInit{
     }
 
     isMale():boolean{
-        return this.newPatient.gender == this.genderItemList[0].toString() ? true : false;
+        return Utils.isMaleGender(this.newPatient.gender, this.genderItemList[0].toString());
     }
 }

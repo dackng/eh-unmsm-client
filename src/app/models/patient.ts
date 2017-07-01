@@ -5,6 +5,7 @@ import * as moment from 'moment';
 
 export class Patient {
 
+    /*Fields for send to APIs*/
     public id: number;
     public code: number;
     public names: string;
@@ -19,6 +20,7 @@ export class Patient {
     public ubigeo: Ubigeo;
     public address : string;
 
+    /*Fields for help to view logic*/
     public genderList: Array<string>;
     public formattedDate : string;
 
@@ -58,5 +60,7 @@ export class Patient {
         this.names = patient.names;
         this.paternalSurname = patient.paternalSurname;
         this.maternalSurname = patient.maternalSurname;
+        this.gender = patient.gender;
+        this.birthDate = patient.birthDate;
     }
 }

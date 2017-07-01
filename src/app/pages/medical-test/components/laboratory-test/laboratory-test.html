@@ -22,7 +22,7 @@
         <!--LABORATORY TEST RECORD-->
         <ba-card translate title="{{'laboratory_test.subtitle'}}" baCardClass="with-scroll card card-primary">
           <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
               <div class="form-group">
                 <label translate>{{'laboratory_test.serological_test'}}</label>&nbsp;&nbsp;
                 <select [(ngModel)]="laboratoryTest.serologicalTestId" #serologicalTestId="ngModel" required
@@ -36,7 +36,7 @@
                     class="text-danger" translate>{{'general.messages.required'}}</small>
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
               <div class="form-group">
                 <label translate>{{'laboratory_test.blood_type'}}</label>&nbsp;&nbsp;
                 <select [(ngModel)]="laboratoryTest.bloodTypeId" #bloodType="ngModel"
@@ -52,21 +52,27 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-3">
               <div class="form-group">
                 <label translate>{{'laboratory_test.hemoglobin'}}</label>&nbsp;&nbsp;
                 <input type="text" class="form-control disabled-field" [(ngModel)]="laboratoryTest.hemoglobin" 
                   required name="hemoglobin" maxlength="3" ngControl="hemoglobin" [disabled] ="isLaboratoryTestRegistered"
-                  #hemoglobin="ngModel" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+                  #hemoglobin="ngModel" onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+                  (change)="laboratoryTest.evaluateHemoglobinState()"/>
                 <small *ngIf="hemoglobin.errors?.required && isFieldDisabled" 
                   class="text-danger" translate>{{'general.messages.required'}}</small>
               </div>
             </div>
-            <div class="col-md-4">
-              <label>&nbsp;</label>
+            <div class="col-md-3">
               <div class="form-group">
-                <input type="text" class="form-control disabled" [(ngModel)]="laboratoryTest.hemoglobinStateName" 
-                  name="hemoglobinStateName" ngControl="hemoglobinStateName" [disabled]="true">
+                <label translate>{{'laboratory_test.hemoglobin_state'}}</label>&nbsp;&nbsp;
+                <select [(ngModel)]="laboratoryTest.hemoglobinStateId" class="form-control disabled-field" name="stateId"
+                  required ngControl="hemoglobinStateId" [disabled]="true" #hemoglobinStateId="ngModel">
+                  <option *ngFor="let hemoglobinState of hemoglobinStateItemList" [ngValue]="hemoglobinState.secondaryId" 
+                    [selected]="hemoglobinState.secondaryId == laboratoryTest.hemoglobinStateId">
+                     {{hemoglobinState.name}}</option>
+                </select>
+                
               </div>
             </div>
           </div>

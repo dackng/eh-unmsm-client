@@ -33,6 +33,8 @@ export class LaboratoryTestComponent implements OnInit{
     isLaboratoryTestRegistered: boolean;
     serologicalItemList: Array<Catalog>;
     bloodTypeItemList: Array<Catalog>;
+    hemoglobinStateItemList: Array<Catalog>;
+    genderItemList: Array<string>;
     isFieldDisabled: boolean;
     errorMessage: string;
 
@@ -64,6 +66,18 @@ export class LaboratoryTestComponent implements OnInit{
                 this.bloodTypeItemList.push(itemByDefault);
                 this._logger.warn("OUTPUT=> bloodTypeItemList : " + JSON.stringify(this.bloodTypeItemList));
         }, error => this.errorMessage = <any> error);
+        this._logger.warn("===== Calling method CATALOG API: getGenderList() =====");
+        this._catalogService.getGenderList()
+            .subscribe( (genderItemList : Array<string> ) => {
+                this.genderItemList = genderItemList;
+                this._logger.warn("OUTPUT=> genderItemList : " + JSON.stringify(this.genderItemList));
+            }, error => this.errorMessage = <any> error);
+        this._logger.warn("===== Calling method CATALOG API: getHemoglobinStateList() =====");
+        this._catalogService.getHemoglobinStateList()
+            .subscribe( (hemoglobinStateItemList : Array<Catalog> ) => {
+                this.hemoglobinStateItemList = hemoglobinStateItemList;
+                this._logger.warn("OUTPUT=> hemoglobinStateItemList : " + JSON.stringify(this.hemoglobinStateItemList));
+            }, error => this.errorMessage = <any> error);
     }
 
     receiveOutputExternal(patient: Patient){
@@ -93,6 +107,11 @@ export class LaboratoryTestComponent implements OnInit{
                             }else{
                                 this._logger.warn("LaboratoryTest is not registered yet");
                                 this.laboratoryTest = new LaboratoryTest();
+                                this.laboratoryTest.hemoglobinStateItemList = this.hemoglobinStateItemList;
+                                this.laboratoryTest.isPatientOfMaleGender = 
+                                    Utils.isMaleGender(patient.gender, this.genderItemList[0].toString());
+                                this.laboratoryTest.ageInYearsOfPatient = 
+                                    Utils.calculateDifferenceInYears(new Date(), patient.birthDate);
                                 this.laboratoryTest.emrHealthPlanId = this.currentHealthPlan.secondaryId;
                                 this.laboratoryTest.emrPatientCode = patient.code;
                                 this.isLaboratoryTestRegistered = false;
@@ -109,7 +128,6 @@ export class LaboratoryTestComponent implements OnInit{
         if(isFormValided){
             this._logger.warn("===== Calling LaboratoryTest API: registerLaboratoryTest()");
             this._logger.warn("INPUT => LaboratoryTest: "+JSON.stringify(this.laboratoryTest));
-            /*
             this._laboratoryTestService.registerLaboratoryTest(this.laboratoryTest)
                 .subscribe(test => {
                     this._logger.warn("*****LaboratoryTest registered successful*****");
@@ -118,7 +136,7 @@ export class LaboratoryTestComponent implements OnInit{
                             this._logger.warn("*****EMR state valid successful*****");
                             this.initilize();
                         }, error => this.errorMessage = <any> error);
-                }, error => this.errorMessage = <any> error);*/
+                }, error => this.errorMessage = <any> error);
         } 
     }
 

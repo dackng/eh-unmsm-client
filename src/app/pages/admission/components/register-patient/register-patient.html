@@ -101,9 +101,9 @@
             <div *ngIf="!isEmrConfirmationMessage" class="form-group">
               <label translate>{{'patient.emrState'}}</label>
               <select [(ngModel)]="emr.stateId" class="form-control disabled-field" name="stateId"
-                required ngControl="stateEmr" [disabled]="true" #stateEmr="ngModel">
-                <option *ngFor="let stateEmr of emrStateItemList" [ngValue]="stateEmr.secondaryId" 
-                  [selected]="stateEmr.secondaryId == emr.stateId"> {{stateEmr.name}}</option>
+                required ngControl="emrState" [disabled]="true" #emrState="ngModel">
+                <option *ngFor="let emrState of emrStateItemList" [ngValue]="emrState.secondaryId" 
+                  [selected]="emrState.secondaryId == emr.stateId"> {{emrState.name}}</option>
               </select>
             </div>
             <div class="form-group">

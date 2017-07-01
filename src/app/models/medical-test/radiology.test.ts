@@ -1,5 +1,6 @@
 export class RadiologyTest {
 
+	/*Fields for send to APIs*/
     public id: number;
 	public typeId: number;
 	public employeeCode: string;
@@ -9,7 +10,9 @@ export class RadiologyTest {
 	public emrPatientCode: number;
 	public emrHealthPlanId: number; 
     
-    constructor () {}
+    constructor () {
+		this.typeId = null; 
+	}
 
 	setFieldsDetail(radiologyTest: RadiologyTest){
 		this.id = radiologyTest.id;

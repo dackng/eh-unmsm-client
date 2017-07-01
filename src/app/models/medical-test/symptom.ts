@@ -3,6 +3,7 @@ import {Utils} from './../utils';
 
 export class Symptom {
 
+	/*Fields for send to APIs*/
     public id: number;
 	public typeId: number;
 	public typeName: string;
@@ -11,9 +12,11 @@ export class Symptom {
 	public appointment: Date;
 	public observation: string;
 
+	/*Fields for help to view logic*/
 	public formattedDate: string;
     public isRegistered: boolean;
 	public indexForEdit: number;
+	
     constructor () {
 		this.typeId = null;
 		this.cieId = null;

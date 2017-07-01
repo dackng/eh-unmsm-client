@@ -39,6 +39,8 @@
                   name="depressionStateName" ngControl="depressionStateName" [disabled]="true">
               </div>
             </div>
+          </div>
+          <div class="row">
             <div class="col-md-2">
               <div class="form-group">
                 <label translate>{{'psychological_test.anxiety_result'}}</label>&nbsp;&nbsp;
@@ -58,7 +60,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-6">
               <div class="form-group">
                 <label translate>{{'psychological_test.diagnosis'}}</label>&nbsp;&nbsp;
                 <select [(ngModel)]="psychologicalTest.diagnosisId" #diagnosisId="ngModel"

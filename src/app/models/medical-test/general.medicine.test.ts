@@ -4,6 +4,7 @@ import {Utils} from './../utils';
 
 export class GeneralMedicineTest {
 
+    /*Fields for send to APIs*/
     public id: number;
     public employeeCode: string;
     public weight: number;
@@ -20,6 +21,7 @@ export class GeneralMedicineTest {
     public emrHealthPlanId: number; 
     public symptoms: Array<Symptom>
 
+    /*Fields for help to view logic*/
     public formattedDate : string;
     constructor () {
         this.symptoms = [];

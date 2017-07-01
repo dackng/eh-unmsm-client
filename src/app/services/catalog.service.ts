@@ -87,6 +87,12 @@ export class CatalogService {
       .catch(this.handleError);
   }
 
+  getHemoglobinStateList() : Observable<Array<Catalog>>{
+    return this.http.get(this.URL + '/list/hemoglobin-state')
+      .map(this.extractDataArray)
+      .catch(this.handleError);
+  }
+
   private extractDataObject(res: Response) {
     let body = res.json();
     return body || { };

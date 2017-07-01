@@ -1,5 +1,6 @@
 export class PsychologicalTest {
 
+	/*Fields for send to APIs*/
 	public id: number;
     public employeeCode: string;
 	public depressionResult: number;

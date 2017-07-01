@@ -1,5 +1,6 @@
 export class Emr {
 
+    /*Fields for send to APIs*/
     public id: number;
     public patientCode: number;
     public employeeCode: string;
@@ -10,7 +11,9 @@ export class Emr {
     public healthPlanId: number; 
     public healthPlanName: string;
     
+    /*Fields for help to view logic*/
     public isApplied : boolean;
+    
     constructor () {
         this.isApplied = false;
         this.stateId = null;

@@ -30,4 +30,12 @@ export class Utils {
         }
         return this.catalog;
     }
+
+    static isMaleGender(gender:string, male:string){
+        return gender == male ? true : false;
+    }
+
+    static calculateDifferenceInYears(firstDate: Date, secondDate: Date){
+        return moment(firstDate).diff(secondDate, 'years');
+    }
 }

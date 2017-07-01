@@ -1,8 +1,9 @@
 export class Ubigeo {
-
+    /*Constants*/
     public static LIMA_DEPARTMENT_CODE = "15";
     public static LIMA_PROVINCE_CODE = "01";
 
+    /*Fields for send to APIs*/
     public ubigeoCode: string;
     public departmentCode: string;
     public departmentDescription: string;  
