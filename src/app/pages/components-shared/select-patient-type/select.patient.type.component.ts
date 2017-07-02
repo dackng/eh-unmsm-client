@@ -3,6 +3,7 @@ import { Logger } from "angular2-logger/core";
 
 import {Catalog} from '../../../models/catalog';
 import {Utils} from '../../../models/utils';
+import {Constants} from '../../../models/constants';
 
 import {CatalogService} from '../../../services/catalog.service';
 
@@ -13,8 +14,6 @@ import {CatalogService} from '../../../services/catalog.service';
   providers: [Logger, CatalogService]
 })
 export class SelectPatientTypeComponent implements OnInit {
-    
-    public static LOADING_LABEL = "CARGANDO...";
     currentHealthPlan: Catalog;
     errorMessage: string;
     @Output() currentHealthPlanNotify = new EventEmitter<Catalog>();
@@ -35,6 +34,6 @@ export class SelectPatientTypeComponent implements OnInit {
 
     initilize(){
         //Creating an item with index 0 because represent the LOADING action
-        this.currentHealthPlan = new Catalog(0,SelectPatientTypeComponent.LOADING_LABEL);
+        this.currentHealthPlan = new Catalog(0,Constants.LOADING_LABEL);
     }
 }

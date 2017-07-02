@@ -36,7 +36,7 @@ export class FindPatientComponent implements OnInit, OnDestroy{
     this.patientCode = null;
     this.isActive = false;
     this.errorMessage = null;
-    this.subscriptionForReceiveInput = this.commonService.notifyObservable$.subscribe((res) => {
+    this.subscriptionForReceiveInput = this.commonService.notifyObservableOfFindPacient$.subscribe((res) => {
         this.patientCode = res.initilizePatientCode;
         this.patient = res.initilizePatient;
         this.isActive = res.initilizeIsActive;
@@ -55,6 +55,7 @@ export class FindPatientComponent implements OnInit, OnDestroy{
           this.patientNotify.emit(this.patient);  
         }else{               
           this._logger.warn("Patient isn't exist or should go to receptionist");
+          this.patientNotify.emit(null);
           this.initilize();
         }
       }, error => this.errorMessage = <any> error);

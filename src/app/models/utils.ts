@@ -2,7 +2,7 @@ import {Catalog} from './catalog';
 import * as moment from 'moment';
 
 export class Utils {
-
+    
     static selectItem: Catalog;
     static catalog: Catalog;
     

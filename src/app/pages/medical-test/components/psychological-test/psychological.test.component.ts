@@ -12,7 +12,6 @@ import {EmrService} from '../../../../services/emr.service';
 import {CatalogService} from '../../../../services/catalog.service';
 import {CommonService} from '../../../../services/common.service';
 
-import {BasicTablesService} from '../../../../services/basicTables.service';
 import { ModalDirective } from 'ng2-bootstrap';
 
 @Component({
@@ -21,8 +20,7 @@ import { ModalDirective } from 'ng2-bootstrap';
                 '../../../../theme/sass/_basicTables.scss',
                 '../../../../theme/sass/_modals.scss'],
     templateUrl: './psychological-test.html',
-    providers: [Logger, PsychologicalTestService, EmrService, CatalogService, CommonService, 
-        BasicTablesService]
+    providers: [Logger, PsychologicalTestService, EmrService, CatalogService, CommonService]
 })
 
 export class PsychologicalTestComponent implements OnInit{ 
@@ -32,6 +30,7 @@ export class PsychologicalTestComponent implements OnInit{
     patientCode: number;
     isPsychologicalTestRegistered: boolean;
     diagnosisItemList: Array<Catalog>;
+    emrStateItemList: Array<Catalog>;
     isFieldDisabled: boolean;
     errorMessage: string;
 
@@ -39,7 +38,7 @@ export class PsychologicalTestComponent implements OnInit{
         this.initilize();
     }
 
-    constructor(private _logger: Logger, private _basicTablesService: BasicTablesService, private _catalogService: CatalogService
+    constructor(private _logger: Logger, private _catalogService: CatalogService
         , private _emrService: EmrService, private _psychologicalTestService: PsychologicalTestService, private _commonService: CommonService) {
         this._logger.warn("Constructor()");
         let itemByDefault = Utils.getSelectItemByDefault();
@@ -49,11 +48,26 @@ export class PsychologicalTestComponent implements OnInit{
                 this.diagnosisItemList = diagnosisItemList;
                 this.diagnosisItemList.push(itemByDefault);
                 this._logger.warn("OUTPUT=> diagnosisItemList : " + JSON.stringify(this.diagnosisItemList));
-        }, error => this.errorMessage = <any> error);   
+        }, error => this.errorMessage = <any> error);
+        this._logger.warn("===== Calling method CATALOG API: getEmrStateList() =====");
+        this._catalogService.getEmrStateList()
+            .subscribe( (emrStateItemList : Array<Catalog> ) => {
+                this.emrStateItemList = emrStateItemList;
+                this._logger.warn("OUTPUT=> emrStateItemList : " + JSON.stringify(this.emrStateItemList));
+            }, error => this.errorMessage = <any> error);   
     }
 
     receiveOutputExternalOfPatient(patient: Patient){
-        this.validateEMRAndPsychologicalTestExistence(patient);   
+        if(patient != null){
+            this._commonService.notifyMedicalTestProcessComponent(
+                //sending signal for get process table
+                {patientCode: patient.code 
+                , healthPlanId: this.currentHealthPlan.secondaryId
+                , emrStateItemList:this.emrStateItemList});
+            this.validateEMRAndPsychologicalTestExistence(patient);
+        }else{
+            this.initilize();
+        }   
     }
 
     receiveOutputExternalOfCurrentHealthPlan(currentHealthPlan: Catalog){
@@ -77,7 +91,7 @@ export class PsychologicalTestComponent implements OnInit{
                             if(psychologicalTest != null){
                                 this._logger.warn("PsychologicalTest already registered");
                                 this.psychologicalTest.setFieldsDetail(psychologicalTest);
-                                this._commonService.notifyOther(
+                                this._commonService.notifyFindPacientComponent(
                                     //sending signal for write other patient code
                                     {initilizePatientCode:patient.code 
                                     , initilizePatient: patient, initilizeIsActive:false});
@@ -119,7 +133,15 @@ export class PsychologicalTestComponent implements OnInit{
         this.errorMessage = null;
         this.psychologicalTest = new PsychologicalTest();
         this.emrUpdated = new Emr();
-        this._commonService.notifyOther({initilizePatientCode:null
+        this.initilizeChildComponents();
+    }
+
+    private initilizeChildComponents(){
+        this._commonService.notifyFindPacientComponent({initilizePatientCode:null
             , initilizePatient: new Patient(), initilizeIsActive:false});
+        this._commonService.notifyMedicalTestProcessComponent(
+            {patientCode: null 
+            , healthPlanId: null
+            , emrStateItemList:null});
     }
 }

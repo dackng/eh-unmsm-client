@@ -4,7 +4,8 @@
     "messages": {
       "required": "Requerido*",
       "no_symptoms":"No hay síntomas",
-      "health_plan":"Plan de salud"
+      "health_plan":"Plan de salud",
+      "no_medical_test":"No hay exámenes médicos"
     },
     "subtitles":{
       "options": "OPCIONES"

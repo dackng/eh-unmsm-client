@@ -2,17 +2,27 @@ import { Injectable, Inject } from '@angular/core';
 import { Subject }    from 'rxjs/Subject';
 @Injectable()
 export class CommonService {
-  private notify = new Subject<any>();
+  private findPacientSubject = new Subject<any>();
+  
+  private medicalTestProcessSubject = new Subject<any>();
   /**
    * Observable string streams
    */
-  notifyObservable$ = this.notify.asObservable();
+  notifyObservableOfFindPacient$ = this.findPacientSubject.asObservable();
+
+  notifyObservableOfMedicalTestTable$ = this.medicalTestProcessSubject.asObservable();
 
   constructor(){}
 
-  public notifyOther(data: any) {
+  public notifyFindPacientComponent(data: any) {
     if (data) {
-      this.notify.next(data);
+      this.findPacientSubject.next(data);
+    }
+  }
+
+  public notifyMedicalTestProcessComponent(data: any) {
+    if (data) {
+      this.medicalTestProcessSubject.next(data);
     }
   }
 }

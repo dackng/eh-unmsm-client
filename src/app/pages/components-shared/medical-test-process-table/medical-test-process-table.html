@@ -1,3 +1,4 @@
+<form>
 <div class="horizontal-scroll">
   <table class="table table-hover">
     <thead>
@@ -8,13 +9,19 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let item of peopleTableData">
-      <td class="table-id center">{{ item.id }}</td>
-      <td>{{ item.firstName }}</td>
-      <td>
-        <button disabled="disabled" ngClass="{status-button btn btn-xs btn-{{ item.status }}">{{ item.status }}</button>
-      </td>
-    </tr>
+      <ng-container *ngIf="patientCode != null && medicalTestItemList !=null">
+        <tr *ngFor="let test of medicalTestItemList; let i=index">
+          <td class="table-id center">{{ i+1 }}</td>
+          <td>{{ test.medicalTestName }}</td>
+          <td>
+            <button disabled="disabled" ngClass="{status-button btn btn-xs btn-{{ test.colorMessage }}">{{test.stateName}}</button>
+          </td>
+        </tr>
+      </ng-container>
     </tbody>
   </table>
+  <ng-container *ngIf="patientCode == null">
+    <label class="row col-md-12 text-center" translate>{{'general.messages.no_medical_test'}}</label>
+  </ng-container>
 </div>
+</form>

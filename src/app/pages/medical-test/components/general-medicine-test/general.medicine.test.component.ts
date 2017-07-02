@@ -13,8 +13,6 @@ import {EmrService} from '../../../../services/emr.service';
 import {CatalogService} from '../../../../services/catalog.service';
 import {CommonService} from '../../../../services/common.service';
 
-import {BasicTablesService} from '../../../../services/basicTables.service';
-
 import { ModalDirective } from 'ng2-bootstrap';
 
 @Component({
@@ -23,7 +21,7 @@ import { ModalDirective } from 'ng2-bootstrap';
                 '../../../../theme/sass/_basicTables.scss',
                 '../../../../theme/sass/_modals.scss'],
     templateUrl: './general-medicine-test.html',
-    providers: [Logger, GeneralMedicineTestService, EmrService, CatalogService, CommonService, BasicTablesService]
+    providers: [Logger, GeneralMedicineTestService, EmrService, CatalogService, CommonService]
 })
 
 export class GeneralMedicineTestComponent implements OnInit{ 
@@ -38,13 +36,15 @@ export class GeneralMedicineTestComponent implements OnInit{
     errorMessage: string;
     symptomTypeItemList: Array<Catalog>;
     cieItemList: Array<Catalog>;
+    emrStateItemList: Array<Catalog>;
+
     @ViewChild('addSymptomModal') addSymptomModal: ModalDirective;
 
     ngOnInit(){
         this.initilize();
     }
 
-    constructor(private _logger: Logger, private _basicTablesService: BasicTablesService, private _catalogService: CatalogService
+    constructor(private _logger: Logger, private _catalogService: CatalogService
         , private _emrService: EmrService, private _generalMedicineTestService: GeneralMedicineTestService
         , private _commonService: CommonService) {
         this._logger.warn("Constructor()");
@@ -61,6 +61,12 @@ export class GeneralMedicineTestComponent implements OnInit{
                 this.cieItemList.push(itemByDefault);
                 this._logger.warn("OUTPUT=> cieItemList : " + JSON.stringify(this.cieItemList));
         }, error => this.errorMessage = <any> error);
+        this._logger.warn("===== Calling method CATALOG API: getEmrStateList() =====");
+        this._catalogService.getEmrStateList()
+            .subscribe( (emrStateItemList : Array<Catalog> ) => {
+                this.emrStateItemList = emrStateItemList;
+                this._logger.warn("OUTPUT=> emrStateItemList : " + JSON.stringify(this.emrStateItemList));
+            }, error => this.errorMessage = <any> error);
     }
 
     showAddSymptomModal(){
@@ -115,7 +121,16 @@ export class GeneralMedicineTestComponent implements OnInit{
     }
 
     receiveOutputExternalOfPatient(patient: Patient){
-        this.validateEMRAndGeneralMedicineTestExistence(patient);   
+        if(patient != null){
+            this._commonService.notifyMedicalTestProcessComponent(
+                //sending signal for get process table
+                {patientCode: patient.code 
+                , healthPlanId: this.currentHealthPlan.secondaryId
+                , emrStateItemList:this.emrStateItemList});
+            this.validateEMRAndGeneralMedicineTestExistence(patient);
+        }else{
+            this.initilize();
+        }   
     }
 
     receiveOutputExternalOfCurrentHealthPlan(currentHealthPlan: Catalog){
@@ -140,7 +155,7 @@ export class GeneralMedicineTestComponent implements OnInit{
                                 this._logger.warn("GeneralMedicineTest already registered");
                                 this.generalMedicineTest.setFieldsDetail(generalMedicineTest);
                                 this.generalMedicineTest.completeFields(this.symptomTypeItemList);
-                                this._commonService.notifyOther(
+                                this._commonService.notifyFindPacientComponent(
                                     //sending signal for write other patient code
                                     {initilizePatientCode:patient.code 
                                     , initilizePatient: patient, initilizeIsActive:false});
@@ -182,8 +197,17 @@ export class GeneralMedicineTestComponent implements OnInit{
         this.generalMedicineTest = new GeneralMedicineTest();
         this.emrUpdated = new Emr();
         this.symptom = new Symptom();
-        this._commonService.notifyOther({initilizePatientCode:null
+        this.initilizeChildComponents();
+    }
+
+    private initilizeChildComponents(){
+        this._commonService.notifyFindPacientComponent({initilizePatientCode:null
             , initilizePatient: new Patient(), initilizeIsActive:false});
+        this._commonService.notifyMedicalTestProcessComponent(
+            //sending signal for get process table
+            {patientCode: null 
+            , healthPlanId: null
+            , emrStateItemList:null});
     }
 
     //Find value item selected
