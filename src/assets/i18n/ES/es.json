@@ -5,7 +5,8 @@
       "required": "Requerido*",
       "no_symptoms":"No hay síntomas",
       "health_plan":"Plan de salud",
-      "no_medical_test":"No hay exámenes médicos"
+      "no_medical_test":"No hay exámenes médicos",
+      "is_patient_no_registered": "Paciente no registrado con el plan de salud, debe ir a Admisión"
     },
     "subtitles":{
       "options": "OPCIONES"

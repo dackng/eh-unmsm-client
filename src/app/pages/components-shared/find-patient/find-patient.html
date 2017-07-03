@@ -11,8 +11,10 @@
           [disabled]="patientCodeField.errors?.required || patientCodeField.errors?.rangeLength || isActive">
           <i class="fa fa-search"></i>
         </button>
-      </span>
+      </span>  
     </div>
+    <small *ngIf="isPatientNoRegistered" class="text-danger" 
+      translate>{{'general.messages.is_patient_no_registered'}}</small>
   </div>
 </form>
 <div class="form-group">

@@ -16,6 +16,7 @@ export class FindPatientComponent implements OnInit, OnDestroy{
   patient : Patient;
   patientCode : number;
   isActive: boolean;
+  isPatientNoRegistered: boolean;
   errorMessage: string;
   @Output() patientNotify = new EventEmitter<Patient>();
   private subscriptionForReceiveInput: Subscription;
@@ -45,6 +46,7 @@ export class FindPatientComponent implements OnInit, OnDestroy{
 
   findPatientByCode(){
     this.isActive = true;
+    this.isPatientNoRegistered = false;
     this.patient = new Patient();
     this._logger.warn("===== Calling method PATIENT API:  getPatientSummaryByCode("+ this.patientCode +") =====");
     this._patientService.getPatientSummaryByCode(this.patientCode)
@@ -56,6 +58,7 @@ export class FindPatientComponent implements OnInit, OnDestroy{
         }else{               
           this._logger.warn("Patient isn't exist or should go to receptionist");
           this.patientNotify.emit(null);
+          this.isPatientNoRegistered = true;
           this.initilize();
         }
       }, error => this.errorMessage = <any> error);
