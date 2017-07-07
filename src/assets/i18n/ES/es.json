@@ -21,7 +21,9 @@
     "menu": {
       "dashboard": "Dashboard",
       "admission": "Admisión",
-      "medical_test": "Examen Médico" 
+      "medical_test": "Examen Médico",
+      "medical_record":"Registro Médico",
+      "health_record":"Registro de Salud"
     }
   },
   "register_patient": {

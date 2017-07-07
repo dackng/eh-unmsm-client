@@ -41,7 +41,7 @@ export const PAGES_MENU = [
         data: {
           menu: {
             title: 'general.menu.medical_test',
-            icon: 'ion-compose',
+            icon: 'ion-medkit',
             selected: false,
             expanded: false,
             order: 250,
@@ -81,30 +81,35 @@ export const PAGES_MENU = [
             }
           }
         ]
-      }/*
+      }
       ,
       {
         path: 'editors',
         data: {
           menu: {
-            title: 'general.menu.editors',
-            icon: 'ion-edit',
+            title: 'general.menu.medical_record',
+            icon: 'ion-ios-pulse-strong',
             selected: false,
             expanded: false,
             order: 100,
           }
-        },
-        children: [
-          {
-            path: 'ckeditor',
-            data: {
-              menu: {
-                title: 'general.menu.ck_editor',
-              }
-            }
+        }
+      }
+      ,
+      {
+        path: 'editors',
+        data: {
+          menu: {
+            title: 'general.menu.health_record',
+            icon: 'ion-clipboard',
+            selected: false,
+            expanded: false,
+            order: 100,
           }
-        ]
-      },
+        }
+      }
+      /*
+      ,
       {
         path: 'components',
         data: {
