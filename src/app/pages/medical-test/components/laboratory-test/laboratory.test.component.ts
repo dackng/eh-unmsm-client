@@ -6,6 +6,7 @@ import {Patient} from '../../../../models/patient';
 import {Catalog} from '../../../../models/catalog';
 import {Emr} from '../../../../models/emr';
 import {Utils} from '../../../../models/utils';
+import {Constants} from '../../../../models/constants';
 import {LaboratoryTest} from '../../../../models/medical-test/laboratory.test';
 import {LaboratoryTestService} from '../../../../services/medical-test/laboratory.test.service';
 import {EmrService} from '../../../../services/emr.service';
@@ -86,8 +87,9 @@ export class LaboratoryTestComponent implements OnInit{
                 //sending signal for get process table
                 {patientCode: patient.code 
                 , healthPlanId: this.currentHealthPlan.secondaryId
-                , emrStateItemList:this.emrStateItemList});
-            this.validateEMRAndLaboratoryTestExistence(patient);
+                , emrStateItemList:this.emrStateItemList
+                , testIndex: Constants.LABORATORY_TEST_INDEX
+                , isExistingTest: this.validateEMRAndLaboratoryTestExistence(patient)});
         }else{
             this.initilize();
         }   
@@ -130,6 +132,7 @@ export class LaboratoryTestComponent implements OnInit{
                                 this.laboratoryTest.emrPatientCode = patient.code;
                                 this.isLaboratoryTestRegistered = false;
                             }
+                            return this.isLaboratoryTestRegistered;
                         }, error => this.errorMessage = <any> error);                        
                 }else{
                     this._logger.warn("EMR doesn't be registered yet, should register EMR for this patient");
@@ -170,6 +173,8 @@ export class LaboratoryTestComponent implements OnInit{
         this._commonService.notifyMedicalTestProcessComponent(
             {patientCode: null 
             , healthPlanId: null
-            , emrStateItemList:null});
+            , emrStateItemList:null
+            , testIndex: Constants.LABORATORY_TEST_INDEX
+            , isExistingTest: false});
     }
 }

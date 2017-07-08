@@ -6,6 +6,7 @@ import {Patient} from '../../../../models/patient';
 import {Catalog} from '../../../../models/catalog';
 import {Emr} from '../../../../models/emr';
 import {Utils} from '../../../../models/utils';
+import {Constants} from '../../../../models/constants';
 import {RadiologyTest} from '../../../../models/medical-test/radiology.test';
 import {RadiologyTestService} from '../../../../services/medical-test/radiology.test.service';
 import {EmrService} from '../../../../services/emr.service';
@@ -63,8 +64,9 @@ export class RadiologyTestComponent implements OnInit{
             //sending signal for get process table
             {patientCode: patient.code 
             , healthPlanId: this.currentHealthPlan.secondaryId
-            , emrStateItemList:this.emrStateItemList});
-            this.validateEMRAndRadiologyTestExistence(patient);
+            , emrStateItemList:this.emrStateItemList
+            , testIndex: Constants.RADIOLOGY_TEST_INDEX
+            , isExistingTest: this.validateEMRAndRadiologyTestExistence(patient)});
         }else{
             this.initilize();
         }
@@ -102,6 +104,7 @@ export class RadiologyTestComponent implements OnInit{
                                 this.radiologyTest.emrPatientCode = patient.code;
                                 this.isRadiologyTestRegistered = false;
                             }
+                            return this.isRadiologyTestRegistered;
                         }, error => this.errorMessage = <any> error);                        
                 }else{
                     this._logger.warn("EMR doesn't be registered yet, should register EMR for this patient");
@@ -142,6 +145,8 @@ export class RadiologyTestComponent implements OnInit{
         this._commonService.notifyMedicalTestProcessComponent(
             {patientCode: null 
             , healthPlanId: null
-            , emrStateItemList:null});
+            , emrStateItemList:null
+            , testIndex: Constants.RADIOLOGY_TEST_INDEX
+            , isExistingTest: false});
     }
 }

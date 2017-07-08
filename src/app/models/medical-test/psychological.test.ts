@@ -16,7 +16,9 @@ export class PsychologicalTest {
 	public emrPatientCode: number;
 	public emrHealthPlanId: number;
 	
-    constructor () {}
+    constructor () {
+		this.isFinished = true;
+	}
 
 	setFieldsDetail(psychologicalTest: PsychologicalTest){
 		this.id = psychologicalTest.id;

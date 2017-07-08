@@ -52,18 +52,18 @@
                         <small *ngIf="pulse.errors?.required && isFieldDisabled" 
                           class="text-danger" translate>{{'general.messages.required'}}</small>
                       </div>
-                      <div class="form-group">
+                      <div class="form-group" *ngIf="!generalMedicineTest.isPatientOfMaleGender">
                         <label translate>{{'general_medicine_test.lmp'}}</label>
                         <div *ngIf="!isGeneralMedicineTestRegistered">
                           <input type="date" class="form-control disabled-field" [(ngModel)]="generalMedicineTest.lmp" 
-                             name="lmp" ngControl="lmp" [disabled] ="isGeneralMedicineTestRegistered" 
+                            name="lmp" ngControl="lmp" [disabled] ="isGeneralMedicineTestRegistered" 
                             #lmp="ngModel">
                           <small *ngIf="lmp.errors?.required && isFieldDisabled" 
                             class="text-danger" translate>{{'general.messages.required'}}</small>
                         </div>
-                        <input *ngIf="isGeneralMedicineTestRegistered" type="text" class="form-control disabled-field" 
-                          [(ngModel)]="generalMedicineTest.formattedDate" [disabled]="isGeneralMedicineTestRegistered"
-                          [ngModelOptions]="{standalone: true}"/>
+                        <input *ngIf="isGeneralMedicineTestRegistered" 
+                          type="text" class="form-control disabled-field" [(ngModel)]="generalMedicineTest.formattedDate" 
+                          [disabled]="isGeneralMedicineTestRegistered" [ngModelOptions]="{standalone: true}"/>
                       </div>
                     </div>
                     <div class="col-md-4">
@@ -72,17 +72,17 @@
                         <div class="form-group">
                           <label translate>{{'general_medicine_test.blood_presure.systolic'}}</label>
                           <input type="text" class="form-control disabled-field" [(ngModel)]="generalMedicineTest.systolic" 
-                              required name="systolic" ngControl="systolic" [disabled] ="isGeneralMedicineTestRegistered"
+                               name="systolic" ngControl="systolic" [disabled] ="isGeneralMedicineTestRegistered"
                               onkeypress='return event.charCode >= 48 && event.charCode <= 57' #systolic="ngModel" maxlength="4">
-                          <small *ngIf="systolic.errors?.required && isFieldDisabled" 
+                          <small *ngIf="isFieldDisabled" 
                             class="text-danger" translate>{{'general.messages.required'}}</small>
                         </div>
                         <div class="form-group">
                           <label translate>{{'general_medicine_test.blood_presure.diastolic'}}</label>
                           <input type="text" class="form-control disabled-field" [(ngModel)]="generalMedicineTest.diastolic" 
-                            required name="diastolic" ngControl="diastolic" [disabled] ="isGeneralMedicineTestRegistered"
+                             name="diastolic" ngControl="diastolic" [disabled] ="isGeneralMedicineTestRegistered"
                             onkeypress='return event.charCode >= 48 && event.charCode <= 57' #diastolic="ngModel" maxlength="4">
-                          <small *ngIf="diastolic.errors?.required && isFieldDisabled" 
+                          <small *ngIf="isFieldDisabled" 
                             class="text-danger" translate>{{'general.messages.required'}}</small>
                         </div>
                       </ba-card>
@@ -94,17 +94,17 @@
                         <div class="form-group">
                           <label translate>{{'general_medicine_test.visual_acuity.right_eye'}}</label>
                           <input type="text" class="form-control disabled-field" [(ngModel)]="generalMedicineTest.rightEye" 
-                            required name="rightEye" ngControl="rightEye" [disabled] ="isGeneralMedicineTestRegistered"
+                            name="rightEye" ngControl="rightEye" [disabled] ="isGeneralMedicineTestRegistered"
                             #rightEye="ngModel" pattern="^(?!\.?$)\d{0,3}(\.\d{0,2})?$"/>
-                          <small *ngIf="(rightEye?.errors?.pattern || rightEye.errors?.required) && isFieldDisabled " 
+                          <small *ngIf="(rightEye?.errors?.pattern) && isFieldDisabled " 
                             class="text-danger" translate>{{'general.messages.required'}}</small>
                         </div>
                         <div class="form-group">
                           <label translate>{{'general_medicine_test.visual_acuity.left_eye'}}</label>
                           <input type="text" class="form-control disabled-field" [(ngModel)]="generalMedicineTest.leftEye" 
-                            required name="leftEye" ngControl="leftEye" [disabled] ="isGeneralMedicineTestRegistered"
+                            name="leftEye" ngControl="leftEye" [disabled] ="isGeneralMedicineTestRegistered"
                             #leftEye="ngModel" pattern="^(?!\.?$)\d{0,3}(\.\d{0,2})?$"/>
-                          <small *ngIf="(leftEye?.errors?.pattern || leftEye.errors?.required) && isFieldDisabled " 
+                          <small *ngIf="(leftEye?.errors?.pattern) && isFieldDisabled " 
                             class="text-danger" translate>{{'general.messages.required'}}</small>
                         </div>
                       </ba-card>
@@ -112,9 +112,6 @@
                     </div>
                   </div>
                   <br/>
-                  <div class="row text-right">
-                    <button type="button" (click)="initilize()" class="btn btn-info btn-xm">Siguiente</button>
-                  </div>
                 </tab>
                 <tab translate tabTitle="EVALUACIÓN CLÍNICA" title ="{{'general_medicine_test.clinical_evaluation'}}" [pageAddress]="pageAddressTab">
                   <div class="row text-xs-left">
@@ -157,9 +154,6 @@
                     </ng-container>
                   </div>
                   <br/>
-                  <div class="row text-xs-left">
-                    <button type="button" (click)="initilize()" class="btn btn-info btn-xm" [disabled]="isGeneralMedicineTestRegistered" translate>{{'general.buttons.before'}}</button>
-                  </div>
                   <!--/CLINICAL EVALUATION-->
                 </tab>
               </tabs>

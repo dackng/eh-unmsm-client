@@ -19,12 +19,14 @@ export class GeneralMedicineTest {
     public isFinished: boolean;
     public emrPatientCode: number;
     public emrHealthPlanId: number; 
-    public symptoms: Array<Symptom>
+    public symptoms: Array<Symptom>;
 
     /*Fields for help to view logic*/
     public formattedDate : string;
+    public isPatientOfMaleGender: boolean;
     constructor () {
         this.symptoms = [];
+        this.isFinished = true;
     }
     
     setFieldsDetail(generalMedicineTest: GeneralMedicineTest){

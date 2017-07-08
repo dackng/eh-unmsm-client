@@ -6,6 +6,7 @@ import {Patient} from '../../../../models/patient';
 import {Catalog} from '../../../../models/catalog';
 import {Emr} from '../../../../models/emr';
 import {Utils} from '../../../../models/utils';
+import {Constants} from '../../../../models/constants';
 import {PsychologicalTest} from '../../../../models/medical-test/psychological.test';
 import {PsychologicalTestService} from '../../../../services/medical-test/psychological.test.service';
 import {EmrService} from '../../../../services/emr.service';
@@ -63,8 +64,9 @@ export class PsychologicalTestComponent implements OnInit{
                 //sending signal for get process table
                 {patientCode: patient.code 
                 , healthPlanId: this.currentHealthPlan.secondaryId
-                , emrStateItemList:this.emrStateItemList});
-            this.validateEMRAndPsychologicalTestExistence(patient);
+                , emrStateItemList:this.emrStateItemList
+                , testIndex: Constants.PSYCHOLOGICAL_TEST_INDEX
+                , isExistingTest: this.validateEMRAndPsychologicalTestExistence(patient)});
         }else{
             this.initilize();
         }   
@@ -102,6 +104,7 @@ export class PsychologicalTestComponent implements OnInit{
                                 this.psychologicalTest.emrPatientCode = patient.code;
                                 this.isPsychologicalTestRegistered = false;
                             }
+                            return this.isPsychologicalTestRegistered;
                         }, error => this.errorMessage = <any> error);                        
                 }else{
                     this._logger.warn("EMR doesn't be registered yet, should register EMR for this patient");
@@ -142,6 +145,8 @@ export class PsychologicalTestComponent implements OnInit{
         this._commonService.notifyMedicalTestProcessComponent(
             {patientCode: null 
             , healthPlanId: null
-            , emrStateItemList:null});
+            , emrStateItemList:null
+            , testIndex: Constants.PSYCHOLOGICAL_TEST_INDEX
+            , isExistingTest: false});
     }
 }

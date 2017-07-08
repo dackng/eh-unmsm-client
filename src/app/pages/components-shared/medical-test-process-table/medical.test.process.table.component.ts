@@ -26,6 +26,7 @@ export class MedicalTestProcessTableComponent implements OnInit, OnDestroy{
     medicalTestItemList: Array<MedicalTestItem>;
     emrStateItemList: Array<Catalog>;
     peopleTableData:Array<any>;
+    
     private subscriptionForReceiveInput: Subscription;
 
     ngOnInit(){
@@ -60,27 +61,30 @@ export class MedicalTestProcessTableComponent implements OnInit, OnDestroy{
         this.emrStateItemList = res.emrStateItemList;
         
         if(this.patientCode!= null && this.healthPlanId != null && this.emrStateItemList !=null){
-          this.setMedicalStateForEachTest();
+          this.setMedicalStateForEachTest(res.testIndex, res.isExistingTest);
         }
       });
     }
 
-    private setMedicalStateForEachTest(){
+    private setMedicalStateForEachTest(indexOfMedicalTest: number, isExistingTest: boolean){
       this._logger.warn("===== Calling method GENERAL MEDICINE API: getTestStateByEmrHealthPlanIdAndEmrPatientCode() =====");
         this._generalMedicineTestService.getTestStateByEmrHealthPlanIdAndEmrPatientCode(
           this.healthPlanId, this.patientCode).subscribe((medicalTestItem:MedicalTestItem)=>{
             this._logger.warn("OUTPUT => MedicalTestItem: " + JSON.stringify(medicalTestItem));
-            if(medicalTestItem != null){
-                if(medicalTestItem.isFinished){
-                  this.medicalTestItemList[0].stateName = this.emrStateItemList[2].name; //finished
-                  this.medicalTestItemList[0].colorMessage = Constants.PRIMARY_COLOR;
-                }else{
-                  this.medicalTestItemList[0].stateName = this.emrStateItemList[1].name; //in process
-                  this.medicalTestItemList[0].colorMessage = Constants.INFO_COLOR;
-                }
+            if(Constants.GENERAL_MEDICINE_TEST_INDEX == indexOfMedicalTest && !isExistingTest){
+              this.medicalTestItemList[Constants.GENERAL_MEDICINE_TEST_INDEX].stateName = this.emrStateItemList[1].name; //in process
+              this.medicalTestItemList[Constants.GENERAL_MEDICINE_TEST_INDEX].colorMessage = Constants.INFO_COLOR;
+            }else if(medicalTestItem != null){
+              if(medicalTestItem.isFinished){
+                this.medicalTestItemList[Constants.GENERAL_MEDICINE_TEST_INDEX].stateName = this.emrStateItemList[2].name; //finished
+                this.medicalTestItemList[Constants.GENERAL_MEDICINE_TEST_INDEX].colorMessage = Constants.PRIMARY_COLOR;
+              }else{
+                this.medicalTestItemList[Constants.GENERAL_MEDICINE_TEST_INDEX].stateName = this.emrStateItemList[1].name; //in process
+                this.medicalTestItemList[Constants.GENERAL_MEDICINE_TEST_INDEX].colorMessage = Constants.INFO_COLOR;
+              }
             }else{
-                this.medicalTestItemList[0].stateName = this.emrStateItemList[0].name; //without evaluating
-                this.medicalTestItemList[0].colorMessage = Constants.DANGER_COLOR;
+               this.medicalTestItemList[Constants.GENERAL_MEDICINE_TEST_INDEX].stateName = this.emrStateItemList[0].name; //without evaluating
+               this.medicalTestItemList[Constants.GENERAL_MEDICINE_TEST_INDEX].colorMessage = Constants.DANGER_COLOR;  
             }     
           }, error => this.errorMessage = <any> error);
           
@@ -88,54 +92,63 @@ export class MedicalTestProcessTableComponent implements OnInit, OnDestroy{
         this._laboratoryTestService.getTestStateByEmrHealthPlanIdAndEmrPatientCode(
           this.healthPlanId, this.patientCode).subscribe((medicalTestItem:MedicalTestItem)=>{
             this._logger.warn("OUTPUT => MedicalTestItem: " + JSON.stringify(medicalTestItem));
-            if(medicalTestItem != null){
-                if(medicalTestItem.isFinished){
-                  this.medicalTestItemList[1].stateName = this.emrStateItemList[2].name; //finished
-                  this.medicalTestItemList[1].colorMessage = Constants.PRIMARY_COLOR;
-                }else{
-                  this.medicalTestItemList[1].stateName = this.emrStateItemList[1].name; //in process
-                  this.medicalTestItemList[1].colorMessage = Constants.INFO_COLOR;
-                }
+            if(Constants.LABORATORY_TEST_INDEX == indexOfMedicalTest && !isExistingTest){
+              this.medicalTestItemList[Constants.LABORATORY_TEST_INDEX].stateName = this.emrStateItemList[1].name; //in process
+              this.medicalTestItemList[Constants.LABORATORY_TEST_INDEX].colorMessage = Constants.INFO_COLOR;
+            }else if(medicalTestItem != null){
+              if(medicalTestItem.isFinished){
+                this.medicalTestItemList[Constants.LABORATORY_TEST_INDEX].stateName = this.emrStateItemList[2].name; //finished
+                this.medicalTestItemList[Constants.LABORATORY_TEST_INDEX].colorMessage = Constants.PRIMARY_COLOR;
               }else{
-                this.medicalTestItemList[1].stateName = this.emrStateItemList[0].name; //without evaluating
-                this.medicalTestItemList[1].colorMessage = Constants.DANGER_COLOR;
-              }     
+                this.medicalTestItemList[Constants.LABORATORY_TEST_INDEX].stateName = this.emrStateItemList[1].name; //in process
+                this.medicalTestItemList[Constants.LABORATORY_TEST_INDEX].colorMessage = Constants.INFO_COLOR;
+              }
+            }else{
+              this.medicalTestItemList[Constants.LABORATORY_TEST_INDEX].stateName = this.emrStateItemList[0].name; //without evaluating
+              this.medicalTestItemList[Constants.LABORATORY_TEST_INDEX].colorMessage = Constants.DANGER_COLOR;
+            }     
           }, error => this.errorMessage = <any> error);
         
         this._logger.warn("===== Calling method RADIOLOGY API: getTestStateByEmrHealthPlanIdAndEmrPatientCode() =====");
         this._radiologyTestService.getTestStateByEmrHealthPlanIdAndEmrPatientCode(
           this.healthPlanId, this.patientCode).subscribe((medicalTestItem:MedicalTestItem)=>{
             this._logger.warn("OUTPUT => MedicalTestItem: " + JSON.stringify(medicalTestItem));
-            if(medicalTestItem != null){
-                if(medicalTestItem.isFinished){
-                    this.medicalTestItemList[2].stateName = this.emrStateItemList[2].name; //finished
-                    this.medicalTestItemList[2].colorMessage = Constants.PRIMARY_COLOR;
-                  }else{
-                    this.medicalTestItemList[2].stateName = this.emrStateItemList[1].name; //in process
-                    this.medicalTestItemList[2].colorMessage = Constants.INFO_COLOR;
-                  }
+            if(Constants.RADIOLOGY_TEST_INDEX == indexOfMedicalTest && !isExistingTest){
+              this.medicalTestItemList[Constants.RADIOLOGY_TEST_INDEX].stateName = this.emrStateItemList[1].name; //in process
+              this.medicalTestItemList[Constants.RADIOLOGY_TEST_INDEX].colorMessage = Constants.INFO_COLOR;
+            }else if(medicalTestItem != null){
+              if(medicalTestItem.isFinished){
+                this.medicalTestItemList[Constants.RADIOLOGY_TEST_INDEX].stateName = this.emrStateItemList[2].name; //finished
+                this.medicalTestItemList[Constants.RADIOLOGY_TEST_INDEX].colorMessage = Constants.PRIMARY_COLOR;
               }else{
-                this.medicalTestItemList[2].stateName = this.emrStateItemList[0].name; //without evaluating
-                this.medicalTestItemList[2].colorMessage = Constants.DANGER_COLOR;
-              }     
+                this.medicalTestItemList[Constants.RADIOLOGY_TEST_INDEX].stateName = this.emrStateItemList[1].name; //in process
+                this.medicalTestItemList[Constants.RADIOLOGY_TEST_INDEX].colorMessage = Constants.INFO_COLOR;
+              }
+            }else{
+              this.medicalTestItemList[Constants.RADIOLOGY_TEST_INDEX].stateName = this.emrStateItemList[0].name; //without evaluating
+              this.medicalTestItemList[Constants.RADIOLOGY_TEST_INDEX].colorMessage = Constants.DANGER_COLOR;
+            }     
           }, error => this.errorMessage = <any> error);
         
         this._logger.warn("===== Calling method PSYCHOLOGICAL API: getTestStateByEmrHealthPlanIdAndEmrPatientCode() =====");
         this._psychologicalTestService.getTestStateByEmrHealthPlanIdAndEmrPatientCode(
           this.healthPlanId, this.patientCode).subscribe((medicalTestItem:MedicalTestItem)=>{
             this._logger.warn("OUTPUT => MedicalTestItem: " + JSON.stringify(medicalTestItem));
-            if(medicalTestItem != null){
-                if(medicalTestItem.isFinished){
-                  this.medicalTestItemList[3].stateName = this.emrStateItemList[2].name; //finished
-                  this.medicalTestItemList[3].colorMessage = Constants.PRIMARY_COLOR;
-                }else{
-                  this.medicalTestItemList[3].stateName = this.emrStateItemList[1].name; //in process
-                  this.medicalTestItemList[3].colorMessage = Constants.INFO_COLOR;
-                }
+            if(Constants.PSYCHOLOGICAL_TEST_INDEX == indexOfMedicalTest && !isExistingTest){
+              this.medicalTestItemList[Constants.PSYCHOLOGICAL_TEST_INDEX].stateName = this.emrStateItemList[1].name; //in process
+              this.medicalTestItemList[Constants.PSYCHOLOGICAL_TEST_INDEX].colorMessage = Constants.INFO_COLOR;
+            }else if(medicalTestItem != null){
+              if(medicalTestItem.isFinished){
+                this.medicalTestItemList[Constants.PSYCHOLOGICAL_TEST_INDEX].stateName = this.emrStateItemList[2].name; //finished
+                this.medicalTestItemList[Constants.PSYCHOLOGICAL_TEST_INDEX].colorMessage = Constants.PRIMARY_COLOR;
               }else{
-                this.medicalTestItemList[3].stateName = this.emrStateItemList[0].name; //without evaluating
-                this.medicalTestItemList[3].colorMessage = Constants.DANGER_COLOR;
-              }     
+                this.medicalTestItemList[Constants.PSYCHOLOGICAL_TEST_INDEX].stateName = this.emrStateItemList[1].name; //in process
+                this.medicalTestItemList[Constants.PSYCHOLOGICAL_TEST_INDEX].colorMessage = Constants.INFO_COLOR;
+              }
+            }else{
+              this.medicalTestItemList[Constants.PSYCHOLOGICAL_TEST_INDEX].stateName = this.emrStateItemList[0].name; //without evaluating
+              this.medicalTestItemList[Constants.PSYCHOLOGICAL_TEST_INDEX].colorMessage = Constants.DANGER_COLOR;
+            }     
           }, error => this.errorMessage = <any> error);
     }
 

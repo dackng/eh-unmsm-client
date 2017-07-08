@@ -6,6 +6,7 @@ import {Patient} from '../../../../models/patient';
 import {Catalog} from '../../../../models/catalog';
 import {Emr} from '../../../../models/emr';
 import {Utils} from '../../../../models/utils';
+import {Constants} from '../../../../models/constants';
 import {GeneralMedicineTest} from '../../../../models/medical-test/general.medicine.test';
 import {Symptom} from '../../../../models/medical-test/symptom';
 import {GeneralMedicineTestService} from '../../../../services/medical-test/general.medicine.test.service';
@@ -37,6 +38,7 @@ export class GeneralMedicineTestComponent implements OnInit{
     symptomTypeItemList: Array<Catalog>;
     cieItemList: Array<Catalog>;
     emrStateItemList: Array<Catalog>;
+    genderItemList: Array<string>;
 
     @ViewChild('addSymptomModal') addSymptomModal: ModalDirective;
 
@@ -66,6 +68,12 @@ export class GeneralMedicineTestComponent implements OnInit{
             .subscribe( (emrStateItemList : Array<Catalog> ) => {
                 this.emrStateItemList = emrStateItemList;
                 this._logger.warn("OUTPUT=> emrStateItemList : " + JSON.stringify(this.emrStateItemList));
+            }, error => this.errorMessage = <any> error);
+        this._logger.warn("===== Calling method CATALOG API: getGenderList() =====");
+        this._catalogService.getGenderList()
+            .subscribe( (genderItemList : Array<string> ) => {
+                this.genderItemList = genderItemList;
+                this._logger.warn("OUTPUT=> genderItemList : " + JSON.stringify(this.genderItemList));
             }, error => this.errorMessage = <any> error);
     }
 
@@ -126,8 +134,9 @@ export class GeneralMedicineTestComponent implements OnInit{
                 //sending signal for get process table
                 {patientCode: patient.code 
                 , healthPlanId: this.currentHealthPlan.secondaryId
-                , emrStateItemList:this.emrStateItemList});
-            this.validateEMRAndGeneralMedicineTestExistence(patient);
+                , emrStateItemList:this.emrStateItemList
+                , testIndex: Constants.GENERAL_MEDICINE_TEST_INDEX
+                , isExistingTest: this.validateEMRAndGeneralMedicineTestExistence(patient)});
         }else{
             this.initilize();
         }   
@@ -155,6 +164,8 @@ export class GeneralMedicineTestComponent implements OnInit{
                                 this._logger.warn("GeneralMedicineTest already registered");
                                 this.generalMedicineTest.setFieldsDetail(generalMedicineTest);
                                 this.generalMedicineTest.completeFields(this.symptomTypeItemList);
+                                this.generalMedicineTest.isPatientOfMaleGender = 
+                                    Utils.isMaleGender(patient.gender, this.genderItemList[0].toString());
                                 this._commonService.notifyFindPacientComponent(
                                     //sending signal for write other patient code
                                     {initilizePatientCode:patient.code 
@@ -164,8 +175,11 @@ export class GeneralMedicineTestComponent implements OnInit{
                                 this.generalMedicineTest = new GeneralMedicineTest();
                                 this.generalMedicineTest.emrHealthPlanId = this.currentHealthPlan.secondaryId;
                                 this.generalMedicineTest.emrPatientCode = patient.code;
+                                this.generalMedicineTest.isPatientOfMaleGender = 
+                                    Utils.isMaleGender(patient.gender, this.genderItemList[0].toString());
                                 this.isGeneralMedicineTestRegistered = false;
                             }
+                            return this.isGeneralMedicineTestRegistered;
                         }, error => this.errorMessage = <any> error);                        
                 }else{
                     this._logger.warn("EMR doesn't be registered yet, should register EMR for this patient");
@@ -207,7 +221,9 @@ export class GeneralMedicineTestComponent implements OnInit{
             //sending signal for get process table
             {patientCode: null 
             , healthPlanId: null
-            , emrStateItemList:null});
+            , emrStateItemList:null
+            , testIndex: Constants.GENERAL_MEDICINE_TEST_INDEX
+            , isExistingTest: false});
     }
 
     //Find value item selected

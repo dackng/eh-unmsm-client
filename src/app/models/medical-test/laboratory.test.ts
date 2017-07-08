@@ -29,7 +29,9 @@ export class LaboratoryTest {
 	public ageInYearsOfPatient:number;
 	public isPatientOfMaleGender: boolean;
 
-    constructor () {}
+    constructor () {
+		this.isFinished = true;
+	}
 
 	setFieldsDetail(laboratoryTest: LaboratoryTest){
         this.id = laboratoryTest.id;

@@ -12,6 +12,7 @@ export class RadiologyTest {
     
     constructor () {
 		this.typeId = null; 
+		this.isFinished = true;
 	}
 
 	setFieldsDetail(radiologyTest: RadiologyTest){
