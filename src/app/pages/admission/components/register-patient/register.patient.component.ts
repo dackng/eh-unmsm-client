@@ -41,6 +41,7 @@ export class RegisterPatientComponent implements OnInit{
     genderItemList: Array<string>;
     ngOnInit(){
         this.initilize();
+        this.currentHealthPlan = new Catalog(0,"");
     }
 
     constructor (private _logger: Logger, private _patientService: PatientService, private _catalogService : CatalogService
@@ -207,7 +208,6 @@ export class RegisterPatientComponent implements OnInit{
         this.isGenderRadioDisabled = true;
         this.isFieldDisabled = false;
         this.isEmrConfirmationMessage = false;
-        this.currentHealthPlan = new Catalog(0,"");
 
         this.departmentItemList = [];
         this.provinceItemList = [];
