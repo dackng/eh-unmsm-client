@@ -74,13 +74,7 @@ export class PsychologicalTestComponent implements OnInit{
 
     receiveOutputExternalOfPatient(patient: Patient){
         if(patient != null){
-            this._commonService.notifyMedicalTestProcessComponent(
-                //sending signal for get process table
-                {patientCode: patient.code 
-                , healthPlanId: this.currentHealthPlan.secondaryId
-                , emrStateItemList:this.emrStateItemList
-                , testIndex: Constants.PSYCHOLOGICAL_TEST_INDEX
-                , isExistingTest: this.validateEMRAndPsychologicalTestExistence(patient)});
+            this.validateEMRAndPsychologicalTestExistence(patient);
         }else{
             this.initilize();
         }   
@@ -113,14 +107,20 @@ export class PsychologicalTestComponent implements OnInit{
                                     , initilizePatient: patient, initilizeIsActive:false});
                             }else{
                                 this._logger.warn("RadiologyTest is not registered yet");
+                                this.isPsychologicalTestRegistered = false;
                                 this.psychologicalTest = new PsychologicalTest();
                                 this.psychologicalTest.depressionStateItemList = this.depressionStateItemList;
                                 this.psychologicalTest.anxietyStateItemList = this.anxietyStateItemList;
                                 this.psychologicalTest.emrHealthPlanId = this.currentHealthPlan.secondaryId;
                                 this.psychologicalTest.emrPatientCode = patient.code;
-                                this.isPsychologicalTestRegistered = false;
                             }
-                            return this.isPsychologicalTestRegistered;
+                            this._commonService.notifyMedicalTestProcessComponent(
+                                //sending signal for get process table
+                                {patientCode: patient.code 
+                                , healthPlanId: this.currentHealthPlan.secondaryId
+                                , emrStateItemList:this.emrStateItemList
+                                , testIndex: Constants.PSYCHOLOGICAL_TEST_INDEX
+                                , isExistingTest: this.isPsychologicalTestRegistered});
                         }, error => this.errorMessage = <any> error);                        
                 }else{
                     this._logger.warn("EMR doesn't be registered yet, should register EMR for this patient");

@@ -68,8 +68,9 @@ export class MedicalTestProcessTableComponent implements OnInit, OnDestroy{
 
     private setMedicalStateForEachTest(indexOfMedicalTest: number, isExistingTest: boolean){
       this._logger.warn("===== Calling method GENERAL MEDICINE API: getTestStateByEmrHealthPlanIdAndEmrPatientCode() =====");
-        this._generalMedicineTestService.getTestStateByEmrHealthPlanIdAndEmrPatientCode(
-          this.healthPlanId, this.patientCode).subscribe((medicalTestItem:MedicalTestItem)=>{
+      
+      this._generalMedicineTestService.getTestStateByEmrHealthPlanIdAndEmrPatientCode(
+      this.healthPlanId, this.patientCode).subscribe((medicalTestItem:MedicalTestItem)=>{
             this._logger.warn("OUTPUT => MedicalTestItem: " + JSON.stringify(medicalTestItem));
             if(Constants.GENERAL_MEDICINE_TEST_INDEX == indexOfMedicalTest && !isExistingTest){
               this.medicalTestItemList[Constants.GENERAL_MEDICINE_TEST_INDEX].stateName = this.emrStateItemList[1].name; //in process
@@ -88,8 +89,8 @@ export class MedicalTestProcessTableComponent implements OnInit, OnDestroy{
             }     
           }, error => this.errorMessage = <any> error);
           
-        this._logger.warn("===== Calling method LABORATORY API: getTestStateByEmrHealthPlanIdAndEmrPatientCode() =====");
-        this._laboratoryTestService.getTestStateByEmrHealthPlanIdAndEmrPatientCode(
+      this._logger.warn("===== Calling method LABORATORY API: getTestStateByEmrHealthPlanIdAndEmrPatientCode() =====");
+      this._laboratoryTestService.getTestStateByEmrHealthPlanIdAndEmrPatientCode(
           this.healthPlanId, this.patientCode).subscribe((medicalTestItem:MedicalTestItem)=>{
             this._logger.warn("OUTPUT => MedicalTestItem: " + JSON.stringify(medicalTestItem));
             if(Constants.LABORATORY_TEST_INDEX == indexOfMedicalTest && !isExistingTest){

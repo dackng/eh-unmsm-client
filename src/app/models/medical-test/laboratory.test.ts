@@ -168,5 +168,4 @@ export class LaboratoryTest {
 		return this.isFifthGroup() && this.hemoglobin > 79 && this.hemoglobin < 110 ? true : false;
 	}
 
-
 }

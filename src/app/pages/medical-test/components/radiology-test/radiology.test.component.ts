@@ -60,13 +60,7 @@ export class RadiologyTestComponent implements OnInit{
 
     receiveOutputExternalOfPatient(patient: Patient){
         if(patient != null){
-            this._commonService.notifyMedicalTestProcessComponent(
-            //sending signal for get process table
-            {patientCode: patient.code 
-            , healthPlanId: this.currentHealthPlan.secondaryId
-            , emrStateItemList:this.emrStateItemList
-            , testIndex: Constants.RADIOLOGY_TEST_INDEX
-            , isExistingTest: this.validateEMRAndRadiologyTestExistence(patient)});
+            this.validateEMRAndRadiologyTestExistence(patient);
         }else{
             this.initilize();
         }
@@ -99,12 +93,18 @@ export class RadiologyTestComponent implements OnInit{
                                     , initilizePatient: patient, initilizeIsActive:false});
                             }else{
                                 this._logger.warn("RadiologyTest is not registered yet");
+                                this.isRadiologyTestRegistered = false;
                                 this.radiologyTest = new RadiologyTest();
                                 this.radiologyTest.emrHealthPlanId = this.currentHealthPlan.secondaryId;
                                 this.radiologyTest.emrPatientCode = patient.code;
-                                this.isRadiologyTestRegistered = false;
                             }
-                            return this.isRadiologyTestRegistered;
+                            this._commonService.notifyMedicalTestProcessComponent(
+                                //sending signal for get process table
+                                {patientCode: patient.code 
+                                , healthPlanId: this.currentHealthPlan.secondaryId
+                                , emrStateItemList:this.emrStateItemList
+                                , testIndex: Constants.RADIOLOGY_TEST_INDEX
+                                , isExistingTest: this.isRadiologyTestRegistered});
                         }, error => this.errorMessage = <any> error);                        
                 }else{
                     this._logger.warn("EMR doesn't be registered yet, should register EMR for this patient");

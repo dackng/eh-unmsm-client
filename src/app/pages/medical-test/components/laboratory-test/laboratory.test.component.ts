@@ -83,13 +83,7 @@ export class LaboratoryTestComponent implements OnInit{
 
     receiveOutputExternalOfPatient(patient: Patient){
         if(patient != null){
-            this._commonService.notifyMedicalTestProcessComponent(
-                //sending signal for get process table
-                {patientCode: patient.code 
-                , healthPlanId: this.currentHealthPlan.secondaryId
-                , emrStateItemList:this.emrStateItemList
-                , testIndex: Constants.LABORATORY_TEST_INDEX
-                , isExistingTest: this.validateEMRAndLaboratoryTestExistence(patient)});
+            this.validateEMRAndLaboratoryTestExistence(patient);
         }else{
             this.initilize();
         }   
@@ -122,6 +116,7 @@ export class LaboratoryTestComponent implements OnInit{
                                     , initilizePatient: patient, initilizeIsActive:false});
                             }else{
                                 this._logger.warn("LaboratoryTest is not registered yet");
+                                this.isLaboratoryTestRegistered = false;
                                 this.laboratoryTest = new LaboratoryTest();
                                 this.laboratoryTest.hemoglobinStateItemList = this.hemoglobinStateItemList;
                                 this.laboratoryTest.isPatientOfMaleGender = 
@@ -130,9 +125,14 @@ export class LaboratoryTestComponent implements OnInit{
                                     Utils.calculateDifferenceInYears(new Date(), patient.birthDate);
                                 this.laboratoryTest.emrHealthPlanId = this.currentHealthPlan.secondaryId;
                                 this.laboratoryTest.emrPatientCode = patient.code;
-                                this.isLaboratoryTestRegistered = false;
                             }
-                            return this.isLaboratoryTestRegistered;
+                            this._commonService.notifyMedicalTestProcessComponent(
+                                    //sending signal for get process table
+                                    {patientCode: patient.code 
+                                    , healthPlanId: this.currentHealthPlan.secondaryId
+                                    , emrStateItemList:this.emrStateItemList
+                                    , testIndex: Constants.LABORATORY_TEST_INDEX
+                                    , isExistingTest: this.isLaboratoryTestRegistered});
                         }, error => this.errorMessage = <any> error);                        
                 }else{
                     this._logger.warn("EMR doesn't be registered yet, should register EMR for this patient");

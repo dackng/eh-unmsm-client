@@ -130,13 +130,7 @@ export class GeneralMedicineTestComponent implements OnInit{
 
     receiveOutputExternalOfPatient(patient: Patient){
         if(patient != null){
-            this._commonService.notifyMedicalTestProcessComponent(
-                //sending signal for get process table
-                {patientCode: patient.code 
-                , healthPlanId: this.currentHealthPlan.secondaryId
-                , emrStateItemList:this.emrStateItemList
-                , testIndex: Constants.GENERAL_MEDICINE_TEST_INDEX
-                , isExistingTest: this.validateEMRAndGeneralMedicineTestExistence(patient)});
+            this.validateEMRAndGeneralMedicineTestExistence(patient);
         }else{
             this.initilize();
         }   
@@ -172,14 +166,20 @@ export class GeneralMedicineTestComponent implements OnInit{
                                     , initilizePatient: patient, initilizeIsActive:false});
                             }else{
                                 this._logger.warn("GeneralMedicineTest is not registered yet");
+                                this.isGeneralMedicineTestRegistered = false;
                                 this.generalMedicineTest = new GeneralMedicineTest();
                                 this.generalMedicineTest.emrHealthPlanId = this.currentHealthPlan.secondaryId;
                                 this.generalMedicineTest.emrPatientCode = patient.code;
                                 this.generalMedicineTest.isPatientOfMaleGender = 
                                     Utils.isMaleGender(patient.gender, this.genderItemList[0].toString());
-                                this.isGeneralMedicineTestRegistered = false;
                             }
-                            return this.isGeneralMedicineTestRegistered;
+                            this._commonService.notifyMedicalTestProcessComponent(
+                                    //sending signal for get process table
+                                    {patientCode: patient.code 
+                                    , healthPlanId: this.currentHealthPlan.secondaryId
+                                    , emrStateItemList:this.emrStateItemList
+                                    , testIndex: Constants.GENERAL_MEDICINE_TEST_INDEX
+                                    , isExistingTest: this.isGeneralMedicineTestRegistered});
                         }, error => this.errorMessage = <any> error);                        
                 }else{
                     this._logger.warn("EMR doesn't be registered yet, should register EMR for this patient");
@@ -201,7 +201,7 @@ export class GeneralMedicineTestComponent implements OnInit{
                             this.initilize();
                         }, error => this.errorMessage = <any> error);
                 }, error => this.errorMessage = <any> error);
-        } 
+        }
     }
 
     initilize(){        
@@ -234,7 +234,7 @@ export class GeneralMedicineTestComponent implements OnInit{
 
     private _addSymptom(){
         this.symptom.formattedDate = Utils.formatHourDate(this.symptom.appointment);
-        console.log(JSON.stringify(this.symptom));
+        this._logger.warn("Adding symptom=>"+JSON.stringify(this.symptom));
         this.generalMedicineTest.symptoms.push(this.symptom);
     }
     
