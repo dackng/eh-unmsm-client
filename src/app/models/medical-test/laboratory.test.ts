@@ -31,6 +31,8 @@ export class LaboratoryTest {
 
     constructor () {
 		this.isFinished = true;
+		this.serologicalTestId = null;
+		this.bloodTypeId = null;
 	}
 
 	setFieldsDetail(laboratoryTest: LaboratoryTest){
@@ -54,6 +56,7 @@ export class LaboratoryTest {
 	- Fourth group for non-pregnant women: 15 years <= age
 	- A group for pregnant women but for the moment in this version will be implemented
 	- Fifth group for men: 15 years <= age
+	Info: http://www.who.int/vmnis/indicators/haemoglobin_es.pdf
 	=>THE REQUISITE IS THAT CATALOG API BRING THE LIST IN ORDER ACORD SecondaryId
 	*/
 	evaluateHemoglobinState(){

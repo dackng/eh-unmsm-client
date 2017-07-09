@@ -24,45 +24,55 @@
           <div class="row">
             <div class="col-md-2">
               <div class="form-group">
-                <label translate>{{'psychological_test.depression_result'}}</label>&nbsp;&nbsp;
+                <label translate>{{'psychological_test.depression_result'}}</label>
                 <input type="text" class="form-control disabled-field" [(ngModel)]="psychologicalTest.depressionResult" 
                   required name="depressionResult" maxlength="3" ngControl="depressionResult" [disabled] ="isPsychologicalTestRegistered"
-                  #depressionResult="ngModel" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+                  #depressionResult="ngModel" onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+                  (change)="psychologicalTest.evaluateDepressionStateByHamilton()"/>
                 <small *ngIf="depressionResult.errors?.required && isFieldDisabled" 
                   class="text-danger" translate>{{'general.messages.required'}}</small>
               </div>
             </div>
             <div class="col-md-4">
-              <label>&nbsp;</label>
               <div class="form-group">
-                <input type="text" class="form-control disabled" [(ngModel)]="psychologicalTest.depressionStateName" 
-                  name="depressionStateName" ngControl="depressionStateName" [disabled]="true">
+                <label translate>{{'psychological_test.depression_state'}}</label>
+                <select [(ngModel)]="psychologicalTest.depressionStateId" class="form-control disabled-field" name="stateId"
+                  ngControl="depressionStateId" [disabled]="true" #depressionStateId="ngModel">
+                  <option *ngFor="let depressionState of depressionStateItemList" [ngValue]="depressionState.secondaryId" 
+                    [selected]="depressionState.secondaryId == psychologicalTest.depressionStateId">
+                     {{depressionState.name}}</option>
+                </select>
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-md-2">
               <div class="form-group">
-                <label translate>{{'psychological_test.anxiety_result'}}</label>&nbsp;&nbsp;
+                <label translate>{{'psychological_test.anxiety_result'}}</label>
                 <input type="text" class="form-control disabled-field" [(ngModel)]="psychologicalTest.anxietyResult" 
                   required name="anxietyResult" maxlength="3" ngControl="anxietyResult" [disabled] ="isPsychologicalTestRegistered"
-                  #anxietyResult="ngModel" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+                  #anxietyResult="ngModel" onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+                  (change)="psychologicalTest.evaluateAnxietyStateByHamilton()"/>
                 <small *ngIf="anxietyResult.errors?.required && isFieldDisabled" 
                   class="text-danger" translate>{{'general.messages.required'}}</small>
               </div>
             </div>
             <div class="col-md-4">
-              <label>&nbsp;</label>
               <div class="form-group">
-                <input type="text" class="form-control disabled" [(ngModel)]="psychologicalTest.anxietyStateName" 
-                  name="anxietyStateName" ngControl="anxietyStateName" [disabled]="true">
+                <label translate>{{'psychological_test.anxiety_state'}}</label>
+                <select [(ngModel)]="psychologicalTest.anxietyStateId" class="form-control disabled-field" name="stateId"
+                  ngControl="anxietyStateId" [disabled]="true" #anxietyStateId="ngModel" [ngModelOptions]="{standalone: true}">
+                  <option *ngFor="let anxietyState of anxietyStateItemList" [ngValue]="anxietyState.secondaryId" 
+                    [selected]="anxietyState.secondaryId == psychologicalTest.anxietyStateId">
+                     {{anxietyState.name}}</option>
+                </select>
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label translate>{{'psychological_test.diagnosis'}}</label>&nbsp;&nbsp;
+                <label translate>{{'psychological_test.diagnosis'}}</label>
                 <select [(ngModel)]="psychologicalTest.diagnosisId" #diagnosisId="ngModel"
                   class="form-control disabled-field" name="diagnosisId" [disabled]="isPsychologicalTestRegistered" 
                   ngControl="diagnosisId" required>
@@ -78,7 +88,7 @@
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
-                <label translate>{{'psychological_test.observation'}}</label>&nbsp;&nbsp;
+                <label translate>{{'psychological_test.observation'}}</label>
                 <input class="form-control disabled-field" [(ngModel)]="psychologicalTest.observation"
                    name="observation" ngControl="observation" [disabled]="isPsychologicalTestRegistered" #observation="ngModel">
               </div>

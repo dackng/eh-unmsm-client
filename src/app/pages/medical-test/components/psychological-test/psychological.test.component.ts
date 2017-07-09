@@ -32,6 +32,8 @@ export class PsychologicalTestComponent implements OnInit{
     isPsychologicalTestRegistered: boolean;
     diagnosisItemList: Array<Catalog>;
     emrStateItemList: Array<Catalog>;
+    depressionStateItemList: Array<Catalog>;
+	anxietyStateItemList: Array<Catalog>;
     isFieldDisabled: boolean;
     errorMessage: string;
 
@@ -55,6 +57,18 @@ export class PsychologicalTestComponent implements OnInit{
             .subscribe( (emrStateItemList : Array<Catalog> ) => {
                 this.emrStateItemList = emrStateItemList;
                 this._logger.warn("OUTPUT=> emrStateItemList : " + JSON.stringify(this.emrStateItemList));
+            }, error => this.errorMessage = <any> error);
+        this._logger.warn("===== Calling method CATALOG API: getDepressionStateList() =====");
+        this._catalogService.getDepressionStateList()
+            .subscribe( (depressionStateItemList : Array<Catalog> ) => {
+                this.depressionStateItemList = depressionStateItemList;
+                this._logger.warn("OUTPUT=> depressionStateItemList : " + JSON.stringify(this.depressionStateItemList));
+            }, error => this.errorMessage = <any> error);
+        this._logger.warn("===== Calling method CATALOG API: getAnxietyStateList() =====");
+        this._catalogService.getAnxietyStateList()
+            .subscribe( (anxietyStateItemList : Array<Catalog> ) => {
+                this.anxietyStateItemList = anxietyStateItemList;
+                this._logger.warn("OUTPUT=> anxietyStateItemList : " + JSON.stringify(this.anxietyStateItemList));
             }, error => this.errorMessage = <any> error);   
     }
 
@@ -100,6 +114,8 @@ export class PsychologicalTestComponent implements OnInit{
                             }else{
                                 this._logger.warn("RadiologyTest is not registered yet");
                                 this.psychologicalTest = new PsychologicalTest();
+                                this.psychologicalTest.depressionStateItemList = this.depressionStateItemList;
+                                this.psychologicalTest.anxietyStateItemList = this.anxietyStateItemList;
                                 this.psychologicalTest.emrHealthPlanId = this.currentHealthPlan.secondaryId;
                                 this.psychologicalTest.emrPatientCode = patient.code;
                                 this.isPsychologicalTestRegistered = false;

@@ -110,7 +110,9 @@
       "option": "Psicología",
       "subtitle": "REGISTRO DE PSICOLOGÍA",
       "depression_result": "Resultado de depresión",
+      "depression_state":"Estado de depresión",
       "anxiety_result": "Resultado de ansiedad",
+      "anxiety_state":"Estado de ansiedad",
       "diagnosis":"Diagnóstico",
       "observation": "Observación"
   },

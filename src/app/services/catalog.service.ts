@@ -93,6 +93,18 @@ export class CatalogService {
       .catch(this.handleError);
   }
 
+  getDepressionStateList() : Observable<Array<Catalog>>{
+    return this.http.get(this.URL + '/list/depression-state')
+      .map(this.extractDataArray)
+      .catch(this.handleError);
+  }
+
+  getAnxietyStateList() : Observable<Array<Catalog>>{
+    return this.http.get(this.URL + '/list/anxiety-state')
+      .map(this.extractDataArray)
+      .catch(this.handleError);
+  }
+
   private extractDataObject(res: Response) {
     let body = res.json();
     return body || { };
