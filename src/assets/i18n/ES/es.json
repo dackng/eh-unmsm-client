@@ -22,7 +22,7 @@
       "dashboard": "Dashboard",
       "admission": "Admisión",
       "medical_test": "Examen Médico",
-      "medical_record":"Registro Médico",
+      "medical_record":"Historia Clínica",
       "health_record":"Registro de Salud"
     }
   },

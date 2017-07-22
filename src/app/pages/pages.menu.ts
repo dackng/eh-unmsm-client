@@ -95,19 +95,6 @@ export const PAGES_MENU = [
           }
         }
       }
-      ,
-      {
-        path: 'editors',
-        data: {
-          menu: {
-            title: 'general.menu.health_record',
-            icon: 'ion-clipboard',
-            selected: false,
-            expanded: false,
-            order: 100,
-          }
-        }
-      }
       /*
       ,
       {
