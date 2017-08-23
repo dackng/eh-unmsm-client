@@ -4,12 +4,14 @@
     "messages": {
       "required": "Requerido*",
       "no_symptoms":"No hay síntomas",
+      "no_emrs":"No hay registros médicos",
       "health_plan":"Plan de salud",
       "no_medical_test":"No hay exámenes médicos",
       "is_patient_no_registered": "Paciente no registrado con el plan de salud, debe ir a Admisión"
     },
     "subtitles":{
-      "options": "OPCIONES"
+      "options": "OPCIONES",
+      "download": "DESCARGAR"
     },
     "buttons": {
       "register": "Registrar",
@@ -68,7 +70,7 @@
       "lmp": "FUM",
       "blood_presure":{
         "name":"PRESIÓN ARTERIAL",
-        "systolic": "Siastólica (Mm/Hg)",
+        "systolic": "Sistólica (Mm/Hg)",
         "diastolic": "Diastólica (Mm/Hg)"
       },
       "visual_acuity": {
@@ -115,6 +117,26 @@
       "anxiety_state":"Estado de ansiedad",
       "diagnosis":"Diagnóstico",
       "observation": "Observación"
+  },
+  "health_record": {
+      "medical_tests": "EXAMENES MÉDICOS",
+      "test_table":{
+        "health_plan":"PLAN DE SALUD",
+        "state":"ESTADO",
+        "start_date":"FECHA DE INICIO",
+        "finish_date": "FECHA DE TERMINO",
+        "download_doc": "DESCARGAR"
+      },
+      "emr":{
+        "subtitle":"CERTIFICADO DE CHEQUEO MÉDICO",
+        "patient": "Paciente",
+        "eap": "EAP",
+        "results": "RESULTADOS",
+        "psychological_test": "Psicología",
+        "serological_test":"Serológico",
+        "radiology_test": "Radiología",
+        "blood_type": "Grupo sanguíneo"
+      }
   },
   "medical_test": {
       

@@ -22,6 +22,8 @@ export const routes: Routes = [
       { path: 'dashboard', loadChildren: 'app/pages/dashboard/dashboard.module#DashboardModule' },
       { path: 'admission', loadChildren: './admission/admission.module#AdmissionModule'},
       { path: 'medical-test', loadChildren: './medical-test/medical.test.module#MedicalTestModule'},
+      { path: 'health-record', loadChildren: 'app/pages/health-record/health.record.module#HealthRecordModule'},
+      
       { path: 'editors', loadChildren: 'app/pages/editors/editors.module#EditorsModule' },
       { path: 'components', loadChildren: 'app/pages/components/components.module#ComponentsModule' },
       { path: 'charts', loadChildren: 'app/pages/charts/charts.module#ChartsModule' },

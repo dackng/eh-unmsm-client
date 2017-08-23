@@ -84,6 +84,19 @@ export const PAGES_MENU = [
       }
       ,
       {
+        path: 'health-record',
+        data: {
+          menu: {
+            title: 'general.menu.medical_record',
+            icon: 'ion-ios-pulse-strong',
+            selected: false,
+            expanded: false,
+            order: 100,
+          }
+        }
+      }/*
+      ,
+      {
         path: 'editors',
         data: {
           menu: {
@@ -95,7 +108,6 @@ export const PAGES_MENU = [
           }
         }
       }
-      /*
       ,
       {
         path: 'components',
