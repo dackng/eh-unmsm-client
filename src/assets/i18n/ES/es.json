@@ -18,7 +18,8 @@
       "cancel": "Cancelar",
       "next": "Siguiente",
       "before": "Anterior",
-      "save_changes": "Guardar cambios"
+      "save_changes": "Guardar cambios",
+      "show_patient_detail": "Ver Detalle de Paciente"
     },
     "menu": {
       "dashboard": "Dashboard",
@@ -43,6 +44,7 @@
       "emrState": "Estado de Examen Médico",
       "eap": "EAP",
       "birthDate": "Fecha de Nacimiento",
+      "age": "Edad",
       "telephone": "Teléfono",
       "gender": {
         "name": "Género",

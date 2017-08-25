@@ -19,7 +19,7 @@ import { ModalDirective } from 'ng2-bootstrap';
     selector: 'health-record',
     styleUrls: ['../../theme/sass/_disabled.scss', 
                 '../../theme/sass/_basicTables.scss',
-                '../../theme/sass/_modals.scss'],
+                './_modal-health-record.scss'],
     templateUrl: './health-record.html',
     providers: [Logger, GeneralMedicineTestService, EmrService, CatalogService, CommonService]
 })

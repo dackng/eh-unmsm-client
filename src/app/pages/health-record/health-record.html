@@ -5,7 +5,7 @@
       <form #consultHealthRecordForm="ngForm" 
           (ngSubmit)="consultHealthRecord(consultHealthRecordForm.form.valid)">
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-4">
             <div class="form-group">
               <label translate>{{'patient.code'}}</label>
               <div class="input-group">
@@ -24,10 +24,59 @@
           </div>
         </div>    
         <div class="row">
-
+          <div class="col-md-4">
+            <div class="form-group">
+              <label translate>{{'patient.names'}}</label>
+              <input type="text" class="form-control disabled-field" [(ngModel)]="patient.names" 
+                required name="names" ngControl="names" [disabled] ="true"
+                #names="ngModel">    
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label translate>{{'patient.paternalSurname'}}</label>
+              <input type="text" class="form-control disabled-field" [(ngModel)]="patient.paternalSurname" 
+                required name="paternalSurname" ngControl="paternalSurname" [disabled] ="true"
+                #paternalSurname="ngModel">    
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label translate>{{'patient.maternalSurname'}}</label>
+              <input type="text" class="form-control disabled-field" [(ngModel)]="patient.maternalSurname" 
+                required name="maternalSurname" ngControl="names" [disabled] ="true"
+                #maternalSurname="ngModel">    
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label translate>{{'patient.age'}}</label>
+              <input type="text" class="form-control disabled-field" [(ngModel)]="patient.names" 
+                required name="age" ngControl="age" [disabled] ="true"
+                #age="ngModel">    
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label translate>{{'patient.gender.name'}}</label>
+              <input type="text" class="form-control disabled-field" [(ngModel)]="patient.paternalSurname" 
+                required name="gender" ngControl="gender" [disabled] ="true"
+                #gender="ngModel">    
+            </div>
+          </div>
+          <div class="col-md-4 text-center">
+            <div class="form-group">
+              <button  class="btn btn-primary btn-xm" (click)="findPatientByCode()"type="button" translate
+               (click)="showConsultEMRModal()">
+                {{'general.buttons.show_patient_detail'}}
+              </button>
+            </div>
+          </div>
         </div>
         <!-- /PACIENT INFORMATION-->
-        
+        <br/>
         <!-- MEDICAL TESTS -->
         <div class="row">
           <div class="col-md-12 ">
@@ -35,6 +84,7 @@
               <tabs>
                 <tab translate tabTitle="EXAMENES MÉDICOS" title ="{{'health_record.medical_tests'}}" [pageAddress]="pageAddressTab"> 
                   <div class="horizontal-scroll">
+                    <br/>
                     <table class="table table-hover">
                       <thead>
                         <tr class="black-muted-bg">
@@ -93,52 +143,55 @@
           </div>
           <div class="modal-body">
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-12">
                 <div class="form-group">
                   <label translate>{{'health_record.emr.patient'}}</label>
                   <input type="text" class="form-control disabled-field" [(ngModel)]="patient.names" 
                     required name="names" ngControl="names" [disabled] ="true">
                 </div>
               </div>
-              <div class="col-md-6">
+            </div>
+            <div class="row">
+              <div class="col-md-12">
                 <div class="form-group">
                   <label translate>{{'health_record.emr.eap'}}</label> 
                   <input type="text" class="form-control disabled-field" [(ngModel)]="patient.names" 
-                    required name="names" ngControl="names" [disabled] ="true">
+                    required name="eap" ngControl="eap" [disabled] ="true">
                 </div>
               </div>
             </div>
+            <br/>
             <!-- TEST RESULTS-->
             <ba-card translate title="{{'health_record.emr.results'}}" baCardClass="with-scroll card card-primary">
               <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <div class="form-group">
                     <label translate>{{'health_record.emr.psychological_test'}}</label>&nbsp;&nbsp;
                     <input type="text" class="form-control disabled-field" [(ngModel)]="patient.names" 
-                      required name="names" ngControl="names" [disabled] ="true">
+                      required name="psychological_test" ngControl="psychological_test" [disabled] ="true">
                   </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <div class="form-group">
                     <label translate>{{'health_record.emr.radiology_test'}}</label>&nbsp;&nbsp;
                     <input type="text" class="form-control disabled-field" [(ngModel)]="patient.names" 
-                      required name="names" ngControl="names" [disabled] ="true">
+                      required name="radiology_test" ngControl="radiology_test" [disabled] ="true">
                   </div>
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <div class="form-group">
                     <label translate>{{'health_record.emr.serological_test'}}</label>&nbsp;&nbsp;
                     <input type="text" class="form-control disabled-field" [(ngModel)]="patient.names" 
-                      required name="names" ngControl="names" [disabled] ="true">
+                      required name="serological_test" ngControl="serological_test" [disabled] ="true">
                   </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <div class="form-group">
                     <label translate>{{'health_record.emr.blood_type'}}</label>&nbsp;&nbsp;
                     <input type="text" class="form-control disabled-field" [(ngModel)]="patient.names" 
-                      required name="names" ngControl="names" [disabled] ="true">
+                      required name="blood_type" ngControl="blood_type" [disabled] ="true">
                   </div>
                 </div>
               </div>
