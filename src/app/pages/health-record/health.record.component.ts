@@ -4,6 +4,7 @@ import { Logger } from "angular2-logger/core";
 
 import {Patient} from '../../models/patient';
 import {Catalog} from '../../models/catalog';
+import {Ubigeo} from '../../models/ubigeo';
 import {Emr} from '../../models/emr';
 import {Utils} from '../../models/utils';
 import {Constants} from '../../models/constants';
@@ -30,6 +31,13 @@ export class HealthRecordComponent {
     errorMessage: string;
     patient: Patient;
 
+    civilStateItemList : Array<Catalog>;
+    eapItemList : Array<Catalog>;
+    departmentItemList : Array<Ubigeo>;
+    provinceItemList : Array<Ubigeo>;
+    districtItemList : Array<Ubigeo>;
+    genderItemList: Array<string>;
+
     emrUpdated: Emr;
     currentHealthPlan: Catalog;
     isGeneralMedicineTestRegistered: boolean;
@@ -38,9 +46,10 @@ export class HealthRecordComponent {
     symptomTypeItemList: Array<Catalog>;
     cieItemList: Array<Catalog>;
     emrStateItemList: Array<Catalog>;
-    genderItemList: Array<string>;
 
-    @ViewChild('consultEMRModal') consultEMRModal: ModalDirective;
+    @ViewChild('consultEMROfNewPatientModal') consultEMROfNewPatientModal: ModalDirective;
+    @ViewChild('consultEMROfOldPatientModal') consultEMROfOldPatientModal: ModalDirective;
+    @ViewChild('consultPatientDetailModal') consultPatientDetailModal: ModalDirective;
 
     ngOnInit(){
         this.initilize();
@@ -77,17 +86,39 @@ export class HealthRecordComponent {
             }, error => this.errorMessage = <any> error);
     }
 
-    showConsultEMRModal(){
-        this.consultEMRModal.config.backdrop = false;
+    showConsultEMROfNewPatientModal(){
+        this.consultEMROfNewPatientModal.config.backdrop = false;
         this.isModalInvalidated = false;
         this.phr = new Phr();
-        this.consultEMRModal.show();
+        this.consultEMROfNewPatientModal.show();
     }
 
-    hideConsultEMRModal(){
-        this.consultEMRModal.hide();
+    hideConsultEMROfNewPatientModal(){
+        this.consultEMROfNewPatientModal.hide();
     }
     
+    showConsultEMROfOldPatientModal(){
+        this.consultEMROfOldPatientModal.config.backdrop = false;
+        this.isModalInvalidated = false;
+        this.phr = new Phr();
+        this.consultEMROfOldPatientModal.show();
+    }
+
+    hideConsultEMROfOldPatientModal(){
+        this.consultEMROfOldPatientModal.hide();
+    }
+
+    showConsultPatientDetailModal(){
+        this.consultPatientDetailModal.config.backdrop = false;
+        this.isModalInvalidated = false;
+        this.phr = new Phr();
+        this.consultPatientDetailModal.show();
+    }
+
+    hideConsultPatientDetailModal(){
+        this.consultPatientDetailModal.hide();
+    }
+
     findPatientByCode(){
         
     }

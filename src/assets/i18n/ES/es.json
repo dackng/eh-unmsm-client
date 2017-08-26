@@ -131,9 +131,12 @@
       },
       "emr":{
         "subtitle":"CERTIFICADO DE CHEQUEO MÉDICO",
+        "certificate_number":"Número de certificado",
         "patient": "Paciente",
         "eap": "EAP",
         "results": "RESULTADOS",
+        "laboratory_results": "RESULTADOS DE LABORATORIO",
+        "radiology_results": "RESULTADOS DE RADIOLOGÍA",
         "psychological_test": "Psicología",
         "serological_test":"Serológico",
         "radiology_test": "Radiología",

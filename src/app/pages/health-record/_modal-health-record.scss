@@ -1,12 +1,12 @@
 @import "../../theme/sass/conf/conf";
 
 .modal {
-  padding-top: 80px;
+  padding-top: 40px;
   background:rgba(0,0,0,0.5);
 
   .modal-content {
     color: $dropdown-text;
-    width: 600px;
+    width: 900px;
     margin: auto;
   
     .modal-header {
