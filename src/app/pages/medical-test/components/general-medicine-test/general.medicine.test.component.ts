@@ -196,7 +196,7 @@ export class GeneralMedicineTestComponent implements OnInit{
                 .subscribe(test => {
                     this._logger.warn("*****GeneralMedicineTest registered successful*****");
                     this._emrService.validateEmrState(this.generalMedicineTest.emrHealthPlanId,
-                        this.generalMedicineTest.emrPatientCode, this.emrUpdated).subscribe(emr => {
+                        this.generalMedicineTest.emrPatientCode, this.emrUpdated).subscribe( (emr: Emr )=> {
                             this._logger.warn("*****EMR state valid successful*****");
                             this.initilize();
                         }, error => this.errorMessage = <any> error);

@@ -6,18 +6,20 @@ import {Patient} from '../../../../models/patient';
 import {Catalog} from '../../../../models/catalog';
 import {Ubigeo} from '../../../../models/ubigeo';
 import {Emr} from '../../../../models/emr';
+import {Phr} from '../../../../models/health-record/phr';
 import {Utils} from '../../../../models/utils';
 
 import {PatientService} from '../../../../services/patient.service';
 import {CatalogService} from '../../../../services/catalog.service';
 import {UbigeoService} from '../../../../services/ubigeo.service';
 import {EmrService} from '../../../../services/emr.service';
+import {PhrService} from '../../../../services/phr.service';
 
 @Component({
     selector: 'register-patient',
     styleUrls: ['../../../../theme/sass/_disabled.scss'],
     templateUrl: './register-patient.html',
-    providers: [Logger, PatientService, CatalogService, UbigeoService, EmrService]
+    providers: [Logger, PatientService, CatalogService, UbigeoService, EmrService, PhrService]
 })
 
 export class RegisterPatientComponent implements OnInit{ 
@@ -31,6 +33,7 @@ export class RegisterPatientComponent implements OnInit{
     isGenderRadioDisabled: boolean;
     isFieldDisabled: boolean;
     isEmrConfirmationMessage: boolean;
+    phr: Phr;
     
     emrStateItemList: Array<Catalog>;
     civilStateItemList : Array<Catalog>;
@@ -45,7 +48,8 @@ export class RegisterPatientComponent implements OnInit{
     }
 
     constructor (private _logger: Logger, private _patientService: PatientService, private _catalogService : CatalogService
-                , private _ubigeoService: UbigeoService, private _emrService: EmrService) {
+                , private _ubigeoService: UbigeoService, private _emrService: EmrService
+                , private _phrService: PhrService) {
         this._logger.warn("Constructor()");
         this.ubigeoItemByDefault = new Ubigeo();
         this.ubigeoItemByDefault.initializeItemByDefault();
@@ -175,7 +179,15 @@ export class RegisterPatientComponent implements OnInit{
                                 this._emrService.registerEmr(this.emr)
                                     .subscribe( (emr: Emr ) => {
                                         this._logger.warn("OUTPUT => EMR registered successful");
-                                        this.initilize();
+                                        this.phr.patientSummary.setFields(this.newPatient,this.civilStateItemList, this.eapItemList);
+                                        this.phr.emrSummary.setInitialFields(this.emr, this.emrStateItemList, this.currentHealthPlan);
+                                        this._logger.warn("===== Calling method PHR API: registerPhr(INPUT) =====");
+                                        this._logger.warn("INPUT => PHR: " + JSON.stringify(this.phr));
+                                        this._phrService.registerPhr(this.phr)
+                                            .subscribe( (phr: Phr) => {
+                                                this._logger.warn("OUTPUT => PHR registered successful");
+                                                this.initilize();
+                                        }, error => this.errorMessage = <any> error);
                                 }, error => this.errorMessage = <any> error);
                             }, error => this.errorMessage = <any> error);
                         }else{
@@ -192,7 +204,14 @@ export class RegisterPatientComponent implements OnInit{
                         this._emrService.registerEmr(this.emr)
                             .subscribe( (emr: Emr ) => {
                                 this._logger.warn("OUTPUT => EMR registered successful");
-                                this.initilize();
+                                this.phr.emrSummary.setInitialFields(this.emr, this.emrStateItemList, this.currentHealthPlan);
+                                this._logger.warn("===== Calling method PHR API: registerEmrSummary(INPUT) =====");
+                                this._logger.warn("INPUT => emrSummary: " + JSON.stringify(this.phr.emrSummary));
+                                this._phrService.registerEmrSummary(this.newPatient.code, this.phr.emrSummary)
+                                    .subscribe( (phr: Phr) => {
+                                        this._logger.warn("OUTPUT => PHR with EMR registered successful");
+                                        this.initilize();
+                                }, error => this.errorMessage = <any> error);
                             }, error => this.errorMessage = <any> error);
                     }, error => this.errorMessage = <any> error);
             }
@@ -208,6 +227,7 @@ export class RegisterPatientComponent implements OnInit{
         this.isGenderRadioDisabled = true;
         this.isFieldDisabled = false;
         this.isEmrConfirmationMessage = false;
+        this.phr = new Phr();
 
         this.departmentItemList = [];
         this.provinceItemList = [];

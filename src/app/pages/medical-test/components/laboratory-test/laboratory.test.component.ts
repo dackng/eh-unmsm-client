@@ -5,11 +5,13 @@ import { Logger } from "angular2-logger/core";
 import {Patient} from '../../../../models/patient';
 import {Catalog} from '../../../../models/catalog';
 import {Emr} from '../../../../models/emr';
+import {Phr} from '../../../../models/health-record/phr';
 import {Utils} from '../../../../models/utils';
 import {Constants} from '../../../../models/constants';
 import {LaboratoryTest} from '../../../../models/medical-test/laboratory.test';
 import {LaboratoryTestService} from '../../../../services/medical-test/laboratory.test.service';
 import {EmrService} from '../../../../services/emr.service';
+import {PhrService} from '../../../../services/phr.service';
 import {CatalogService} from '../../../../services/catalog.service';
 import {CommonService} from '../../../../services/common.service';
 
@@ -27,6 +29,7 @@ import { ModalDirective } from 'ng2-bootstrap';
 
 export class LaboratoryTestComponent implements OnInit{ 
     emrUpdated: Emr;
+    phrUpdated: Phr;
     laboratoryTest: LaboratoryTest;
     currentHealthPlan: Catalog;
     patientCode: number;
@@ -44,7 +47,8 @@ export class LaboratoryTestComponent implements OnInit{
     }
 
     constructor(private _logger: Logger, private _catalogService: CatalogService
-        , private _emrService: EmrService, private _laboratoryTestService: LaboratoryTestService, private _commonService: CommonService) {
+        , private _emrService: EmrService, private _laboratoryTestService: LaboratoryTestService
+        , private _commonService: CommonService, private _phrService: PhrService) {
         this._logger.warn("Constructor()");
         let itemByDefault = Utils.getSelectItemByDefault();
         this._logger.warn("===== Calling method CATALOG API:  getSerologicalTestList() =====");
@@ -149,9 +153,17 @@ export class LaboratoryTestComponent implements OnInit{
                 .subscribe(test => {
                     this._logger.warn("*****LaboratoryTest registered successful*****");
                     this._emrService.validateEmrState(this.laboratoryTest.emrHealthPlanId,
-                        this.laboratoryTest.emrPatientCode, this.emrUpdated).subscribe(emr => {
+                        this.laboratoryTest.emrPatientCode, this.emrUpdated).subscribe( (emr: Emr )=> {
                             this._logger.warn("*****EMR state valid successful*****");
-                            this.initilize();
+                            this.phrUpdated.emrSummary
+                                .setValuesOfLaboratoryTest(emr, this.emrStateItemList, this.laboratoryTest);
+                            this._logger.warn("===== Calling method PHR API: updateEmrSummary(INPUT) =====");
+                            this._logger.warn("INPUT => emrSummary: " + JSON.stringify(this.phrUpdated.emrSummary));
+                            this._phrService.updateEmrSummary(this.laboratoryTest.emrPatientCode, this.phrUpdated.emrSummary)
+                                .subscribe( (phr: Phr) => {
+                                    this._logger.warn("OUTPUT => PHR with EMR updated successful");
+                                    this.initilize();
+                            }, error => this.errorMessage = <any> error);
                         }, error => this.errorMessage = <any> error);
                 }, error => this.errorMessage = <any> error);
         } 
@@ -164,6 +176,7 @@ export class LaboratoryTestComponent implements OnInit{
         this.errorMessage = null;
         this.laboratoryTest = new LaboratoryTest();
         this.emrUpdated = new Emr();
+        this.phrUpdated = new Phr();
         this.initilizeChildComponents();
     }
 
