@@ -5,12 +5,11 @@ import { AppTranslationModule } from '../../app.translation.module';
 import { NgaModule } from '../../theme/nga.module';
 import { ModalModule } from 'ng2-bootstrap/ng2-bootstrap';
 import { CustomFormsModule } from 'ng2-validation';
-import { routing }       from './health.record.routing';
+import { routing } from './health.record.routing';
 
 import { HealthRecordComponent } from './health.record.component';
-
-import { TabComponent } from '../components-shared/component-tabbed/tab/tab.component';
-import { TabsComponent } from '../components-shared/component-tabbed/tabs/tabs.component';
+import { TabComponent } from './components-shared/component-tabbed/tab/tab.component';
+import { TabsComponent } from './components-shared/component-tabbed/tabs/tabs.component';
 
 @NgModule({
   imports: [
