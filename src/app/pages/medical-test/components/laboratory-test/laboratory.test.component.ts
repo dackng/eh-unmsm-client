@@ -24,7 +24,7 @@ import { ModalDirective } from 'ng2-bootstrap';
                 '../../../../theme/sass/_modals.scss'],
     templateUrl: './laboratory-test.html',
     providers: [Logger, LaboratoryTestService, EmrService, CatalogService, 
-        CommonService]
+        CommonService, PhrService]
 })
 
 export class LaboratoryTestComponent implements OnInit{ 
@@ -155,8 +155,9 @@ export class LaboratoryTestComponent implements OnInit{
                     this._emrService.validateEmrState(this.laboratoryTest.emrHealthPlanId,
                         this.laboratoryTest.emrPatientCode, this.emrUpdated).subscribe( (emr: Emr )=> {
                             this._logger.warn("*****EMR state valid successful*****");
-                            this.phrUpdated.emrSummary
-                                .setValuesOfLaboratoryTest(emr, this.emrStateItemList, this.laboratoryTest);
+                            this.setValuesOfLaboratoryTestForPHR(emr, this.emrStateItemList
+                                , this.laboratoryTest, this.serologicalItemList, this.bloodTypeItemList
+                                , this.hemoglobinStateItemList);
                             this._logger.warn("===== Calling method PHR API: updateEmrSummary(INPUT) =====");
                             this._logger.warn("INPUT => emrSummary: " + JSON.stringify(this.phrUpdated.emrSummary));
                             this._phrService.updateEmrSummary(this.laboratoryTest.emrPatientCode, this.phrUpdated.emrSummary)
@@ -189,5 +190,19 @@ export class LaboratoryTestComponent implements OnInit{
             , emrStateItemList:null
             , testIndex: Constants.LABORATORY_TEST_INDEX
             , isExistingTest: false});
+    }
+
+    private setValuesOfLaboratoryTestForPHR(emr: Emr, emrStateItemList: Array<Catalog>, laboratoryTest: LaboratoryTest
+        , serologicalItemList: Array<Catalog>, bloodTypeItemList: Array<Catalog>
+        , hemoglobinStateItemList: Array<Catalog>){
+        this.phrUpdated.emrSummary.state = emrStateItemList.find(item => item.secondaryId == emr.stateId).name;
+        this.phrUpdated.emrSummary.serologicalResult = serologicalItemList
+            .find(item => item.secondaryId == laboratoryTest.serologicalTestId).name;
+        this.phrUpdated.emrSummary.bloodType = bloodTypeItemList
+            .find(item => item.secondaryId == laboratoryTest.bloodTypeId).name;
+        this.phrUpdated.emrSummary.hemoglobin = laboratoryTest.hemoglobin + ' - ' + hemoglobinStateItemList
+            .find(item => item.secondaryId == laboratoryTest.hemoglobinStateId).name;
+        this.phrUpdated.emrSummary.bloodCount = hemoglobinStateItemList
+            .find(item => item.secondaryId == laboratoryTest.hemoglobinStateId).name;;
     }
 }

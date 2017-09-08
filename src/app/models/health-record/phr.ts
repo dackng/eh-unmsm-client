@@ -8,11 +8,16 @@ export class Phr {
     /*Fields for send to APIs*/
     public patientSummary : PatientSummary; 
     public emrSummary : EmrSummary;
-    public emrList : Array<EmrSummary>;
+    public emrSummaryList : Array<EmrSummary>;
     
     constructor () {
-        this.emrList = [];
+        this.emrSummaryList = [];
         this.patientSummary = new PatientSummary();
         this.emrSummary = new EmrSummary();
+    }
+
+    setFields(phr: Phr){
+        this.patientSummary = phr.patientSummary;
+        this.emrSummaryList = phr.emrSummaryList;
     }
 }

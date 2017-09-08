@@ -5,11 +5,13 @@ import { Logger } from "angular2-logger/core";
 import {Patient} from '../../../../models/patient';
 import {Catalog} from '../../../../models/catalog';
 import {Emr} from '../../../../models/emr';
+import {Phr} from '../../../../models/health-record/phr';
 import {Utils} from '../../../../models/utils';
 import {Constants} from '../../../../models/constants';
 import {PsychologicalTest} from '../../../../models/medical-test/psychological.test';
 import {PsychologicalTestService} from '../../../../services/medical-test/psychological.test.service';
 import {EmrService} from '../../../../services/emr.service';
+import {PhrService} from '../../../../services/phr.service';
 import {CatalogService} from '../../../../services/catalog.service';
 import {CommonService} from '../../../../services/common.service';
 
@@ -21,11 +23,12 @@ import { ModalDirective } from 'ng2-bootstrap';
                 '../../../../theme/sass/_basicTables.scss',
                 '../../../../theme/sass/_modals.scss'],
     templateUrl: './psychological-test.html',
-    providers: [Logger, PsychologicalTestService, EmrService, CatalogService, CommonService]
+    providers: [Logger, PsychologicalTestService, EmrService, CatalogService, CommonService, PhrService]
 })
 
 export class PsychologicalTestComponent implements OnInit{ 
     emrUpdated: Emr;
+    phrUpdated: Phr;
     psychologicalTest: PsychologicalTest;
     currentHealthPlan: Catalog;
     patientCode: number;
@@ -42,7 +45,8 @@ export class PsychologicalTestComponent implements OnInit{
     }
 
     constructor(private _logger: Logger, private _catalogService: CatalogService
-        , private _emrService: EmrService, private _psychologicalTestService: PsychologicalTestService, private _commonService: CommonService) {
+        , private _emrService: EmrService, private _psychologicalTestService: PsychologicalTestService
+        , private _commonService: CommonService, private _phrService: PhrService) {
         this._logger.warn("Constructor()");
         let itemByDefault = Utils.getSelectItemByDefault();
         this._logger.warn("===== Calling method CATALOG API:  getPsychologicalDiagnosisList() =====");
@@ -137,9 +141,17 @@ export class PsychologicalTestComponent implements OnInit{
                 .subscribe(test => {
                     this._logger.warn("*****PsychologicalTest registered successful*****");
                     this._emrService.validateEmrState(this.psychologicalTest.emrHealthPlanId,
-                        this.psychologicalTest.emrPatientCode, this.emrUpdated).subscribe(emr => {
+                        this.psychologicalTest.emrPatientCode, this.emrUpdated).subscribe( (emr: Emr )=> {
                             this._logger.warn("*****EMR state valid successful*****");
-                            this.initilize();
+                            this.setValuesOfPsychologicalTestForPHR(emr, this.emrStateItemList
+                                , this.psychologicalTest, this.diagnosisItemList);
+                            this._logger.warn("===== Calling method PHR API: updateEmrSummary(INPUT) =====");
+                            this._logger.warn("INPUT => emrSummary: " + JSON.stringify(this.phrUpdated.emrSummary));
+                            this._phrService.updateEmrSummary(this.psychologicalTest.emrPatientCode, this.phrUpdated.emrSummary)
+                                .subscribe( (phr: Phr) => {
+                                    this._logger.warn("OUTPUT => PHR with EMR updated successful");
+                                    this.initilize();
+                            }, error => this.errorMessage = <any> error);
                         }, error => this.errorMessage = <any> error);
                 }, error => this.errorMessage = <any> error);
         } 
@@ -152,6 +164,7 @@ export class PsychologicalTestComponent implements OnInit{
         this.errorMessage = null;
         this.psychologicalTest = new PsychologicalTest();
         this.emrUpdated = new Emr();
+        this.phrUpdated = new Phr();
         this.initilizeChildComponents();
     }
 
@@ -164,5 +177,12 @@ export class PsychologicalTestComponent implements OnInit{
             , emrStateItemList:null
             , testIndex: Constants.PSYCHOLOGICAL_TEST_INDEX
             , isExistingTest: false});
+    }
+    
+    private setValuesOfPsychologicalTestForPHR(emr: Emr, emrStateItemList: Array<Catalog>
+        , psychologicalTest:PsychologicalTest, diagnosisItemList: Array<Catalog>){
+        this.phrUpdated.emrSummary.state = emrStateItemList.find(item => item.secondaryId == emr.stateId).name;
+        this.phrUpdated.emrSummary.psychologicalResult = diagnosisItemList
+            .find(item => item.secondaryId == psychologicalTest.diagnosisId).name;
     }
 }

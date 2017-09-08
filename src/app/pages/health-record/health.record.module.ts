@@ -12,9 +12,6 @@ import { HealthRecordComponent } from './health.record.component';
 import { TabComponent } from '../components-shared/component-tabbed/tab/tab.component';
 import { TabsComponent } from '../components-shared/component-tabbed/tabs/tabs.component';
 
-import { FindPatientComponent } from '../components-shared/find-patient/find.patient.component';
-import { SelectPatientTypeComponent } from '../components-shared/select-patient-type/select.patient.type.component';
-
 @NgModule({
   imports: [
     CommonModule,
@@ -28,9 +25,7 @@ import { SelectPatientTypeComponent } from '../components-shared/select-patient-
   declarations: [
     HealthRecordComponent,
     TabComponent,
-    TabsComponent,
-    FindPatientComponent,
-    SelectPatientTypeComponent
+    TabsComponent
   ]
 })
 export class HealthRecordModule {

@@ -22,6 +22,7 @@ export class PatientSummary {
 
     /*Fields for help to view logic*/
     public formattedDate : string;
+    public fullname: string;
 
     constructor(){
         this.ubigeo = new Ubigeo();
@@ -40,6 +41,10 @@ export class PatientSummary {
         this.gender = patient.gender;
         this.address = patient.address;
         this.ubigeo = patient.ubigeo;
+        this.getFullName();
     }
-
+    
+    getFullName(){
+        this.fullname = this.paternalSurname + " " + this.maternalSurname + ", " + this.names;  
+    }
 }

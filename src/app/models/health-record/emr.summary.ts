@@ -1,6 +1,8 @@
 import {Emr} from './../emr';
 import {Catalog} from './../catalog';
 import {LaboratoryTest} from './../medical-test/laboratory.test';
+import {RadiologyTest} from './../medical-test/radiology.test';
+import {PsychologicalTest} from './../medical-test/psychological.test';
 
 export class EmrSummary {
 
@@ -28,19 +30,17 @@ export class EmrSummary {
         this.healthPlan = currentHealthPlan.name;
     }
 
-    setValuesOfLaboratoryTest(emr: Emr, emrStateItemList: Array<Catalog>, laboratory: LaboratoryTest){
-        this.state = emrStateItemList.find(item => item.secondaryId == emr.stateId).name;
-        /*
-        this.serologicalResult= ;
-        this.bloodType;
-        this.hemoglobin;
-        this.bloodCount;*/
-    }
-    
-    setValuesOfRadiologyTest(){
-
-    }
-    setValuesOfPsychologicalTest(){
-
+    setFieldsDetail(emrSummary: EmrSummary){
+        this.code = emrSummary.code;
+        this.state = emrSummary.state;
+        this.createdAt = emrSummary.createdAt;
+        this.updatedAt = emrSummary.updatedAt;
+        this.healthPlan = emrSummary.healthPlan;
+        this.psychologicalResult = emrSummary.psychologicalResult;
+        this.radiologyResult = emrSummary.radiologyResult;
+        this.serologicalResult = emrSummary.serologicalResult;
+        this.bloodType = emrSummary.bloodType;
+        this.hemoglobin = emrSummary.hemoglobin;
+        this.bloodCount = emrSummary.bloodCount;
     }
 }

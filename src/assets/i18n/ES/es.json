@@ -7,7 +7,8 @@
       "no_emrs":"No hay registros médicos",
       "health_plan":"Plan de salud",
       "no_medical_test":"No hay exámenes médicos",
-      "is_patient_no_registered": "Paciente no registrado con el plan de salud, debe ir a Admisión"
+      "is_patient_no_registered": "Paciente no registrado con el plan de salud, debe ir a Admisión",
+      "is_phr_no_registered": "Historia Clínica no registrada"
     },
     "subtitles":{
       "options": "OPCIONES",
