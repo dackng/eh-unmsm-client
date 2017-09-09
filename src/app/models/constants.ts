@@ -14,4 +14,8 @@ export class Constants {
     public static LABORATORY_TEST_INDEX = 1;
     public static RADIOLOGY_TEST_INDEX = 2;
     public static PSYCHOLOGICAL_TEST_INDEX = 3;
+
+    public static GENDER_MALE_VIEW = "MASCULINO";
+    public static GENDER_MALE_API = "M";
+    public static GENDER_FEMALE_VIEW = "FEMENINO";
 }

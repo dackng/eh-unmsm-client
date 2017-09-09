@@ -12,12 +12,12 @@ import { GeneralMedicineTestComponent } from './components/general-medicine-test
 import { LaboratoryTestComponent } from './components/laboratory-test/laboratory.test.component';
 import { RadiologyTestComponent } from './components/radiology-test/radiology.test.component';
 import { PsychologicalTestComponent } from './components/psychological-test/psychological.test.component';
-import { TabComponent } from '../components-shared/component-tabbed/tab/tab.component';
-import { TabsComponent } from '../components-shared/component-tabbed/tabs/tabs.component';
-import { MedicalTestProcessTableComponent } from '../components-shared/medical-test-process-table/medical.test.process.table.component';
+import { TabComponent } from './components/components-shared/component-tabbed/tab/tab.component';
+import { TabsComponent } from './components/components-shared/component-tabbed/tabs/tabs.component';
+import { MedicalTestProcessTableComponent } from './components/components-shared/medical-test-process-table/medical.test.process.table.component';
 
-import { FindPatientComponent } from '../components-shared/find-patient/find.patient.component';
-import { SelectPatientTypeComponent } from '../components-shared/select-patient-type/select.patient.type.component';
+import { FindPatientComponent } from './components/components-shared/find-patient/find.patient.component';
+import { SelectPatientTypeComponent } from './components/components-shared/select-patient-type/select.patient.type.component';
 
 @NgModule({
   imports: [

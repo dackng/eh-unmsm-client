@@ -4,7 +4,7 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/Rx'
 
 import {PsychologicalTest} from '../../models/medical-test/psychological.test';
-import {MedicalTestItem} from '../../pages/components-shared/medical-test-process-table/medical.test.item';
+import {MedicalTestItem} from '../../pages/medical-test/components/components-shared/medical-test-process-table/medical.test.item';
 
 @Injectable()
 export class PsychologicalTestService {

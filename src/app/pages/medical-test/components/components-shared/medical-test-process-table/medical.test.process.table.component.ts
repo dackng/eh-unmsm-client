@@ -2,15 +2,15 @@ import {Component, Input,OnInit, OnDestroy} from '@angular/core';
 import { Logger } from "angular2-logger/core";
 import { Subscription } from 'rxjs/Subscription';
 
-import {GeneralMedicineTestService} from '../../../services/medical-test/general.medicine.test.service';
-import {LaboratoryTestService} from '../../../services/medical-test/laboratory.test.service';
-import {PsychologicalTestService} from '../../../services/medical-test/psychological.test.service';
-import {RadiologyTestService} from '../../../services/medical-test/radiology.test.service';
-import {CommonService} from '../../../services/common.service';
+import {GeneralMedicineTestService} from '../../../../../services/medical-test/general.medicine.test.service';
+import {LaboratoryTestService} from '../../../../../services/medical-test/laboratory.test.service';
+import {PsychologicalTestService} from '../../../../../services/medical-test/psychological.test.service';
+import {RadiologyTestService} from '../../../../../services/medical-test/radiology.test.service';
+import {CommonService} from '../../../../../services/common.service';
 
 import {MedicalTestItem} from './medical.test.item';
-import {Constants} from '../../../models/constants';
-import {Catalog} from '../../../models/catalog';
+import {Constants} from '../../../../../models/constants';
+import {Catalog} from '../../../../../models/catalog';
 
 @Component({
   selector: 'medical-test-process-table',

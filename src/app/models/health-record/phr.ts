@@ -20,4 +20,9 @@ export class Phr {
         this.patientSummary = phr.patientSummary;
         this.emrSummaryList = phr.emrSummaryList;
     }
+
+    addFirstEmrSummary(emr: Emr, emrStateItemList: Array<Catalog>, currentHealthPlan: Catalog){
+        this.emrSummary.setInitialFields(emr, emrStateItemList, currentHealthPlan);
+        this.emrSummaryList.push(this.emrSummary);
+    }
 }

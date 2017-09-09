@@ -143,7 +143,7 @@ export class PsychologicalTestComponent implements OnInit{
                     this._emrService.validateEmrState(this.psychologicalTest.emrHealthPlanId,
                         this.psychologicalTest.emrPatientCode, this.emrUpdated).subscribe( (emr: Emr )=> {
                             this._logger.warn("*****EMR state valid successful*****");
-                            this.setValuesOfPsychologicalTestForPHR(emr, this.emrStateItemList
+                            this._setValuesOfPsychologicalTestForPHR(emr, this.emrStateItemList
                                 , this.psychologicalTest, this.diagnosisItemList);
                             this._logger.warn("===== Calling method PHR API: updateEmrSummary(INPUT) =====");
                             this._logger.warn("INPUT => emrSummary: " + JSON.stringify(this.phrUpdated.emrSummary));
@@ -165,10 +165,10 @@ export class PsychologicalTestComponent implements OnInit{
         this.psychologicalTest = new PsychologicalTest();
         this.emrUpdated = new Emr();
         this.phrUpdated = new Phr();
-        this.initilizeChildComponents();
+        this._initilizeChildComponents();
     }
 
-    private initilizeChildComponents(){
+    private _initilizeChildComponents(){
         this._commonService.notifyFindPacientComponent({initilizePatientCode:null
             , initilizePatient: new Patient(), initilizeIsActive:false});
         this._commonService.notifyMedicalTestProcessComponent(
@@ -179,7 +179,7 @@ export class PsychologicalTestComponent implements OnInit{
             , isExistingTest: false});
     }
     
-    private setValuesOfPsychologicalTestForPHR(emr: Emr, emrStateItemList: Array<Catalog>
+    private _setValuesOfPsychologicalTestForPHR(emr: Emr, emrStateItemList: Array<Catalog>
         , psychologicalTest:PsychologicalTest, diagnosisItemList: Array<Catalog>){
         this.phrUpdated.emrSummary.state = emrStateItemList.find(item => item.secondaryId == emr.stateId).name;
         this.phrUpdated.emrSummary.psychologicalResult = diagnosisItemList

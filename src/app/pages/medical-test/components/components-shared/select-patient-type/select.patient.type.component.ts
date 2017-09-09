@@ -1,15 +1,15 @@
 import {Component,Output, OnInit, EventEmitter} from '@angular/core';
 import { Logger } from "angular2-logger/core";
 
-import {Catalog} from '../../../models/catalog';
-import {Utils} from '../../../models/utils';
-import {Constants} from '../../../models/constants';
+import {Catalog} from '../../../../../models/catalog';
+import {Utils} from '../../../../../models/utils';
+import {Constants} from '../../../../../models/constants';
 
-import {CatalogService} from '../../../services/catalog.service';
+import {CatalogService} from '../../../../../services/catalog.service';
 
 @Component({
   selector: 'select-patient-type',
-  styleUrls: ['../../../theme/sass/_disabled.scss'],
+  styleUrls: ['../../../../../theme/sass/_disabled.scss'],
   template: require('./select-patient-type.html'),
   providers: [Logger, CatalogService]
 })

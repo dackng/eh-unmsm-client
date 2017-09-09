@@ -179,8 +179,9 @@ export class RegisterPatientComponent implements OnInit{
                                 this._emrService.registerEmr(this.emr)
                                     .subscribe( (emr: Emr ) => {
                                         this._logger.warn("OUTPUT => EMR registered successful");
-                                        this.phr.patientSummary.setFields(this.newPatient,this.civilStateItemList, this.eapItemList);
-                                        this.phr.emrSummary.setInitialFields(this.emr, this.emrStateItemList, this.currentHealthPlan);
+                                        this.phr.patientSummary.setFields(this.newPatient,this.civilStateItemList, this.eapItemList
+                                            , this.departmentItemList, this.provinceItemList, this.districtItemList, this.genderItemList);
+                                        this.phr.addFirstEmrSummary(this.emr, this.emrStateItemList, this.currentHealthPlan);
                                         this._logger.warn("===== Calling method PHR API: registerPhr(INPUT) =====");
                                         this._logger.warn("INPUT => PHR: " + JSON.stringify(this.phr));
                                         this._phrService.registerPhr(this.phr)

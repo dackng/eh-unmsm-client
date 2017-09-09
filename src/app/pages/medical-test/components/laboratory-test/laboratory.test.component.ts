@@ -155,7 +155,7 @@ export class LaboratoryTestComponent implements OnInit{
                     this._emrService.validateEmrState(this.laboratoryTest.emrHealthPlanId,
                         this.laboratoryTest.emrPatientCode, this.emrUpdated).subscribe( (emr: Emr )=> {
                             this._logger.warn("*****EMR state valid successful*****");
-                            this.setValuesOfLaboratoryTestForPHR(emr, this.emrStateItemList
+                            this._setValuesOfLaboratoryTestForPHR(emr, this.emrStateItemList
                                 , this.laboratoryTest, this.serologicalItemList, this.bloodTypeItemList
                                 , this.hemoglobinStateItemList);
                             this._logger.warn("===== Calling method PHR API: updateEmrSummary(INPUT) =====");
@@ -178,10 +178,10 @@ export class LaboratoryTestComponent implements OnInit{
         this.laboratoryTest = new LaboratoryTest();
         this.emrUpdated = new Emr();
         this.phrUpdated = new Phr();
-        this.initilizeChildComponents();
+        this._initilizeChildComponents();
     }
 
-    private initilizeChildComponents(){
+    private _initilizeChildComponents(){
         this._commonService.notifyFindPacientComponent({initilizePatientCode:null
             , initilizePatient: new Patient(), initilizeIsActive:false});
         this._commonService.notifyMedicalTestProcessComponent(
@@ -192,7 +192,7 @@ export class LaboratoryTestComponent implements OnInit{
             , isExistingTest: false});
     }
 
-    private setValuesOfLaboratoryTestForPHR(emr: Emr, emrStateItemList: Array<Catalog>, laboratoryTest: LaboratoryTest
+    private _setValuesOfLaboratoryTestForPHR(emr: Emr, emrStateItemList: Array<Catalog>, laboratoryTest: LaboratoryTest
         , serologicalItemList: Array<Catalog>, bloodTypeItemList: Array<Catalog>
         , hemoglobinStateItemList: Array<Catalog>){
         this.phrUpdated.emrSummary.state = emrStateItemList.find(item => item.secondaryId == emr.stateId).name;

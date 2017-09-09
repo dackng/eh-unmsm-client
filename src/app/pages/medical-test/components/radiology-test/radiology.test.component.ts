@@ -127,7 +127,7 @@ export class RadiologyTestComponent implements OnInit{
                     this._emrService.validateEmrState(this.radiologyTest.emrHealthPlanId,
                         this.radiologyTest.emrPatientCode, this.emrUpdated).subscribe(emr => {
                             this._logger.warn("*****EMR state valid successful*****");
-                            this.setValuesOfRadiologyTestForPHR(emr, this.emrStateItemList
+                            this._setValuesOfRadiologyTestForPHR(emr, this.emrStateItemList
                                 , this.radiologyTest, this.radiologyTypeItemList);
                             this._logger.warn("===== Calling method PHR API: updateEmrSummary(INPUT) =====");
                             this._logger.warn("INPUT => emrSummary: " + JSON.stringify(this.phrUpdated.emrSummary));
@@ -149,10 +149,10 @@ export class RadiologyTestComponent implements OnInit{
         this.radiologyTest = new RadiologyTest();
         this.emrUpdated = new Emr();
         this.phrUpdated = new Phr();
-        this.initilizeChildComponents();
+        this._initilizeChildComponents();
     }
 
-    private initilizeChildComponents(){
+    private _initilizeChildComponents(){
         this._commonService.notifyFindPacientComponent({initilizePatientCode:null
             , initilizePatient: new Patient(), initilizeIsActive:false});
         this._commonService.notifyMedicalTestProcessComponent(
@@ -163,7 +163,7 @@ export class RadiologyTestComponent implements OnInit{
             , isExistingTest: false});
     }
 
-    private setValuesOfRadiologyTestForPHR(emr: Emr, emrStateItemList: Array<Catalog>, radiologyTest: RadiologyTest
+    private _setValuesOfRadiologyTestForPHR(emr: Emr, emrStateItemList: Array<Catalog>, radiologyTest: RadiologyTest
         , radiologyTypeItemList: Array<Catalog>){
         this.phrUpdated.emrSummary.state = emrStateItemList.find(item => item.secondaryId == emr.stateId).name;
         this.phrUpdated.emrSummary.radiologyResult = radiologyTypeItemList

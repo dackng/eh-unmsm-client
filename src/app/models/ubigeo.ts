@@ -42,4 +42,11 @@ export class Ubigeo {
     validateCodes(){
         return this.departmentCode!=null && this.provinceCode!=null && this.districtCode!=null ? true : false;
     }
+
+    //Find value by code for PHR
+    findValuesSelected(ubigeo: Ubigeo, departmentItemList : Array<Ubigeo>, provinceItemList : Array<Ubigeo>, districtItemList : Array<Ubigeo>){
+        this.departmentDescription = departmentItemList.find(item => item.departmentCode == ubigeo.departmentCode).departmentDescription;
+        this.provinceDescription = provinceItemList.find(item => item.provinceCode == ubigeo.provinceCode).provinceDescription;
+        this.districtDescription = districtItemList.find(item => item.districtCode == ubigeo.districtCode).districtDescription;
+    }
 }

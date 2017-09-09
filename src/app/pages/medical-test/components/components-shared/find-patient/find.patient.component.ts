@@ -2,13 +2,13 @@ import {Component, Input, Output, EventEmitter, OnInit, OnDestroy} from '@angula
 import { Logger } from "angular2-logger/core";
 import { Subscription } from 'rxjs/Subscription';
 
-import {Patient} from '../../../models/patient';
-import {PatientService} from '../../../services/patient.service';
-import {CommonService} from '../../../services/common.service';
+import {Patient} from '../../../../../models/patient';
+import {PatientService} from '../../../../../services/patient.service';
+import {CommonService} from '../../../../../services/common.service';
 
 @Component({
   selector: 'find-patient',
-  styleUrls: ['../../../theme/sass/_disabled.scss'],
+  styleUrls: ['../../../../../theme/sass/_disabled.scss'],
   template: require('./find-patient.html'),
   providers: [Logger, PatientService]
 })
