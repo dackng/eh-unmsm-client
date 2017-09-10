@@ -12,7 +12,8 @@
     },
     "subtitles":{
       "options": "OPCIONES",
-      "download": "DESCARGAR"
+      "create_date": "FECHA DE INICIO",
+      "end_date": "FECHA DE TÉRMINO"
     },
     "buttons": {
       "register": "Registrar",
@@ -81,8 +82,6 @@
         "right_eye": "Ojo derecho",
         "left_eye": "Ojo izquierdo"
       },
-      "triage": "TRIAJE",
-      "clinical_evaluation": "EVALUACIÓN CLÍNICA",
       "symptom_table":{
         "num": "N°",
         "symptoms": "SINTOMAS",

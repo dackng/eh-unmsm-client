@@ -19,7 +19,7 @@
                   </button>
                 </span>
               </div>
-              <small *ngIf="isPhrNoRegistered" class="text-danger" 
+              <small *ngIf="isPhrNoRegistered && isActive" class="text-danger" 
                 translate>{{'general.messages.is_phr_no_registered'}}</small>
             </div>
           </div>
@@ -54,7 +54,7 @@
           <div class="col-md-4">
             <div class="form-group">
               <label translate>{{'patient.age'}}</label>
-              <input type="text" class="form-control disabled-field" [(ngModel)]="phr.patientSummary.names" 
+              <input type="text" class="form-control disabled-field" [(ngModel)]="phr.patientSummary.age" 
                 required name="age" ngControl="age" [disabled] ="true"
                 #age="ngModel">    
             </div>
@@ -70,7 +70,7 @@
           <div class="col-md-4 text-center">
             <div class="form-group">
               <button  class="btn btn-primary btn-xm" 
-                [disabled] = "!isPhrNoRegistered"  (click)="showEmrOfNewPatientModal()"type="button" translate>
+                [disabled] = "isPhrNoRegistered"  (click)="showPatientDetailModal()"type="button" translate>
                 {{'general.buttons.show_patient_detail'}}
               </button>
             </div>
@@ -83,7 +83,7 @@
           <div class="col-md-12 ">
             <div class="container-fluid">
               <tabs>
-                <tab translate tabTitle="EXAMENES MÉDICOS" title ="{{'health_record.medical_tests'}}" [pageAddress]="pageAddressTab"> 
+                <tab translate tabTitle="EXAMENES MÉDICOS" title ="EXAMENES MÉDICOS" [pageAddress]="pageAddressTab"> 
                   <div class="horizontal-scroll">
                     <br/>
                     <table class="table table-hover">
@@ -92,22 +92,20 @@
                           <th class="table-id" >N°</th>
                           <th translate>{{'health_record.test_table.health_plan'}}</th>
                           <th translate>{{'health_record.test_table.state'}}</th>
-                          <th translate>{{'general.subtitles.download'}}</th>
+                          <th translate>{{'general.subtitles.create_date'}}</th>
+                          <th translate>{{'general.subtitles.end_date'}}</th>
                           <th translate>{{'general.subtitles.options'}}</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <ng-container *ngIf="phr.emrList != null">
+                        <ng-container *ngIf="phr.emrSummaryList != null">
                           <tr *ngFor="let item of phr.emrSummaryList; let i=index">
                             <td class="table-id center">{{ i+1 }}</td>
                             <td>{{ item.healthPlan }}</td>
                             <td>{{ item.state }}</td>
-                            <td>{{ item.createdAt }}</td>
-                            <td>{{ item.updatedAt }}</td>
+                            <td>{{ item.formattedCreateDate }}</td>
+                            <td>{{ item.formattedUpdateDate }}</td>
                             <td>
-                              <button type="button"  class="btn btn-info btn-icon btn-xm" >
-                                <i class="ion-edit"></i>
-                              </button>
                               <button type="button"  class="btn btn-info btn-icon btn-xm"
                                 (click)="showEmrModal(phr.emrSummaryList.indexOf(item))" >
                                 <i class="ion-search"></i>
@@ -202,7 +200,7 @@
               <div class="col-md-3">
                 <div class="form-group">
                   <label translate>{{'patient.birthDate'}}</label> 
-                  <input type="text" class="form-control disabled-field" [(ngModel)]="phr.patientSummary.birthDate" 
+                  <input type="text" class="form-control disabled-field" [(ngModel)]="phr.patientSummary.formattedDate" 
                     name="birthDate" ngControl="birthDate" [disabled] ="true">
                 </div>
               </div>

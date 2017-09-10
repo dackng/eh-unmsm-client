@@ -24,12 +24,13 @@ export class PatientSummary {
     /*Fields for help to view logic*/
     public formattedDate : string;
     public fullname: string;
+    public age: number;
 
     constructor(){
         this.ubigeo = new Ubigeo();
     }
 
-    setFields(patient: Patient, civilStateItemList : Array<Catalog>, eapItemList : Array<Catalog>
+    buildFields(patient: Patient, civilStateItemList : Array<Catalog>, eapItemList : Array<Catalog>
     , departmentItemList : Array<Ubigeo>, provinceItemList : Array<Ubigeo>
     , districtItemList : Array<Ubigeo>, genderItemList: Array<string>){
         this.code = patient.code;
@@ -39,15 +40,36 @@ export class PatientSummary {
         this.civilState = civilStateItemList.find(item => item.secondaryId == patient.civilStateId).name;
         this.email = patient.email;
         this.eap = eapItemList.find(item => item.secondaryId == patient.eapId).name;
-        this.formattedDate = Utils.formatDate(patient.birthDate);
+        this.birthDate = patient.birthDate;
         this.telephone = patient.telephone;
         this.gender = Utils.isMaleGender(Constants.GENDER_MALE_API, patient.gender) ? Constants.GENDER_MALE_VIEW : Constants.GENDER_FEMALE_VIEW;
         this.address = patient.address;
         this.ubigeo.findValuesSelected(patient.ubigeo, departmentItemList, provinceItemList, districtItemList);
-        this.getFullName();
+    }
+
+    setFields(patientSummary: PatientSummary){
+        this.code = patientSummary.code;
+        this.names = patientSummary.names;
+        this.paternalSurname = patientSummary.paternalSurname;
+        this.maternalSurname = patientSummary.maternalSurname;
+        this._getFullname();
+        this.civilState = patientSummary.civilState;
+        this.email = patientSummary.email;
+        this.eap = patientSummary.eap;
+        this.birthDate = patientSummary.birthDate;
+        this._getAge();
+        this.formattedDate = Utils.formatDate(this.birthDate);
+        this.telephone = patientSummary.telephone;
+        this.gender = patientSummary.gender;
+        this.address = patientSummary.address;
+        this.ubigeo = patientSummary.ubigeo;
     }
     
-    getFullName(){
-        this.fullname = this.paternalSurname + " " + this.maternalSurname + ", " + this.names;  
+    private _getFullname(){
+        this.fullname = this.paternalSurname + " " + this.maternalSurname + ", " + this.names;
+    }
+
+    private _getAge(){
+        this.age = Utils.calculateDifferenceInYears(new Date(), this.birthDate);
     }
 }

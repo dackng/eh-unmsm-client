@@ -18,6 +18,7 @@ export class HealthRecordComponent {
     phr: Phr;
     emrSummary: EmrSummary;
     patientCode: number;
+    isActive: boolean;
     isPhrNoRegistered: boolean;
     errorMessage: string;
 
@@ -62,6 +63,7 @@ export class HealthRecordComponent {
     }
 
     findPhrByPatientCode(){
+        this.isActive = true;
         this.isPhrNoRegistered = false;
         this._logger.warn("===== Calling method PHR API:  findPhrByPatientCode("+ this.patientCode +") =====");
         this._phrService.findPhrByPatientCode(this.patientCode)
@@ -71,7 +73,6 @@ export class HealthRecordComponent {
                     this._logger.warn("OUTPUT => PHR: " + JSON.stringify(this.phr));
                 }else{
                     this._logger.warn("PHR isn't exist");
-                    this.isPhrNoRegistered = true;
                     this.initilize();
                 }
             }, error => this.errorMessage = <any> error);
@@ -80,5 +81,6 @@ export class HealthRecordComponent {
     initilize(){      
         this.phr = new Phr();
         this.emrSummary = new EmrSummary();
+        this.isPhrNoRegistered = true;
     }
 }
