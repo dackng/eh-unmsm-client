@@ -31,13 +31,6 @@ export class PsychologicalTestService {
       .catch(this.handleError);
   }
 
-  getTestStateByEmrHealthPlanIdAndEmrPatientCode(healthPlanId: number, patientCode: number)
-     : Observable<MedicalTestItem>{
-    return this.http.get(this.URL +'/get-state/' + healthPlanId + '/' + patientCode)
-      .map(this.extractData)
-      .catch(this.handleError);
-  }
-
   private extractData(res: Response) { 
     let body = res.json();
     return body || { };

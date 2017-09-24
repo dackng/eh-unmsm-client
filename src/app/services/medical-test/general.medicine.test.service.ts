@@ -4,7 +4,6 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/Rx'
 
 import {GeneralMedicineTest} from '../../models/medical-test/general.medicine.test';
-import {MedicalTestItem} from '../../pages/medical-test/components/components-shared/medical-test-process-table/medical.test.item';
 
 @Injectable()
 export class GeneralMedicineTestService {
@@ -27,13 +26,6 @@ export class GeneralMedicineTestService {
     let bodyString = JSON.stringify(generalMedicineTest);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     return this.http.post(this.URL + '/register', bodyString, {headers:headers})
-      .map(this.extractData)
-      .catch(this.handleError);
-  }
-
-  getTestStateByEmrHealthPlanIdAndEmrPatientCode(healthPlanId: number, patientCode: number)
-     : Observable<MedicalTestItem>{
-    return this.http.get(this.URL +'/get-state/' + healthPlanId + '/' + patientCode)
       .map(this.extractData)
       .catch(this.handleError);
   }
