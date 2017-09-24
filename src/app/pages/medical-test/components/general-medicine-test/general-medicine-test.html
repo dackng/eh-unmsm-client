@@ -72,16 +72,16 @@
                           <label translate>{{'general_medicine_test.blood_presure.systolic'}}</label>
                           <input type="text" class="form-control disabled-field" [(ngModel)]="generalMedicineTest.systolic" 
                                name="systolic" ngControl="systolic" [disabled] ="isGeneralMedicineTestRegistered"
-                              onkeypress='return event.charCode >= 48 && event.charCode <= 57' #systolic="ngModel" maxlength="4">
-                          <small *ngIf="isFieldDisabled" 
+                              onkeypress='return event.charCode >= 48 && event.charCode <= 57' #systolic="ngModel" maxlength="3">
+                          <small *ngIf="systolic.errors?.required && isFieldDisabled" 
                             class="text-danger" translate>{{'general.messages.required'}}</small>
                         </div>
                         <div class="form-group">
                           <label translate>{{'general_medicine_test.blood_presure.diastolic'}}</label>
                           <input type="text" class="form-control disabled-field" [(ngModel)]="generalMedicineTest.diastolic" 
                              name="diastolic" ngControl="diastolic" [disabled] ="isGeneralMedicineTestRegistered"
-                            onkeypress='return event.charCode >= 48 && event.charCode <= 57' #diastolic="ngModel" maxlength="4">
-                          <small *ngIf="isFieldDisabled" 
+                            onkeypress='return event.charCode >= 48 && event.charCode <= 57' #diastolic="ngModel" maxlength="3">
+                          <small *ngIf="diastolic.errors?.required && isFieldDisabled" 
                             class="text-danger" translate>{{'general.messages.required'}}</small>
                         </div>
                       </ba-card>

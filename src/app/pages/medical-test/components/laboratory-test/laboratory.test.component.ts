@@ -150,15 +150,6 @@ export class LaboratoryTestComponent implements OnInit{
     }
 
     registerLaboratoryTest(isFormValided : boolean){
-        this._setValuesOfLaboratoryTestForPHR(this.emrUpdated);
-                            this._logger.warn("===== Calling method PHR API: updateEmrSummary(INPUT) =====");
-                            this._logger.warn("INPUT => emrSummary: " + JSON.stringify(this.phrUpdated.emrSummary));
-                            this._phrService.updateEmrSummary(this.laboratoryTest.emrPatientCode, this.phrUpdated.emrSummary)
-                                .subscribe( (phr: Phr) => {
-                                    this._logger.warn("OUTPUT => PHR with EMR updated successful");
-                                    this.initilize();
-                            }, error => this.errorMessage = <any> error);
-/*
         this.isFieldDisabled = true;
         if(isFormValided){
             this._logger.warn("===== Calling LaboratoryTest API: registerLaboratoryTest()");
@@ -180,7 +171,6 @@ export class LaboratoryTestComponent implements OnInit{
                         }, error => this.errorMessage = <any> error);
                 }, error => this.errorMessage = <any> error);
         }
-        */
     }
 
     initilize(){
@@ -208,10 +198,10 @@ export class LaboratoryTestComponent implements OnInit{
             this.phrUpdated.emrSummary.updatedAt = this.emrUpdated.updatedAt;
             this.phrUpdated.emrSummary.state = this.emrStateItemList.find(item => item.secondaryId == this.emrUpdated.stateId).name;    
         }else{
+            if(emr.code != {} && emr.code != null )this.phrUpdated.emrSummary.code = emr.code;
             this.phrUpdated.emrSummary.updatedAt = emr.updatedAt;
             this.phrUpdated.emrSummary.state = this.emrStateItemList.find(item => item.secondaryId == emr.stateId).name;
         }
-        if(emr.code != {} && emr.code != null )this.phrUpdated.emrSummary.code = emr.code;
         this.phrUpdated.emrSummary.healthPlan = this.currentHealthPlan.name;
         this.phrUpdated.emrSummary.serologicalResult = this.serologicalItemList
             .find(item => item.secondaryId == this.laboratoryTest.serologicalTestId).name;

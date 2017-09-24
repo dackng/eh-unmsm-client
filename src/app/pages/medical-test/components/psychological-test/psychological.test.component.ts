@@ -186,10 +186,10 @@ export class PsychologicalTestComponent implements OnInit{
             this.phrUpdated.emrSummary.updatedAt = this.emrUpdated.updatedAt;
             this.phrUpdated.emrSummary.state = this.emrStateItemList.find(item => item.secondaryId == this.emrUpdated.stateId).name;    
         }else{
+            if(emr.code != {} && emr.code != null )this.phrUpdated.emrSummary.code = emr.code;
             this.phrUpdated.emrSummary.updatedAt = emr.updatedAt;
             this.phrUpdated.emrSummary.state = this.emrStateItemList.find(item => item.secondaryId == emr.stateId).name;
         }
-        if(emr.code != {} && emr.code != null )this.phrUpdated.emrSummary.code = emr.code;
         this.phrUpdated.emrSummary.healthPlan = this.currentHealthPlan.name;
         this.phrUpdated.emrSummary.psychologicalResult = this.diagnosisItemList
             .find(item => item.secondaryId == this.psychologicalTest.diagnosisId).name;

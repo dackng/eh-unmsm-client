@@ -64,6 +64,7 @@ export class HealthRecordComponent {
 
     findPhrByPatientCode(){
         this.isActive = true;
+        this.phr.emrSummaryList = [];
         this.isPhrNoRegistered = false;
         this._logger.warn("===== Calling method PHR API:  findPhrByPatientCode("+ this.patientCode +") =====");
         this._phrService.findPhrByPatientCode(this.patientCode)
