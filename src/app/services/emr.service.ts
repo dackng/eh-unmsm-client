@@ -4,6 +4,7 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/Rx'
 
 import {Emr} from '../models/emr';
+import {MedicalTest} from '../models/medical.test';
 
 @Injectable()
 export class EmrService {
@@ -29,10 +30,17 @@ export class EmrService {
       .catch(this.handleError);
   }
 
-  validateEmrState(healthPlanId: number, patientCode: number, emr: Emr) {
+  validateEmrState(testTypeId: number, emr: Emr): Observable<Emr> {
     let bodyString = JSON.stringify(emr);
     let headers = new Headers({ 'Content-Type': 'application/json' });
-    return this.http.put(this.URL + '/find/' + healthPlanId + '/' + patientCode, bodyString, {headers:headers})
+    return this.http.put(this.URL + '/validate-current-state/' + testTypeId , bodyString, {headers:headers})
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  getMedicalTestsByType(healthPlanId: number, patientCode: number, testTypeId: number) 
+    : Observable<Array<MedicalTest>>{
+    return this.http.get(this.URL +'/list/medical-test/' + healthPlanId + '/' + patientCode + '/' + testTypeId)
       .map(this.extractData)
       .catch(this.handleError);
   }

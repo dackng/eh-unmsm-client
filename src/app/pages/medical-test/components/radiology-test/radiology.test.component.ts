@@ -35,6 +35,7 @@ export class RadiologyTestComponent implements OnInit{
     isRadiologyTestRegistered: boolean;
     radiologyTypeItemList: Array<Catalog>;
     emrStateItemList: Array<Catalog>;
+    radiologyItem: Catalog;
     isFieldDisabled: boolean;
     errorMessage: string;
 
@@ -59,6 +60,12 @@ export class RadiologyTestComponent implements OnInit{
             .subscribe( (emrStateItemList : Array<Catalog> ) => {
                 this.emrStateItemList = emrStateItemList;
                 this._logger.warn("OUTPUT=> emrStateItemList : " + JSON.stringify(this.emrStateItemList));
+            }, error => this.errorMessage = <any> error);
+        this._logger.warn("===== Calling method CATALOG API: getRadiologyTest() =====");
+        this._catalogService.getRadiologyTest()
+            .subscribe( (radiologyItem : Catalog ) => {
+                this.radiologyItem = radiologyItem;
+                this._logger.warn("OUTPUT=> radiologyItem : " + JSON.stringify(this.radiologyItem));
             }, error => this.errorMessage = <any> error);
     }
 
@@ -104,11 +111,9 @@ export class RadiologyTestComponent implements OnInit{
                             }
                             this._commonService.notifyMedicalTestProcessComponent(
                                 //sending signal for get process table
-                                {patientCode: patient.code 
-                                , healthPlanId: this.currentHealthPlan.secondaryId
-                                , emrStateItemList:this.emrStateItemList
-                                , testIndex: Constants.RADIOLOGY_TEST_INDEX
-                                , isExistingTest: this.isRadiologyTestRegistered});
+                                {  patientCode: patient.code 
+                                 , healthPlanId: this.currentHealthPlan.secondaryId
+                                 , testTypeId: this.radiologyItem.secondaryId});
                         }, error => this.errorMessage = <any> error);                        
                 }else{
                     this._logger.warn("EMR doesn't be registered yet, should register EMR for this patient");
@@ -124,11 +129,10 @@ export class RadiologyTestComponent implements OnInit{
             this._radiologyTestService.registerRadiologyTest(this.radiologyTest)
                 .subscribe(test => {
                     this._logger.warn("*****RadiologyTest registered successful*****");
-                    this._emrService.validateEmrState(this.radiologyTest.emrHealthPlanId,
-                        this.radiologyTest.emrPatientCode, this.emrUpdated).subscribe(emr => {
+                    this._emrService.validateEmrState(this.radiologyItem.secondaryId
+                        ,this.emrUpdated).subscribe( ( emr : Emr )=> {
                             this._logger.warn("*****EMR state valid successful*****");
-                            this._setValuesOfRadiologyTestForPHR(emr, this.emrStateItemList
-                                , this.radiologyTest, this.radiologyTypeItemList);
+                            this._setValuesOfRadiologyTestForPHR(emr);
                             this._logger.warn("===== Calling method PHR API: updateEmrSummary(INPUT) =====");
                             this._logger.warn("INPUT => emrSummary: " + JSON.stringify(this.phrUpdated.emrSummary));
                             this._phrService.updateEmrSummary(this.radiologyTest.emrPatientCode, this.phrUpdated.emrSummary)
@@ -158,15 +162,19 @@ export class RadiologyTestComponent implements OnInit{
         this._commonService.notifyMedicalTestProcessComponent(
             {patientCode: null 
             , healthPlanId: null
-            , emrStateItemList:null
-            , testIndex: Constants.RADIOLOGY_TEST_INDEX
-            , isExistingTest: false});
+            , testTypeId: null});
     }
 
-    private _setValuesOfRadiologyTestForPHR(emr: Emr, emrStateItemList: Array<Catalog>, radiologyTest: RadiologyTest
-        , radiologyTypeItemList: Array<Catalog>){
-        this.phrUpdated.emrSummary.state = emrStateItemList.find(item => item.secondaryId == emr.stateId).name;
-        this.phrUpdated.emrSummary.radiologyResult = radiologyTypeItemList
-            .find(item => item.secondaryId == radiologyTest.typeId).name;
+    private _setValuesOfRadiologyTestForPHR(emr: Emr){
+        if(emr == null){
+            this.phrUpdated.emrSummary.updatedAt = this.emrUpdated.updatedAt;
+            this.phrUpdated.emrSummary.state = this.emrStateItemList.find(item => item.secondaryId == this.emrUpdated.stateId).name;    
+        }else{
+            this.phrUpdated.emrSummary.updatedAt = emr.updatedAt;
+            this.phrUpdated.emrSummary.state = this.emrStateItemList.find(item => item.secondaryId == emr.stateId).name;
+        }
+        this.phrUpdated.emrSummary.healthPlan = this.currentHealthPlan.name;
+        this.phrUpdated.emrSummary.radiologyResult = this.radiologyTypeItemList
+            .find(item => item.secondaryId == this.radiologyTest.typeId).name;
     }
 }

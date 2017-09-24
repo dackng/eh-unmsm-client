@@ -9,12 +9,12 @@
     </tr>
     </thead>
     <tbody>
-      <ng-container *ngIf="patientCode != null && medicalTestItemList !=null">
-        <tr *ngFor="let test of medicalTestItemList; let i=index">
+      <ng-container *ngIf="patientCode != null && medicalTestList !=null">
+        <tr *ngFor="let test of medicalTestList; let i=index">
           <td class="table-id center">{{ i+1 }}</td>
-          <td>{{ test.medicalTestName }}</td>
+          <td>{{ test.typeName }}</td>
           <td>
-            <button disabled="disabled" ngClass="{status-button btn btn-xs btn-{{ test.colorMessage }}">{{test.stateName}}</button>
+            <button disabled="disabled" ngClass="{status-button btn btn-xs btn-{{ test.color }}">{{test.stateName}}</button>
           </td>
         </tr>
       </ng-container>

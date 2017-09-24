@@ -105,6 +105,42 @@ export class CatalogService {
       .catch(this.handleError);
   }
 
+  getMedicalTestListForNewPatient() : Observable<Array<Catalog>>{
+    return this.http.get(this.URL + '/list/medical-test/new-patient')
+      .map(this.extractDataArray)
+      .catch(this.handleError);
+  }
+  
+  getMedicalTestListForOldPatient() : Observable<Array<Catalog>>{
+    return this.http.get(this.URL + '/list/medical-test/old-patient')
+      .map(this.extractDataArray)
+      .catch(this.handleError);
+  }
+
+  getGeneralMedicineTest() : Observable<Catalog>{
+    return this.http.get(this.URL + '/element/medical-test/general-medicine')
+      .map(this.extractDataArray)
+      .catch(this.handleError);
+  }
+
+  getLaboratoryTest() : Observable<Catalog>{
+    return this.http.get(this.URL + '/element/medical-test/laboratory')
+      .map(this.extractDataArray)
+      .catch(this.handleError);
+  }
+
+  getRadiologyTest() : Observable<Catalog>{
+    return this.http.get(this.URL + '/element/medical-test/radiology')
+      .map(this.extractDataArray)
+      .catch(this.handleError);
+  }
+
+  getPsychologicalTest() : Observable<Catalog>{
+    return this.http.get(this.URL + '/element/medical-test/psychological')
+      .map(this.extractDataArray)
+      .catch(this.handleError);
+  }
+
   private extractDataObject(res: Response) {
     let body = res.json();
     return body || { };

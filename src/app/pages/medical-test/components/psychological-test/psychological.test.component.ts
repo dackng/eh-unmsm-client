@@ -37,6 +37,7 @@ export class PsychologicalTestComponent implements OnInit{
     emrStateItemList: Array<Catalog>;
     depressionStateItemList: Array<Catalog>;
 	anxietyStateItemList: Array<Catalog>;
+    psychologicalItem: Catalog;
     isFieldDisabled: boolean;
     errorMessage: string;
 
@@ -73,6 +74,12 @@ export class PsychologicalTestComponent implements OnInit{
             .subscribe( (anxietyStateItemList : Array<Catalog> ) => {
                 this.anxietyStateItemList = anxietyStateItemList;
                 this._logger.warn("OUTPUT=> anxietyStateItemList : " + JSON.stringify(this.anxietyStateItemList));
+            }, error => this.errorMessage = <any> error);
+        this._logger.warn("===== Calling method CATALOG API: getPsychologicalTest() =====");
+        this._catalogService.getPsychologicalTest()
+            .subscribe( (psychologicalItem : Catalog ) => {
+                this.psychologicalItem = psychologicalItem;
+                this._logger.warn("OUTPUT=> radiologyItem : " + JSON.stringify(this.psychologicalItem));
             }, error => this.errorMessage = <any> error);   
     }
 
@@ -120,11 +127,9 @@ export class PsychologicalTestComponent implements OnInit{
                             }
                             this._commonService.notifyMedicalTestProcessComponent(
                                 //sending signal for get process table
-                                {patientCode: patient.code 
-                                , healthPlanId: this.currentHealthPlan.secondaryId
-                                , emrStateItemList:this.emrStateItemList
-                                , testIndex: Constants.PSYCHOLOGICAL_TEST_INDEX
-                                , isExistingTest: this.isPsychologicalTestRegistered});
+                                { patientCode: patient.code 
+                                  , healthPlanId: this.currentHealthPlan.secondaryId
+                                  , testTypeId: this.psychologicalItem.secondaryId});
                         }, error => this.errorMessage = <any> error);                        
                 }else{
                     this._logger.warn("EMR doesn't be registered yet, should register EMR for this patient");
@@ -140,11 +145,10 @@ export class PsychologicalTestComponent implements OnInit{
             this._psychologicalTestService.registerPsychologicalTest(this.psychologicalTest)
                 .subscribe(test => {
                     this._logger.warn("*****PsychologicalTest registered successful*****");
-                    this._emrService.validateEmrState(this.psychologicalTest.emrHealthPlanId,
-                        this.psychologicalTest.emrPatientCode, this.emrUpdated).subscribe( (emr: Emr )=> {
+                    this._emrService.validateEmrState(this.psychologicalItem.secondaryId
+                        ,this.emrUpdated).subscribe( (emr: Emr )=> {
                             this._logger.warn("*****EMR state valid successful*****");
-                            this._setValuesOfPsychologicalTestForPHR(emr, this.emrStateItemList
-                                , this.psychologicalTest, this.diagnosisItemList);
+                            this._setValuesOfPsychologicalTestForPHR(emr);
                             this._logger.warn("===== Calling method PHR API: updateEmrSummary(INPUT) =====");
                             this._logger.warn("INPUT => emrSummary: " + JSON.stringify(this.phrUpdated.emrSummary));
                             this._phrService.updateEmrSummary(this.psychologicalTest.emrPatientCode, this.phrUpdated.emrSummary)
@@ -174,15 +178,19 @@ export class PsychologicalTestComponent implements OnInit{
         this._commonService.notifyMedicalTestProcessComponent(
             {patientCode: null 
             , healthPlanId: null
-            , emrStateItemList:null
-            , testIndex: Constants.PSYCHOLOGICAL_TEST_INDEX
-            , isExistingTest: false});
+            , testTypeId: null});
     }
     
-    private _setValuesOfPsychologicalTestForPHR(emr: Emr, emrStateItemList: Array<Catalog>
-        , psychologicalTest:PsychologicalTest, diagnosisItemList: Array<Catalog>){
-        this.phrUpdated.emrSummary.state = emrStateItemList.find(item => item.secondaryId == emr.stateId).name;
-        this.phrUpdated.emrSummary.psychologicalResult = diagnosisItemList
-            .find(item => item.secondaryId == psychologicalTest.diagnosisId).name;
+    private _setValuesOfPsychologicalTestForPHR(emr: Emr){
+        if(emr == null){
+            this.phrUpdated.emrSummary.updatedAt = this.emrUpdated.updatedAt;
+            this.phrUpdated.emrSummary.state = this.emrStateItemList.find(item => item.secondaryId == this.emrUpdated.stateId).name;    
+        }else{
+            this.phrUpdated.emrSummary.updatedAt = emr.updatedAt;
+            this.phrUpdated.emrSummary.state = this.emrStateItemList.find(item => item.secondaryId == emr.stateId).name;
+        }
+        this.phrUpdated.emrSummary.healthPlan = this.currentHealthPlan.name;
+        this.phrUpdated.emrSummary.psychologicalResult = this.diagnosisItemList
+            .find(item => item.secondaryId == this.psychologicalTest.diagnosisId).name;
     }
 }

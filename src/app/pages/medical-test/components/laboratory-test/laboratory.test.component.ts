@@ -39,6 +39,7 @@ export class LaboratoryTestComponent implements OnInit{
     hemoglobinStateItemList: Array<Catalog>;
     genderItemList: Array<string>;
     emrStateItemList: Array<Catalog>;
+    laboratoryItem: Catalog;
     isFieldDisabled: boolean;
     errorMessage: string;
 
@@ -82,6 +83,12 @@ export class LaboratoryTestComponent implements OnInit{
             .subscribe( (emrStateItemList : Array<Catalog> ) => {
                 this.emrStateItemList = emrStateItemList;
                 this._logger.warn("OUTPUT=> emrStateItemList : " + JSON.stringify(this.emrStateItemList));
+            }, error => this.errorMessage = <any> error);
+        this._logger.warn("===== Calling method CATALOG API: getLaboratoryTest() =====");
+        this._catalogService.getLaboratoryTest()
+            .subscribe( (laboratoryItem : Catalog ) => {
+                this.laboratoryItem = laboratoryItem;
+                this._logger.warn("OUTPUT=> laboratoryItem : " + JSON.stringify(this.laboratoryItem));
             }, error => this.errorMessage = <any> error);
     }
 
@@ -134,9 +141,7 @@ export class LaboratoryTestComponent implements OnInit{
                                     //sending signal for get process table
                                     {patientCode: patient.code 
                                     , healthPlanId: this.currentHealthPlan.secondaryId
-                                    , emrStateItemList:this.emrStateItemList
-                                    , testIndex: Constants.LABORATORY_TEST_INDEX
-                                    , isExistingTest: this.isLaboratoryTestRegistered});
+                                    , testTypeId: this.laboratoryItem.secondaryId});
                         }, error => this.errorMessage = <any> error);                        
                 }else{
                     this._logger.warn("EMR doesn't be registered yet, should register EMR for this patient");
@@ -152,12 +157,10 @@ export class LaboratoryTestComponent implements OnInit{
             this._laboratoryTestService.registerLaboratoryTest(this.laboratoryTest)
                 .subscribe(test => {
                     this._logger.warn("*****LaboratoryTest registered successful*****");
-                    this._emrService.validateEmrState(this.laboratoryTest.emrHealthPlanId,
-                        this.laboratoryTest.emrPatientCode, this.emrUpdated).subscribe( (emr: Emr )=> {
+                    this._emrService.validateEmrState(this.laboratoryItem.secondaryId
+                        ,this.emrUpdated).subscribe( (emr: Emr )=> {
                             this._logger.warn("*****EMR state valid successful*****");
-                            this._setValuesOfLaboratoryTestForPHR(emr, this.emrStateItemList
-                                , this.laboratoryTest, this.serologicalItemList, this.bloodTypeItemList
-                                , this.hemoglobinStateItemList);
+                            this._setValuesOfLaboratoryTestForPHR(emr);
                             this._logger.warn("===== Calling method PHR API: updateEmrSummary(INPUT) =====");
                             this._logger.warn("INPUT => emrSummary: " + JSON.stringify(this.phrUpdated.emrSummary));
                             this._phrService.updateEmrSummary(this.laboratoryTest.emrPatientCode, this.phrUpdated.emrSummary)
@@ -167,7 +170,7 @@ export class LaboratoryTestComponent implements OnInit{
                             }, error => this.errorMessage = <any> error);
                         }, error => this.errorMessage = <any> error);
                 }, error => this.errorMessage = <any> error);
-        } 
+        }
     }
 
     initilize(){
@@ -187,22 +190,25 @@ export class LaboratoryTestComponent implements OnInit{
         this._commonService.notifyMedicalTestProcessComponent(
             {patientCode: null 
             , healthPlanId: null
-            , emrStateItemList:null
-            , testIndex: Constants.LABORATORY_TEST_INDEX
-            , isExistingTest: false});
+            , testTypeId: null});
     }
 
-    private _setValuesOfLaboratoryTestForPHR(emr: Emr, emrStateItemList: Array<Catalog>, laboratoryTest: LaboratoryTest
-        , serologicalItemList: Array<Catalog>, bloodTypeItemList: Array<Catalog>
-        , hemoglobinStateItemList: Array<Catalog>){
-        this.phrUpdated.emrSummary.state = emrStateItemList.find(item => item.secondaryId == emr.stateId).name;
-        this.phrUpdated.emrSummary.serologicalResult = serologicalItemList
-            .find(item => item.secondaryId == laboratoryTest.serologicalTestId).name;
-        this.phrUpdated.emrSummary.bloodType = bloodTypeItemList
-            .find(item => item.secondaryId == laboratoryTest.bloodTypeId).name;
-        this.phrUpdated.emrSummary.hemoglobin = laboratoryTest.hemoglobin + ' - ' + hemoglobinStateItemList
-            .find(item => item.secondaryId == laboratoryTest.hemoglobinStateId).name;
-        this.phrUpdated.emrSummary.bloodCount = hemoglobinStateItemList
-            .find(item => item.secondaryId == laboratoryTest.hemoglobinStateId).name;;
+    private _setValuesOfLaboratoryTestForPHR(emr: Emr){
+        if(emr == null){
+            this.phrUpdated.emrSummary.updatedAt = this.emrUpdated.updatedAt;
+            this.phrUpdated.emrSummary.state = this.emrStateItemList.find(item => item.secondaryId == this.emrUpdated.stateId).name;    
+        }else{
+            this.phrUpdated.emrSummary.updatedAt = emr.updatedAt;
+            this.phrUpdated.emrSummary.state = this.emrStateItemList.find(item => item.secondaryId == emr.stateId).name;
+        }
+        this.phrUpdated.emrSummary.healthPlan = this.currentHealthPlan.name;
+        this.phrUpdated.emrSummary.serologicalResult = this.serologicalItemList
+            .find(item => item.secondaryId == this.laboratoryTest.serologicalTestId).name;
+        this.phrUpdated.emrSummary.bloodType = this.bloodTypeItemList
+            .find(item => item.secondaryId == this.laboratoryTest.bloodTypeId).name;
+        this.phrUpdated.emrSummary.hemoglobin = this.laboratoryTest.hemoglobin + ' - ' + this.hemoglobinStateItemList
+            .find(item => item.secondaryId == this.laboratoryTest.hemoglobinStateId).name;
+        this.phrUpdated.emrSummary.bloodCount = this.hemoglobinStateItemList
+            .find(item => item.secondaryId == this.laboratoryTest.hemoglobinStateId).name;
     }
 }

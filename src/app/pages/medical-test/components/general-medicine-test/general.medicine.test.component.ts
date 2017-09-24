@@ -39,9 +39,9 @@ export class GeneralMedicineTestComponent implements OnInit{
     cieItemList: Array<Catalog>;
     emrStateItemList: Array<Catalog>;
     genderItemList: Array<string>;
-
+    generalMedicineItem: Catalog;
     @ViewChild('addSymptomModal') addSymptomModal: ModalDirective;
-
+    
     ngOnInit(){
         this.initilize();
     }
@@ -74,6 +74,12 @@ export class GeneralMedicineTestComponent implements OnInit{
             .subscribe( (genderItemList : Array<string> ) => {
                 this.genderItemList = genderItemList;
                 this._logger.warn("OUTPUT=> genderItemList : " + JSON.stringify(this.genderItemList));
+            }, error => this.errorMessage = <any> error);
+        this._logger.warn("===== Calling method CATALOG API: getGeneralMedicineTest() =====");
+        this._catalogService.getGeneralMedicineTest()
+            .subscribe( (generalMedicineItem : Catalog ) => {
+                this.generalMedicineItem = generalMedicineItem;
+                this._logger.warn("OUTPUT=> generalMedicineItem : " + JSON.stringify(this.generalMedicineItem));
             }, error => this.errorMessage = <any> error);
     }
 
@@ -177,9 +183,7 @@ export class GeneralMedicineTestComponent implements OnInit{
                                     //sending signal for get process table
                                     {patientCode: patient.code 
                                     , healthPlanId: this.currentHealthPlan.secondaryId
-                                    , emrStateItemList:this.emrStateItemList
-                                    , testIndex: Constants.GENERAL_MEDICINE_TEST_INDEX
-                                    , isExistingTest: this.isGeneralMedicineTestRegistered});
+                                    , testTypeId: this.generalMedicineItem.secondaryId});
                         }, error => this.errorMessage = <any> error);                        
                 }else{
                     this._logger.warn("EMR doesn't be registered yet, should register EMR for this patient");
@@ -195,8 +199,10 @@ export class GeneralMedicineTestComponent implements OnInit{
             this._generalMedicineTestService.registerGeneralMedicineTest(this.generalMedicineTest)
                 .subscribe(test => {
                     this._logger.warn("*****GeneralMedicineTest registered successful*****");
-                    this._emrService.validateEmrState(this.generalMedicineTest.emrHealthPlanId,
-                        this.generalMedicineTest.emrPatientCode, this.emrUpdated).subscribe( (emr: Emr )=> {
+                    this._logger.warn("===== Calling EMR API: validateEmrState()");
+                    this._logger.warn("INPUT => emrUpdated: "+JSON.stringify(this.emrUpdated));
+                    this._emrService.validateEmrState(this.generalMedicineItem.secondaryId
+                        ,this.emrUpdated).subscribe( (emr: Emr )=> {
                             this._logger.warn("*****EMR state valid successful*****");
                             this.initilize();
                         }, error => this.errorMessage = <any> error);
@@ -221,9 +227,7 @@ export class GeneralMedicineTestComponent implements OnInit{
             //sending signal for get process table
             {patientCode: null 
             , healthPlanId: null
-            , emrStateItemList:null
-            , testIndex: Constants.GENERAL_MEDICINE_TEST_INDEX
-            , isExistingTest: false});
+            , testTypeId: null});
     }
 
     //Find value item selected
